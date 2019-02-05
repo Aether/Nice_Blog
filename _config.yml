@@ -4,7 +4,7 @@ name: Aether # your name
 email: aether379@gmail.com # your email address
 description: >
     Keep calm and carry on # this means to ignore newlines until "baseurl:"
-baseurl: "/Aether" # the subpath of your site, e.g. /blog
+baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site
 twitter_username:  # your Twitter username
 github_username: Aether # your Github username
