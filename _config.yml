@@ -1,13 +1,13 @@
 # Site settings
-title: Nice Blog
-name: Nice Blog # your name
-email: youremail@example.com # your email address
+title: Aether's Blog
+name: Aether # your name
+email: aether379@gmail.com # your email address
 description: >
-    A Simple Jekyll Blog Theme. # this means to ignore newlines until "baseurl:"
-baseurl: "/Nice_Blog" # the subpath of your site, e.g. /blog
+    Keep calm and carry on # this means to ignore newlines until "baseurl:"
+baseurl: "/Aether" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site
-twitter_username: # your Twitter username
-github_username: # your Github username
+twitter_username:  # your Twitter username
+github_username: Aether # your Github username
 disqus_username: # your disqus username
 
 google-analytics: # add it if you have one
