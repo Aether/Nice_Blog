@@ -81,7 +81,7 @@ a:hover {
   border-bottom: 2px dotted #000; }
 
 .post-content h2:before {
-  content: "¶ ❤️";
+  content: "¶123 ❤️";
   margin-right: 20px;
   color: #198a45; }
 
@@ -121,7 +121,7 @@ a:hover {
  */
 blockquote {
   border-left: 5px solid #eee;
-  margin-left: 30px;
+  margin-left: 0px;
   padding: 5px 15px;
   color: #888888; }
 
