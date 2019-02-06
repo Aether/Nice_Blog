@@ -375,7 +375,7 @@ table, th {
   height: 35px; }
 
 .tech .describe {
-  font-family: 'Noto Sans', serif;
+  font-family: Consolase,'Noto Sans', serif;
   margin-right: 12px;
   text-align: center; }
 
@@ -406,7 +406,7 @@ table, th {
   font-size: 14px;
   color: #404040;
   color: rgba(0, 0, 0, 0.7);
-  font-family: 'Noto Sans', serif;
+  font-family: Consolase,'Noto Sans', serif;
   line-height: 25px; }
 
 .tech .progress > span:before {

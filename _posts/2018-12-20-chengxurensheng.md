@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "程序人生 ——Hello’s P2P"
-subtitle: "2018HITCSAPP大作业"
+subtitle: ""
 date: 2018-12-20
 author: Aether
 category: coding
-tags: Progress CSAPP Program
+tags: CSAPP PROGRAM PROCESS
 finished: true
 ---
 
@@ -150,9 +150,9 @@ C语言运算符中优先级最低的一种运算符。当顺序点用，结合�
     - D为常数偏移量，Rb为基址寄存器，Ri为变址寄存器，S为比例因子。
 
 #### 逻辑／位操作
-- 逻辑运算： 与&& 	或\\|		非！
+- 逻辑运算： 与&& 	或\|		非！
 
-- 位运算：	与&	或\\|		非～	异或^
+- 位运算：	与&	或\|		非～	异或^
 
 - 逻辑左移<< SHL  逻辑右移>> SHR  算数左移<< SAL 算数右移>> SAR 
 
@@ -438,7 +438,7 @@ Linux将虚拟内存组织成一些段的集合去管理，图展示了一个Lin
 为了减少MMU查询PTE的开销，TLB应运而生。TLB就是MMU中PTE的缓存。它将VA中的VPN分为两部分，一部分作为TLB的标记，另一部分作为TLB的索引。当TLB不命中时，MMU从L1缓存中取出相应的PTE放在TLB中。这样一来命中的话地址翻译都在MMU上执行，效率非常高。TLB命中与不命中的地址翻译情况如图
 
 由于页表是需要常驻内存的，为了减少内存被占用的程序可以使用多级页表。Intel Core i7使用四级页表减少主存压力。上一级页表映射下一级虚拟地址空间的一片（有点类似数据结构中建立层索引）。所以VPN被分为四份，VPN i储存着一个到第i级页表的索引，只有最后一级页表中存放PPN。
-![FfnBes.jpg](https://s1.ax1x.com/2018/12/29/FfnBes.jpg){:height="40%" width="70%"}
+![FfnBes.jpg](https://s1.ax1x.com/2018/12/29/FfnBes.jpg){:height="40%" width="80%"}
 ### 三级Cache支持下的物理内存访问
 
 局部性原理启示着高速缓存的思想：用更小更快的设备作为更大更慢设备的缓存区。由于寄存器和主存之间效率非常悬殊，直接访问效率非常低，现代的CPU设计中会在寄存器和CPU间建立多层缓存，数据以块为单元在层与层间复制，这样既可以降低成本又可以保证效率。图为Intel Core i7的高速缓存层次结构。
