@@ -8,8 +8,8 @@
   box-sizing: border-box; }
 
 body {
-  font: 400 18px/1.5 "Noto Sans", serif;
-  color: #111;
+  font: 400 22px/1.5 Consolase,"Noto Sans", serif;
+  color: #666;
   background-color: #fdfdfd;
   -webkit-text-size-adjust: 100%;
   -webkit-font-feature-settings: "kern" 1;
@@ -48,7 +48,7 @@ figcaption {
  * Lists
  */
 ul, ol {
-  margin-left: 30px;
+  margin-left: 25px;
   color: #666;
   letter-spacing: 1px; }
 
@@ -59,6 +59,7 @@ ul {
  * Headings
  */
 h1 {
+  color: #198a45;
   font-size: 18px; }
 
 h2,
@@ -80,13 +81,13 @@ a:hover {
   border-bottom: 2px dotted #000; }
 
 .post-content h2:before {
-  content: "¶ ";
+  content: "¶ ❤️";
   margin-right: 20px;
-  color: #25bcba; }
+  color: #198a45; }
 
 .link {
   padding: 2px;
-  color: #25b3bc;
+  color: #198a45;
   text-decoration: none;
   transition: background-color .7s; }
 
@@ -143,13 +144,13 @@ code {
   border: 1px solid #f8f8f8;
   border-radius: 3px;
   background-color: #f8f8f8;
-  color: #27badf; }
+  color: #333; }
 
 code {
   padding: 1px 10px; }
 
 pre {
-  padding: 8px 12px;
+  padding: 18px 22px;
   overflow-x: auto; }
   pre > code {
     border: 0;
