@@ -1,14 +1,715 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Nice Blog</title>
-    <description>A Simple Jekyll Blog Theme. # this means to ignore newlines until &quot;baseurl:&quot;
+    <title>Aether's Blog</title>
+    <description>Keep calm and carry on # this means to ignore newlines until &quot;baseurl:&quot;
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 08 May 2018 18:45:29 -0700</pubDate>
-    <lastBuildDate>Tue, 08 May 2018 18:45:29 -0700</lastBuildDate>
-    <generator>Jekyll v3.5.2</generator>
+    <pubDate>Mon, 11 Feb 2019 03:19:48 +0800</pubDate>
+    <lastBuildDate>Mon, 11 Feb 2019 03:19:48 +0800</lastBuildDate>
+    <generator>Jekyll v3.8.5</generator>
+    
+      <item>
+        <title>程序人生 ——Hello’s P2P</title>
+        <description>&lt;h1 id=&quot;程序人生-hellos-p2p&quot;&gt;程序人生-Hello’s P2P&lt;/h1&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;我是Hello，我是每一个程序猿¤的初恋（羞羞……）
+却在短短几分钟后惨遭每个菜鸟的无情抛弃（呜呜……），他们很快喜欢上sum、sort、matrix、PR、AI、IOT、BD、MIS……，从不回头。
+只有我自己知道，我的出身有多么高贵，我的一生多么坎坷！
+多年后，那些真懂我的大佬（也是曾经的菜鸟一枚），才恍然感悟我的伟大！
+想当年：            俺才是第一个玩 P2P的: From Program to Process
+懵懵懂懂的你笨笨磕磕的将我一字一键敲进电脑存成hello.c（Program），无意识中将我预处理、编译、汇编、链接，历经艰辛，我-Hello一个完美的生命诞生了。
+你知道吗？在壳(Bash)里，伟大的OS（进程管理）为我fork（Process）,为我execve,为我mmap，分我时间片，让我得以在Hardware(CPU/RAM/IO)上驰骋（取指译码执行/流水线等）；
+你知道吗？OS（存储管理）与MMU为VA到PA操碎了心；TLB、4级页表、3级Cache，Pagefile等等各显神通为我加速；IO管理与信号处理使尽了浑身解数，软硬结合，才使我能在键盘、主板、显卡、屏幕间游刃有余, 虽然我在台上的表演只是一瞬间、演技看起来还很Low、效果很惨白。
+感谢 OS！感谢 Bash！在我完美谢幕后回收了我。  我赤条条来去无牵挂！
+我朝 CS（计算机系统-Editor+Cpp+Compiler+AS+LD + OS + CPU/RAM/IO等）挥一挥手，不带走一片云彩！ 俺也是 O2O: From Zero-0 to Zero-0。
+历史长河中一个个菜鸟与我擦肩而过，只有CS知道我的生、我的死，我的坎坷，“只有 CS 知道……我曾经……来…………过……”————未来一首关于Hello的歌曲绕梁千日不绝 !!&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;本文从每个程序猿的初恋——hello.c出发，探究hello from Program to Process的生命周期。从代码hello.c如何一步步转变为可执行程序hello，再到shell中如何创建、加载、运行hello进程，运行过程中CPU、RAM、IO发生了什么，MMU、TLB、PageFile、四级页表、三级Cache访问在幕后贡献了多少力量，hello又是如何被回收……通过了解hello短暂而精彩的一生去理解计算机系统的具体实现。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// 大作业的 hello.c 程序
+// gcc -m64 -no-pie -fno-PIC hello.c -o hello
+// 程序运行过程中可以按键盘，如不停乱按，包括回车，Ctrl-Z，Ctrl-C等。
+// 可以 运行 ps  jobs  pstree fg 等命令
+
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;unistd.h&amp;gt; 
+#include &amp;lt;stdlib.h&amp;gt;
+
+int sleepsecs=2.5;
+
+int main(int argc,char *argv[])
+{
+	int i;
+
+	if(argc!=3)
+	{
+		printf(&quot;Usage: Hello 学号 姓名！\n&quot;);
+		exit(1);
+	}
+	for(i=0;i&amp;lt;10;i++)
+	{
+		printf(&quot;Hello %s %s\n&quot;,argv[1],argv[2]);
+		sleep(sleepsecs);
+	}
+	getchar();
+	return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;预处理&quot;&gt;预处理&lt;/h1&gt;
+&lt;h3 id=&quot;预处理的概念与作用&quot;&gt;预处理的概念与作用&lt;/h3&gt;
+&lt;p&gt;预处理指在程序进行编译前对源代码进行处理的过程，生成.i文本文件。
+预处理器cpp对程序源代码文本进行处理：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;扩展源代码，插入所有用#include命令指定的文件&lt;/li&gt;
+  &lt;li&gt;扩展所有用#define声明指定的宏&lt;/li&gt;
+  &lt;li&gt;处理所有的预编译指令&lt;/li&gt;
+  &lt;li&gt;添加行号信息文件名信息，便于调试&lt;/li&gt;
+  &lt;li&gt;删除所有的注释&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;在ubuntu下预处理的命令&quot;&gt;在Ubuntu下预处理的命令&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;使用预处理器cpp：cpp hello.c &amp;gt; hello.i
+使用GNU编译器套件gcc：gcc hello.c –E –o hello.o
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;hello的预处理结果解析&quot;&gt;Hello的预处理结果解析&lt;/h3&gt;
+
+&lt;p&gt;在hello.i文件的最开始的部分生成了如图2-3-1的文本，包含了文件名等文件信息，便于调试。&lt;/p&gt;
+
+&lt;p&gt;在hello.c中使用#include引入了&lt;stdio.h&gt;。在预处理过程中cpp扩展hello.c的源代码，插入所有用#include命令指定的文件。&lt;/stdio.h&gt;&lt;/p&gt;
+
+&lt;p&gt;由于插入头文件，在hello.i中发现了头文件中的数据定义和头文件中的函数作为外部函数。&lt;/p&gt;
+
+&lt;p&gt;hello.c代码中有四行注释，在hello.i中发现已被删去。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;编译&quot;&gt;编译&lt;/h1&gt;
+&lt;h3 id=&quot;编译的概念与作用&quot;&gt;编译的概念与作用&lt;/h3&gt;
+
+&lt;p&gt;编译过程产生源代码的汇编代码。编译器ccl将文本文件hello.i翻译成文本文件hello.s，hello.s中包含一个汇编语言程序。&lt;/p&gt;
+
+&lt;h3 id=&quot;在ubuntu下编译的命令&quot;&gt;在Ubuntu下编译的命令&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;使用hello.c编译：gcc hello.c –S –o hello.s
+使用hello.i编译：gcc hello.i –S –o hello.s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;hello的编译结果解析&quot;&gt;Hello的编译结果解析&lt;/h3&gt;
+&lt;h4 id=&quot;数据&quot;&gt;数据&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;常量&lt;/strong&gt;：在AT&amp;amp;T中用$加在数字前表示常量
+&lt;strong&gt;变量&lt;/strong&gt;：局部变量储存在寄存器或栈中，全局变量、静态变量储存在.bss或.data中&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;类型&lt;/strong&gt;：在x86-64中根据数据占用字节数将其分为1字节的b（字节）、2字节的w（字）、4字节的d（双字）、8字节的q（四字）&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;宏&lt;/strong&gt;：在预处理时被扩展&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;C声明&lt;/th&gt;
+      &lt;th&gt;Intel数据类型&lt;/th&gt;
+      &lt;th&gt;汇编代码后缀&lt;/th&gt;
+      &lt;th&gt;大小（字节）&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;char&lt;/td&gt;
+      &lt;td&gt;字节&lt;/td&gt;
+      &lt;td&gt;b&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;short&lt;/td&gt;
+      &lt;td&gt;字&lt;/td&gt;
+      &lt;td&gt;w&lt;/td&gt;
+      &lt;td&gt;2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;int&lt;/td&gt;
+      &lt;td&gt;双字&lt;/td&gt;
+      &lt;td&gt;l&lt;/td&gt;
+      &lt;td&gt;4&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;long&lt;/td&gt;
+      &lt;td&gt;四字&lt;/td&gt;
+      &lt;td&gt;q&lt;/td&gt;
+      &lt;td&gt;8&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;char*&lt;/td&gt;
+      &lt;td&gt;四字&lt;/td&gt;
+      &lt;td&gt;q&lt;/td&gt;
+      &lt;td&gt;8&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;float&lt;/td&gt;
+      &lt;td&gt;单精度&lt;/td&gt;
+      &lt;td&gt;s&lt;/td&gt;
+      &lt;td&gt;4&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;double&lt;/td&gt;
+      &lt;td&gt;双精度&lt;/td&gt;
+      &lt;td&gt;l&lt;/td&gt;
+      &lt;td&gt;8&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;赋值&quot;&gt;赋值&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;直接赋值&lt;/strong&gt;：将内存中或寄存器中或常数值移到寄存器／内存中。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;传送指令 movx src，dst 	
+x可以为b,w,l,q后缀，分别对应1/2/4/8字节操作数
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;合法的操作数组合：立即数—寄存器	立即数—内存	 
+ 寄存器—寄存器	寄存器—内存	 
+ 内存—寄存器&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;逗号运算符&lt;/strong&gt;:
+C语言运算符中优先级最低的一种运算符。当顺序点用，结合顺序是从左至右，用来顺序求值，完毕之后整个表达式的值是最后一个表达式的值。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;条件运算符（？：）&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;条件传送指令 cmovcc src，dst 		
+cc表示条件，src只能为寄存器，dst可为内存和寄存器，其利用EFLAGS中的CF、OF、PF、SF、ZF实现条件判断。 条件：无符号数：用a、b、e、n、c分别表示大于、小于、等于、否、进位c。CPU用CF、ZF、PF实现判别。有符号数：用g、l、e、n、o分别表示大于、小于、等于、否、溢出，CPU用SF、ZF、OF实现判别。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;初值&lt;/strong&gt;：赋初值的全局变量为强符号，储存在.data节，未赋初值的全局变量为弱符号，储存在.bss节。&lt;/p&gt;
+
+&lt;h3 id=&quot;类型转换&quot;&gt;类型转换&lt;/h3&gt;
+&lt;p&gt;扩展传送指令：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;符号扩展的传送 movsbl S, D
+零扩展的传送 movzbl S, D
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;算数操作&quot;&gt;算数操作&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;加+ADD/ADC	减-SUB/SBB 乘*MUL/IMUL  除/DIV/IDIV&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;逻辑左«/右移» SHL/SHR  算数左«/右移» SAL/SAR&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;通常使用&lt;strong&gt;leaq&lt;/strong&gt;指令计算形如a+bx的数据：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;D(Rb, Ri, S) — Mem[Reg[Rb]+S*Reg[Ri]+D]&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;D为常数偏移量，Rb为基址寄存器，Ri为变址寄存器，S为比例因子。&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;逻辑位操作&quot;&gt;逻辑／位操作&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;逻辑运算： 与&amp;amp;&amp;amp; 	或|		非！&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;位运算：	与&amp;amp;	或|		非～	异或^&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;逻辑左移« SHL  逻辑右移» SHR  算数左移« SAL 算数右移» SAR&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;关系操作&quot;&gt;关系操作&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;关系包括： ==相等  !=不相等  &amp;gt;大于  &lt;小于&gt;=大于等于  &amp;lt;=小于等于&lt;/小于&gt;&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  比较指令cmpq Src1, Src2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;计算Src2-Src1但不改变目的操作数，将比较结果设置为条件码。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CF为进位标志位	SF为符号标志位	ZF为零标志位	OF为溢出标志位&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;数组指针结构操作&quot;&gt;数组／指针／结构操作&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;指针&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;寄存器间接寻址  (R) — Mem[Reg[R]]  即指针的解引用&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;如mov (%rcx), %rax  对应
+long y = *xp;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;数组&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;数组T A[L]即内存中连续分配的L*sizeof(T)字节。由于是连续的，所以可以通过偏移量访问数组。
+相对寻址 D(R) — Mem[Reg[R]+D]，D为常数偏移量。
+多维数组的储存为行优先&lt;/p&gt;
+
+&lt;p&gt;&amp;lt;div align=center&amp;gt;
+&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/FfnQLd.jpg&quot; alt=&quot;&quot; height=&quot;60%&quot; width=&quot;70%&quot; /&gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;多层次数组： 每个元素是一个指针类型，为数组首地址。
+&amp;lt;div align=center&amp;gt;
+&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/Ffn4m9.jpg&quot; alt=&quot;Ffn4m9.jpg&quot; height=&quot;60%&quot; width=&quot;70%&quot; /&gt;
+&amp;lt;/div&amp;gt;
+&lt;strong&gt;结构体&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;完整内存寻址 D(Rb, Ri, S) — Mem[Reg[Rb]+S*Reg[Ri]+D]
+D为常数偏移量，Rb为基址寄存器，Ri为变址寄存器，S为比例因子。&lt;/p&gt;
+
+&lt;p&gt;结构组成员的偏移量是在编译阶段确定的，结构体内部应满足每个元素的对齐要求，结构体的整体也应整齐存放，访问结构体数组中的元素根据汇编器给出的偏移量进行访问。&lt;/p&gt;
+
+&lt;h4 id=&quot;控制转移&quot;&gt;控制转移&lt;/h4&gt;
+&lt;p&gt;根据特定标志跳转：JZ/JNZ  JC/JNC JS/JNS  JO/JNO  JP/JNP JE/JNE  JCXZ  JECXZ&lt;/p&gt;
+
+&lt;p&gt;无符号数比较：JA/JNA  JAE/JNAE  JB/JNB  JBE/JNBE&lt;br /&gt;
+有符号数比较：JG/JNG  JGE/JNGE  JL/JNL  JLE/JNLE
+直接跳转：jmp&lt;/p&gt;
+&lt;h4 id=&quot;函数操作&quot;&gt;函数操作&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;参数传递&lt;/strong&gt;：在64位系统中，函数的前六个参数通过寄存器传递，从第七个参数开始使用栈传递。在32位系统中，函数参数使用栈传递。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;函数调用&lt;/strong&gt;：构建参数（移动到寄存器或压入栈中），将返回地址（call指令的下一条指令）压入栈中，然后调用call跳转到相应的函数。保存栈帧指针和被保存寄存器。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;函数返回&lt;/strong&gt;：恢复被保存的寄存器和栈帧指针，弹出返回地址并返回。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/FfnMsH.jpg&quot; alt=&quot;FfnMsH.jpg&quot; height=&quot;30%&quot; width=&quot;30%&quot; /&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/Ffn3dI.jpg&quot; alt=&quot;Ffn3dI.jpg&quot; height=&quot;30%&quot; width=&quot;30%&quot; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;汇编&quot;&gt;汇编&lt;/h1&gt;
+&lt;h3 id=&quot;汇编的概念与作用&quot;&gt;汇编的概念与作用&lt;/h3&gt;
+&lt;p&gt;汇编器as将hello.s翻译成机器语言指令，把这些指令打包成可重定位目标程序的格式，结果保存在二进制文件hello.o中。&lt;/p&gt;
+&lt;h3 id=&quot;在ubuntu下汇编的命令&quot;&gt;在Ubuntu下汇编的命令&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;使用hello.c备注提供的命令：gcc -m64 -no-pie -fno-PIC hello.c -o hello
+直接生成hello.o：gcc –o hello.o hello.c
+使用汇编器as：as hello.s –o hello.o
+使用hello.s文件汇编：gcc –c hello.s –o hello.o
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;可重定位目标elf格式&quot;&gt;可重定位目标elf格式&lt;/h3&gt;
+&lt;p&gt;ELF可重定位目标文件如图所示，由ELF头、节头表和它们之间的节组成。
+ELF可重定位目标文件包括以下内容：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/FfneJK.jpg&quot; alt=&quot;FfneJK.jpg&quot; height=&quot;40%&quot; width=&quot;40%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;ELF头&lt;/strong&gt;：
+Magic：16字节的序列，描述了生成该文件的系统的字的大小和字节顺序
+剩下部分包含帮助链接器语法分析和解释目标文件的信息。包括：ELF头大小、目标文件的类型、机器类型、节头表的文件偏移。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;.text&lt;/strong&gt;：已编译程序的机器代码
+使用readelf查看内容，与objdump反汇编生成的机器码对比一致。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;.rodata&lt;/strong&gt;（只读代码段）：只读数据，如printf语句中的格式串和开关语句的跳转表&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;.data&lt;/strong&gt;：已初始化的全局和静态C变量
+&lt;strong&gt;.bss&lt;/strong&gt;：未初始化的全局和静态C变量，以及所有被初始化为0的全局或静态变量。使用readelf查看hello.o的节头表中的.bss节的信息如下。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[ 4] .bss            	NOBITS           0000000000000000  000000c4
+ 0000000000000000	0000000000000000  WA       0     0     1
+ （.bss的size为0）
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;.bss在目标文件中不占据实际的空间，仅仅是一个占位符。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;.symtab&lt;/strong&gt;：符号表，存放在程序中定义和引用的函数和全局变量的信息。在hello中调用的printf、sleep、exit、getchar都显示在此处。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;.rel.text&lt;/strong&gt;：.text节中位置的列表。当链接器把这个目标文件和其他文件组合时，需要修改这些位置。一般而言，任何调用外部函数或者引用全局变量的指令都需要修改。另一方面，调用本地函数的指令则不需要修改。在可执行文件中重定位信息通常被省略。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;.rel.data&lt;/strong&gt;：被模块引用或定义的所有全局变量的重定位信息。一般而言，任何已初始化的全局变量，如果它的初始值是一个全局变量的地址或者外部定义函数的地址，都需要被修改。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;.debug&lt;/strong&gt;：调试符号表，其条目是程序中定义的局部变量和类型定义，程序中定义和引用的全局变量，以及原始的C源文件。以-g选项调用编译器才能得到这张表。
+&lt;strong&gt;.line&lt;/strong&gt;：原始C程序中的行号和.text节中的机器指令之间的映射，以-g选项调用编译器才能得到这张表。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;.strtab&lt;/strong&gt;：字符串表，包括.symtab和.debug节中的符号表，以及节头部中的节名字。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Section header table节头表&lt;/strong&gt;：描述不同节的位置和大小。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;链接&quot;&gt;链接&lt;/h1&gt;
+&lt;h3 id=&quot;链接的概念与作用&quot;&gt;链接的概念与作用&lt;/h3&gt;
+&lt;p&gt;链接是将各种代码和数据片段收集并组合为一个单一文件的过程，这个文件可被加载到内存执行。链接可以执行于编译时、加载时、或运行时。在现代系统中，链接由链接器之行。&lt;/p&gt;
+
+&lt;p&gt;链接使分离编译成为可能。不用将大型的应用程序组织为一个巨大的源文件，而是可以把它分解成更小更好管理的模块，可以独立地修改和编译这些模块。当改变模块中的一个时只需重新编译它并链接即可。&lt;/p&gt;
+&lt;h3 id=&quot;在ubuntu下链接的命令&quot;&gt;在Ubuntu下链接的命令&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ld -dynamic-linker /lib64/ld-linux-x86-64.so.2  /usr/lib/x86_64-linux-gnu/crt1.o /usr/lib/x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o hello.o -lc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/x86_64-linux-gnu/crtn.o -z relro -o hello ### 可执行目标文件hello的格式
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可执行目标文件与可重定位目标文件类似。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;ELF头&lt;/strong&gt;：描述文件的总体格式，包括程序的入口点。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;.text、.rodata、.data节&lt;/strong&gt;与可重定位目标文件相似，但它们已被重定位到他们最终的运行时的内存地址。&lt;/p&gt;
+
+&lt;p&gt;因为可执行文件已被重定位，所以不再需要&lt;strong&gt;rel节&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;.init节&lt;/strong&gt;定义了一个函数_init，程序的初始代码会调用它。&lt;/p&gt;
+
+&lt;h3 id=&quot;链接的重定位过程分析&quot;&gt;链接的重定位过程分析&lt;/h3&gt;
+&lt;p&gt;hello.o	中只有.text段，其中仅包括main函数.而hello中有.init、.plt.got、.text、.fini 四段。&lt;/p&gt;
+
+&lt;p&gt;.init 中包括_init、puts@plt、printf@plt、__libc_start_main@plt、getchar@plt、exit@plt、sleep@plt函数。&lt;/p&gt;
+
+&lt;p&gt;.plt.got中包括.plt.got函数。&lt;/p&gt;
+
+&lt;p&gt;.text中包括_start、deregister_tm_clones、register_tm_clones、__do_global_dtors_aux、frame_dummy、main、__libc_csu_init、__libc_csu_fini函数。&lt;/p&gt;
+
+&lt;p&gt;.fini包括了_fini函数。&lt;/p&gt;
+
+&lt;p&gt;由此可见在重定位过程中&lt;strong&gt;相同类型的节发生合并&lt;/strong&gt;，所以.text等节的内容发生了变化，增加了许多函数。除此之外重定义过程中还发生了重定位节中的符号引用，使每个符号指向正确的内存地址。内容如下：&lt;/p&gt;
+
+&lt;p&gt;在hello.o反汇编文本中，可以看到je的跳转仍使用的是地址偏移量的形式，意思是跳转到与main偏移量为29的位置。callq的地址全是占位0，表明其未被重定位。
+hello.o反汇编：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0000000000000000 &amp;lt;main&amp;gt;:
+……
+  13:	74 14                	je     29 &amp;lt;main+0x29&amp;gt;
+……
+			16: R_X86_64_32	.rodata
+  1a:	e8 00 00 00 00       	callq  1f &amp;lt;main+0x1f&amp;gt;
+……
+  29:	c7 45 fc 00 00 00 00  	movl   $0x0,-0x4(%rbp)
+……
+  55:	e8 00 00 00 00       	callq  5a &amp;lt;main+0x5a&amp;gt;
+			56: R_X86_64_PC32  printf-0x4
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;hello.o反汇编文本中出现了两种重定位类型：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;R_X86_64_PC32&lt;/strong&gt;：重定位一个32位PC相对地址的引用&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;R_X86_64_32&lt;/strong&gt;：重定位一个32位PC绝对地址的引用&lt;/p&gt;
+
+&lt;p&gt;56: R_X86_64_PC32 printf-0x4 
+    告诉编译器修改开始于偏移量为0x56处的字符引用，使其在运行时指向printf函数。&lt;/p&gt;
+
+&lt;p&gt;16: R_X86_64_32 .rodata 告诉编译器修改开始于偏移量为0x16处的字符引用，使其在运行时指向.rodata的第一个字节。&lt;/p&gt;
+
+&lt;p&gt;在hello反汇编文本中，可以看到je的跳转有了确定的地址，与hello.o中对应跳转的条目一致。callq的地址也从0变为了偏移量fffffe50（补码），表示跳转到与call指令下一条指令偏移量为fffffe50的位置。&lt;/p&gt;
+
+&lt;p&gt;hello反汇编：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0000000000400646 &amp;lt;main&amp;gt;:
+……
+  400659:	74 14                	je     40066f &amp;lt;main+0x29&amp;gt;
+……
+400660:	e8 7b fe ff ff      	 	callq  4004e0 &amp;lt;puts@plt&amp;gt;
+……
+  40066f:	c7 45 fc 00 00 00 00  	movl   $0x0,-0x4(%rbp)
+……
+  40069b:	e8 50 fe ff ff        	callq  4004f0 &amp;lt;printf@plt&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;hello的执行流程&quot;&gt;hello的执行流程&lt;/h3&gt;
+&lt;p&gt;shell为hello调用fork()生成子进程，以argv envp 为参数调用execve在子进程的上下文中加载新进程，execve调用加载器进行加载。通过虚拟地址空间中的页映射为可执行文件的片初始化代码段和数据段。最后加载器跳转到_start的地址。由_start开始依次进行函数调用：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;_start -&amp;gt; __libc_start_main -&amp;gt; __libc_csu_init -&amp;gt; _init -&amp;gt; main -&amp;gt; _fini.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;_start定义在系统目标文件ctrl.o中。_start调用系统启动函数__libc_start_main，__libc_start_main被定义在libc.so中，初始化执行环境。&lt;/p&gt;
+
+&lt;h2 id=&quot;进程管理&quot;&gt;进程管理&lt;/h2&gt;
+&lt;h3 id=&quot;进程的概念与作用&quot;&gt;进程的概念与作用&lt;/h3&gt;
+&lt;p&gt;进程，是操作系统对一个正在运行的程序的一种抽象，是执行中程序的一个具体的实例。系统中每个程序都运行在&lt;strong&gt;上下文&lt;/strong&gt;中。
+进程提供给应用程序两个关键的抽象：&lt;strong&gt;一个独立的逻辑控制流&lt;/strong&gt;和&lt;strong&gt;一个私有的地址空间&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&quot;shell-bash的作用与处理流程&quot;&gt;Shell-bash的作用与处理流程&lt;/h3&gt;
+&lt;p&gt;Shell是一个用C语言编写的程序，它是用户使用Linux的桥梁。Shell既是一种命令语言，又是一种程序设计语言。它是一个交互性的应用级程序，它代表用户运行其他程序。&lt;/p&gt;
+
+&lt;h4 id=&quot;作用&quot;&gt;作用&lt;/h4&gt;
+&lt;p&gt;shell执行一系列的读/求值步骤，读步骤读取用户的命令行，求值步骤 解析命令，代表用户执行。&lt;/p&gt;
+
+&lt;h4 id=&quot;处理流程&quot;&gt;处理流程&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;先调用&lt;code class=&quot;highlighter-rouge&quot;&gt;parseline&lt;/code&gt;函数，这个函数解析了以空格分隔的命令行参数，并构造最终会传递给&lt;code class=&quot;highlighter-rouge&quot;&gt;execve&lt;/code&gt;的 &lt;code class=&quot;highlighter-rouge&quot;&gt;argv&lt;/code&gt;向量。&lt;/li&gt;
+  &lt;li&gt;第一个参数被假设为内置shell命令名或可执行文件，这时会解释这个命令或在一个新的子程序的上下文中加载并运行这个文件。&lt;/li&gt;
+  &lt;li&gt;如果最后一个参数是‘&amp;amp;’字符，那么 &lt;code class=&quot;highlighter-rouge&quot;&gt;parseline&lt;/code&gt; 函数返回 1，表示应该在后台执行 程序，否则返回 0，表示应该在前台执行程序。&lt;/li&gt;
+  &lt;li&gt;解析命令行之后，&lt;code class=&quot;highlighter-rouge&quot;&gt;eval&lt;/code&gt;函数调用&lt;code class=&quot;highlighter-rouge&quot;&gt;builtin_command&lt;/code&gt;函数，该函数检查第一个命令行参数是否为内置的shell命令。如果是，则立即解释，返回1，否则返回0。&lt;/li&gt;
+  &lt;li&gt;如果&lt;code class=&quot;highlighter-rouge&quot;&gt;builtin_command&lt;/code&gt;函数返回0，那么shell创建一个子进程，在子进程中执 行所请求的程序。如果用户要求在后台运行程序，那么 shell 返回到循环的顶部，等待下一个命令的执行。否则shell使用&lt;code class=&quot;highlighter-rouge&quot;&gt;waitpid&lt;/code&gt;函数等待作业终止。当job终止时，shell开始下一轮迭代。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;hello的fork进程创建过程&quot;&gt;Hello的fork进程创建过程&lt;/h3&gt;
+&lt;p&gt;Hello进程通过调用fork函数创建其子进程。内核为Hello的子进程程创建各种数据结构，并分配给它一个唯一的PID。父进程和新创建的子进程之间最大的区别在于&lt;strong&gt;PID不同&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;为了给这个新进程创建虚拟内存，内核创建当前进程的mm_struct、区域结构和页表的原样副本。子进程与父进程用户级虚拟地址空间，如代码和数据段、堆、共享库和用户栈&lt;strong&gt;相同但相互独立&lt;/strong&gt;。子进程还获得与父进程任何打开文件描述符相同的副本，这意味着当父进程调用fork时，子进程可以读写父进程中打开的任何文件。&lt;/p&gt;
+
+&lt;p&gt;fork函数&lt;strong&gt;调用一次，返回两次&lt;/strong&gt;。在父进程中fork返回子进程PID，在子进程中fork返回0。&lt;/p&gt;
+&lt;h3 id=&quot;hello的execve过程&quot;&gt;Hello的execve过程&lt;/h3&gt;
+&lt;p&gt;execve函数在当前进程的上下文中加载并运行一个新的程序，覆盖当前进程的地址空间。新进程与调用进程拥有&lt;strong&gt;相同的PID&lt;/strong&gt;。只有找不到可执行文件时execve才返回到调用程序。与fork不同，execve&lt;strong&gt;调用一次从不返回&lt;/strong&gt;。
+当我们的hello进程调用execve函数加载运行其他程序时会发生以下变化：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;删除已存在的用户区域&lt;/li&gt;
+  &lt;li&gt;映射私有区域&lt;/li&gt;
+  &lt;li&gt;映射共享区域&lt;/li&gt;
+  &lt;li&gt;设置程序计数器（PC），使之指向代码区域入口点&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;hello的进程执行&quot;&gt;Hello的进程执行&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;系统中的每个程序都运行在某个程序的上下文中。上下文就是程序正确运行需要的状态，包括内存中的程序的代码和数据、用户栈、内核栈、内核数据结构、通用目的寄存器的内容、程序计数器、环境变量以及打开文件描述符的集合。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;调度由内核中的调度器代码处理，即内核选择执行哪个进程的决策。在内核调度了一个新的进程运行后，它抢占当前进程，并使用上下文切换转移控制到新的进程。上下文切换保存当前进程的上下文，恢复先前被抢占的进程被保存的上下文，将控制传递给这个新恢复的进程。当内核代表用户执行系统调用时，可能会发生上下文切换。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/FfnDwn.jpg&quot; alt=&quot;FfnDwn.jpg&quot; height=&quot;70%&quot; width=&quot;80%&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;如因为等待某个时间发生阻塞时，内核可以选择让当前进程休眠，切换到另一个进程。sleep系统调用显式地请求让调用进程休眠。中断也可能引发上下文切换，如所有系统都有某种产生周期性定时器中断的机制。每次定时器中断时都切换到另一个进程。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;当用户输入命令行运行程序hello时，shell创建hello进程，然后在这个新进程的上下文中运行可执行目标文件hello。&lt;/li&gt;
+  &lt;li&gt;运行hello程序代码的进程初始在用户模式中，当hello进程遇到中断、故障或陷阱（系统调用）异常时控制将传递到异常处理程序，CPU将模式从用户模式切换为内核模式。异常处理程序在内核模式中运行，当它返回到应用程序代码时，CPU将模式从内核模式切换为用户模式。&lt;/li&gt;
+  &lt;li&gt;如调用printf输出一条语句是由write通过产生陷阱使系统调用sys_call，把输出的任务移交给操作系统内核完成。hello中调用的sleep函数执行系统调用，显式地请求让调用进程休眠，切换到另一个进程。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;hello的异常与信号处理&quot;&gt;hello的异常与信号处理&lt;/h3&gt;
+&lt;p&gt;在hello的执行过程中可能会遇到以下异常：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;缺页故障&lt;/strong&gt;：调用缺页异常处理程序后可继续运行&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;I/O设备导致的中断&lt;/strong&gt;，如定时器芯片、ctrl+c等&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;陷阱&lt;/strong&gt;（即系统调用）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;hello中的printf调用write函数，write函数通过产生陷阱使系统调用sys_call，把输出的任务移交给操作系统内核完成。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;异常处理&lt;/strong&gt;：当hello进程遇到异常时控制将传递到异常处理程序，CPU将模式从用户模式切换为内核模式。异常处理程序在内核模式中运行，当它返回到应用程序代码时，CPU将模式从内核模式切换为用户模式。&lt;/p&gt;
+
+&lt;p&gt;在hello的执行过程中可能会遇到以下信号：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;/bin/kill 程序&lt;/strong&gt;可以向另外的进程发送任意的信号&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;键盘发送信号&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;ctrl+c使内核发送SIGINT信号到前台进程组的每个进程&lt;/li&gt;
+      &lt;li&gt;ctrl+z发送一个SIGSTP到前台进程组的每个进程&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;信号处理&lt;/strong&gt;：当进程hello从内核模式切换到用户模式时，内核会检查进程hello是否存在未被阻塞的待处理信号，如果不存在待处理信号则继续执行下一条指令，否则选择待处理信号中id最小（意味着最重要）的信号强制hello接受， SIGINT使进程终止，SIGTSTP使进程挂起直到被重启。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;hello的存储管理&quot;&gt;hello的存储管理&lt;/h1&gt;
+&lt;h3 id=&quot;hello的存储器地址空间&quot;&gt;hello的存储器地址空间&lt;/h3&gt;
+&lt;p&gt;主存被组织成一个连续的字节大小的单元组成的数组，每个字节都有一个唯一的&lt;strong&gt;物理地址&lt;/strong&gt;。与之对应，&lt;strong&gt;虚拟内存&lt;/strong&gt;被组织成一个存放在磁盘上连续的字节大小的单元组成的数组，每个字节都有一个唯一的虚拟地址。而我们之前看到的机器语言指令中出现的内存地址，都是&lt;strong&gt;逻辑地址&lt;/strong&gt;。&lt;strong&gt;线性地址&lt;/strong&gt;是逻辑地址到物理地址变换之间的中间层，逻辑地址需要转换成线性地址，再经过MMU转换成物理地址才能够被访问到。
+&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/FfnnzD.jpg&quot; alt=&quot;FfnnzD.jpg&quot; height=&quot;70%&quot; width=&quot;90%&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;intel逻辑地址到线性地址的变换-段式管理&quot;&gt;Intel逻辑地址到线性地址的变换-段式管理&lt;/h3&gt;
+
+&lt;p&gt;先简单介绍一下Linux虚拟内存系统。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/FfnKQe.jpg&quot; alt=&quot;FfnKQe.jpg&quot; height=&quot;30%&quot; width=&quot;50%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Linux将虚拟内存组织成一些段的集合去管理，图展示了一个Linux进程的虚拟内存，由内核代码段、内核数据段、用户代码段、用户数据段等组成。&lt;/p&gt;
+
+&lt;p&gt;逻辑地址相当于数据段内的偏移，故逻辑地址加上隐含的数据段的基地址，才能构成线性地址。数据段即图展示的内核代码段、内核数据段、用户代码段、用户数据段等。因为Linux所有的段（用户代码段、用户数据段、内核代码段、内核数据段）的线性地址都是从 0x00000000 开始，长度4G，所以逻辑地址等于线性地址。
+&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/Ffnroq.jpg&quot; alt=&quot;Ffnroq.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;hello的线性地址到物理地址的变换-页式管理&quot;&gt;Hello的线性地址到物理地址的变换-页式管理&lt;/h3&gt;
+
+&lt;p&gt;物理内存被分割为一个个&lt;strong&gt;物理页&lt;/strong&gt;进行管理。线性地址通过&lt;strong&gt;页表&lt;/strong&gt;查找来对应物理地址。&lt;strong&gt;页表将虚拟页地址映射到物理页地址&lt;/strong&gt;，标记着某个虚拟页是否存放，存在的话在DRAM中的哪个地方，否则在物理内存中选择一个牺牲页，将虚拟页复制到DRAM中，替换这个牺牲页。CPU将线性地址传入MMU将其转换为物理地址的过程称为&lt;strong&gt;地址翻译&lt;/strong&gt;。地址翻译总体来说具有以下几个步骤：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/FfnmRO.jpg&quot; alt=&quot;FfnmRO.jpg&quot; height=&quot;50%&quot; width=&quot;60%&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;CPU生成VA将其传给MMU&lt;/li&gt;
+  &lt;li&gt;MMU使用页表生成PTE地址，从cache／main memory中请求PTE&lt;/li&gt;
+  &lt;li&gt;cache／main memory向MMU返回PTE&lt;/li&gt;
+  &lt;li&gt;MMU构造PA并传送到cache／main memory
+    &lt;ul&gt;
+      &lt;li&gt;MMU以VPN作为选择PTE的索引，因为物理页与虚拟页都是P字节的，所以他们的偏移量PPO与VPO一致，将PPN与VPO串联起来就得到了相应的PA。如果有效位为0，触发缺页异常处理程序。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;cache／main memory返回所请求的字段给CPU
+其中第三步返回的PTE可能有效值为0，触发缺页异常处理程序，将虚拟页面缓存在物理内存中后重新进行地址翻译。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;tlb与四级页表支持下的va到pa的变换&quot;&gt;TLB与四级页表支持下的VA到PA的变换&lt;/h3&gt;
+
+&lt;p&gt;为了减少MMU查询PTE的开销，TLB应运而生。TLB就是MMU中PTE的缓存。它将VA中的VPN分为两部分，一部分作为TLB的标记，另一部分作为TLB的索引。当TLB不命中时，MMU从L1缓存中取出相应的PTE放在TLB中。这样一来命中的话地址翻译都在MMU上执行，效率非常高。TLB命中与不命中的地址翻译情况如图&lt;/p&gt;
+
+&lt;p&gt;由于页表是需要常驻内存的，为了减少内存被占用的程序可以使用多级页表。Intel Core i7使用四级页表减少主存压力。上一级页表映射下一级虚拟地址空间的一片（有点类似数据结构中建立层索引）。所以VPN被分为四份，VPN i储存着一个到第i级页表的索引，只有最后一级页表中存放PPN。
+&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/FfnBes.jpg&quot; alt=&quot;FfnBes.jpg&quot; height=&quot;40%&quot; width=&quot;80%&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;三级cache支持下的物理内存访问&quot;&gt;三级Cache支持下的物理内存访问&lt;/h3&gt;
+
+&lt;p&gt;局部性原理启示着高速缓存的思想：用更小更快的设备作为更大更慢设备的缓存区。由于寄存器和主存之间效率非常悬殊，直接访问效率非常低，现代的CPU设计中会在寄存器和CPU间建立多层缓存，数据以块为单元在层与层间复制，这样既可以降低成本又可以保证效率。图为Intel Core i7的高速缓存层次结构。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/Ffn8ot.jpg&quot; alt=&quot;Ffn8ot.jpg&quot; height=&quot;80%&quot; width=&quot;60%&quot; /&gt;
+当CPU需要向主存请求一块数据时，优先向cache中L1发送请求，若请求的块正好在L1中，则命中，否则向下一层L2继续请求块，直到请求成功。&lt;/p&gt;
+&lt;h3 id=&quot;hello进程fork时的内存映射&quot;&gt;hello进程fork时的内存映射&lt;/h3&gt;
+&lt;p&gt;当hello进程调用fork时，内核为hello的子进程程创建各种数据结构，并分配给它一个唯一的PID。为了给这个新进程创建虚拟内存，内核创建当前进程的mm_struct、区域结构和页表的原样副本。它将两个进程中的每个页面都标记为只读，并将两个进程中的每个区域结构都标记为私有的写时复制。
+当fork在hello的子进程中返回时，新进程现在的虚拟内存刚好和调用fork时存在的虚拟内存相同。当这两个进程中的任一个进行写操作时，写时复制机制就会创建新页面。因此虚拟内存为hello的父进程和子进程保持私有地址空间的抽象概念。&lt;/p&gt;
+&lt;h3 id=&quot;hello进程execve时的内存映射&quot;&gt;hello进程execve时的内存映射&lt;/h3&gt;
+&lt;p&gt;当我们的hello进程调用execve函数加载运行其他程序时会发生以下变化：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;删除已存在的用户区域&lt;/li&gt;
+  &lt;li&gt;映射私有区域&lt;/li&gt;
+  &lt;li&gt;映射共享区域&lt;/li&gt;
+  &lt;li&gt;设置程序计数器（PC），使之指向代码区域入口点&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;缺页故障与缺页中断处理&quot;&gt;缺页故障与缺页中断处理&lt;/h3&gt;
+&lt;p&gt;我们以图7-3-1中的页表为例说明缺页中断处理操作。MME向cache／main memory请求得到的PTE 3有效位为0，此刻发生Page Fault故障，触发缺页异常处理程序，将虚拟页面缓存在物理内存中后重新进行地址翻译。&lt;/p&gt;
+
+&lt;p&gt;内核中的缺页异常处理程序首先检查虚拟地址是否合法、若不合法则触发段错误。然后检查试图进行的内存访问是否合法，若不合法则触发保护异常，通过后则在物理内存中选取一个牺牲页PP3，若VP4已被修改，则内核将其复制回磁盘（写回）。然后修改页表中VP4的页表条目，表明VP4已不再缓存在内存中。在此之后内核从磁盘复制VP3到内存中的PP3，更新PTE3后返回。当缺页异常处理程序返回时它重新启动导致缺页故障的指令，由于此时缺页故障已被修复，所以地址翻译可以继续正常处理了。&lt;/p&gt;
+&lt;h3 id=&quot;动态存储分配管理&quot;&gt;动态存储分配管理&lt;/h3&gt;
+&lt;p&gt;由于在某些情况下只有在程序运行之后才知道某些数据结构的大小，所以程序往往使用动态内存分配动态分配数组。&lt;/p&gt;
+
+&lt;h3 id=&quot;动态内存管理的基本方法&quot;&gt;动态内存管理的基本方法&lt;/h3&gt;
+&lt;p&gt;C语言使用动态内存分配器维护堆。分配器将堆视为一组不同大小的块的集合来维护。每个块是一个连续的chunk，分为已分配和未分配两种状态。已分配的块显式地保留给应用程序使用，保持已分配状态，直到被应用程序显式地释放或被内存分配器自身隐式释放。未被分配的块保持空闲直到它显式地被应用所分配。&lt;/p&gt;
+&lt;h3 id=&quot;动态内存管理的策略&quot;&gt;动态内存管理的策略&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;在执行malloc或free操作前先初始化堆。&lt;/li&gt;
+  &lt;li&gt;当进程动态申请内存时先调整块的大小进行对齐，分配器再优先检查是否有大小合适的空闲块，如果有则放置请求块，并且根据需要将空闲块选择性做分割处理，否则在堆上扩展内存或回收垃圾。&lt;/li&gt;
+  &lt;li&gt;当进程请求释放内存时检查释放块的周围是否有空闲块，如果有则将其合并&lt;/li&gt;
+  &lt;li&gt;使用分配器应解决以下问题：
+    &lt;ul&gt;
+      &lt;li&gt;空闲块组织&lt;/li&gt;
+      &lt;li&gt;放置策略&lt;/li&gt;
+      &lt;li&gt;分割空闲块&lt;/li&gt;
+      &lt;li&gt;合并空闲块&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;空闲块组织方式&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;隐式空闲链表&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;根据这种方式可以使分配器像链表一样遍历所有的块从而间接遍历整个空闲块的集合。通过在最后设置已分配而大小为0的块来标志结束。
+&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/Ffn1eA.jpg&quot; alt=&quot;Ffn1eA.jpg&quot; /&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;显式空闲链表&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;将堆组织成一个双向空闲链表，如果未被分配的话有效载荷的位置包含一个指向前驱的指针和一个指向后继的指针。可以使用地址顺序或LIFO的方法维护链表中空闲块的顺序。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/Ffeou9.jpg&quot; alt=&quot;image&quot; height=&quot;80%&quot; width=&quot;85%&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;分离的空闲链表
+    &lt;ul&gt;
+      &lt;li&gt;按照大小分类，构造不同大小的空闲列表&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;块按地址大小排序
+    &lt;ul&gt;
+      &lt;li&gt;在每个空闲块中使用一个带指针的平衡树，使用块大小作为权值&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;放置策略&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;首次适配：从头开始扫描寻找第一个合适的空闲块&lt;/li&gt;
+  &lt;li&gt;下一次适配：从上次查询的结束的地方开始&lt;/li&gt;
+  &lt;li&gt;最佳适配：检查每个空闲块，根据需求选择大小最小的空闲块。如果空闲块大于需求，则分割空闲块。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;分割空闲块&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;如果空闲块大于需求，则将空闲块分为已利用和未利用两部分。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;合并空闲块&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;立即合并&lt;/li&gt;
+  &lt;li&gt;推迟合并(常见)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;hello的io管理&quot;&gt;hello的IO管理&lt;/h1&gt;
+&lt;h3 id=&quot;linux的io设备管理方法&quot;&gt;Linux的IO设备管理方法&lt;/h3&gt;
+&lt;p&gt;在Linux中，所有的I/O设备都被模型化为文件，所有的输入和输出都被当作对相应的文件的读和写来执行。这种将设备映射为文件的方式允许Linux内核引出一个简单、低级的应用接口，称为UnixI/O，这使得所有的输入和输出都能以一种统一且一致的方式来执行。&lt;/p&gt;
+&lt;h3 id=&quot;unix-io接口及其函数&quot;&gt;Unix I/O接口及其函数&lt;/h3&gt;
+&lt;p&gt;Unix I/O 是系统引出的一个简单、低级的应用接口，用来辅助主存和外部设备之间复制数据，使所有输入输出的方式以同一且一致的方式运行。&lt;/p&gt;
+
+&lt;h3 id=&quot;unix-io-函数主要包括&quot;&gt;Unix I/O 函数主要包括：&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;read 和 write —— 读写函数&lt;/li&gt;
+  &lt;li&gt;lseek —— 随机访问文件&lt;/li&gt;
+  &lt;li&gt;open 和 close —— 打开关闭文件&lt;/li&gt;
+  &lt;li&gt;stat —— 检索文件信息&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;printf的实现分析&quot;&gt;printf的实现分析&lt;/h4&gt;
+&lt;p&gt;printf是标准IO函数提供的一个更加完整的带缓冲的替代品。查看printf的源码分析其实现：&lt;/p&gt;
+
+&lt;p&gt;声明了256字节的数组buf作为缓存区—&amp;gt;取出第一个参数—&amp;gt;调用vsprintf函数—&amp;gt;调用write函数—&amp;gt;返回vsprintf的返回值。其中((char*)(&amp;amp;fmt) + 4)表示的是printf函数的第一个参数。
+vsprintf的作用是格式化。它接受确定输出格式的格式字符串fmt。用格式字符串对个数变化的参数进行格式化，产生格式化输出。返回的是要打印出来的字符串的长度。&lt;/p&gt;
+
+&lt;p&gt;write为Unix I/O函数，查看write函数的反汇编代码：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; mov eax, _NR_write 
+ mov ebx, [esp + 4] 
+ mov ecx, [esp + 8] 
+ int INT_VECTOR_SYS_CALL
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;前三行即参数传递，第四行表示要调用中断门。通过中断门来实现特定的系统服务。int INT_VECTOR_SYS_CALL表示要通过系统来调用sys_call这个函数。也就是说write通过产生陷阱使系统调用sys_call，把输出的任务移交给操作系统内核完成。&lt;/p&gt;
+
+&lt;p&gt;在此之后字符显示驱动子程序：从ASCII到字模库到显示vram（存储每一个点的RGB颜色信息）。显示芯片按照刷新频率逐行读取vram，并通过信号线向液晶显示器传输每一个点（RGB分量）。&lt;/p&gt;
+
+&lt;h3 id=&quot;getchar的实现分析&quot;&gt;getchar的实现分析&lt;/h3&gt;
+&lt;p&gt;来自I/O设备的信号导致异步异常——键盘中断，触发中断处理程序：键盘中断处理子程序，它接受按键扫描码转成ascii码，保存到系统的键盘缓冲区。
+getchar等调用read系统函数，通过系统调用读取按键ascii码，直到接受到回车键才返回。当我们按下回车键时，就开始调用getchar()函数，把缓冲区最先存储的字符读取，并且把这个字符从缓冲区中清除。然后利用循环继续读取，释放。&lt;/p&gt;
+&lt;h3 id=&quot;本章小结&quot;&gt;本章小结&lt;/h3&gt;
+&lt;p&gt;Linux中将设备的模型化为文件， 使用Unix I/O接口进行设备管理。Linux提供了少量的基于Unix I/O 模型的系统级函数，它们允许应用程序打开、关闭、读写文件、提取文件的元数据和IO重定向。Linux读和写操作会出现不足值，应用程序必须能正确的预计并处理这种情况。应用程序不应直接调用UnixI/O函数，而是应该使用RIO函数包，RIO通过反复执行读写操作，直到传送完所有的请求数据，自动处理不足值。&lt;/p&gt;
+
+&lt;p&gt;标准I/O库是基于UnixI/O实现的，并提供了一组强大的高级I/O例程。对于绝大多数应用程序而言，标准I/O比更简单，对于网络应用程序来说Unix I/O更胜一筹。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;总结&quot;&gt;总结&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;我们的hello.c代码经过预处理、编译、汇编、链接四个阶段的加工，从代码一步步转变为汇编语言、机器语言、二进制文本，最后成为可执行文件，也就是我们的程序——hello。&lt;/li&gt;
+  &lt;li&gt;当我们在shell 中输入命令行执行hello后，shell为hello创建一个新的子进程，并在子进程中调用execve来加载并执行该进程。执行结束后shell回收hello进程。&lt;/li&gt;
+  &lt;li&gt;当hello调用printf时产生系统调用，进行上下文切换，从用户模式切换至内核模式，通过 I/O流向屏幕输出一行字符。每输出一次将休眠一段时间，直至输出10次。接着getchar函数会从输入缓冲区读取一个字符，然后执行return 0指令结束程序的执行。在进程运行的过程中，可以发送信号至进程使其停止或终止。&lt;/li&gt;
+  &lt;li&gt;在这个过程中，我们认识了CPU如何处理hello中的指令序列；访问内存过程中的VA和PA怎样进行相互转换；TLB、四级页表为什么可以加快地址翻译；缺页中断如何处理；三级cache的访问方式。&lt;/li&gt;
+  &lt;li&gt;从分析过程中可以进一步加深对P2P，O2O、计算机系统的理解，从而写出更好的程序。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 20 Dec 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/chengxurensheng.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/chengxurensheng.html</guid>
+        
+        <category>CSAPP</category>
+        
+        <category>PROGRAM</category>
+        
+        <category>PROCESS</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
     
       <item>
         <title>Welcome to Nice Blog</title>
@@ -22,30 +723,30 @@
 
 &lt;p&gt;A Simple Jekyll Blog Theme.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;http://benjaminblog.ml/Nice_Blog&quot;&gt;Demo&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://gabriel-chen.github.io/Nice_Blog&quot;&gt;Demo&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://itisbenjamin.github.io/Nice_Blog/img/blog/index.png&quot; alt=&quot;index-page&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/BrmOMmv.png&quot; alt=&quot;index-page&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Introduce yourself in &lt;code class=&quot;highlighter-rouge&quot;&gt;About&lt;/code&gt; page  :
-&lt;img src=&quot;https://itisbenjamin.github.io/Nice_Blog/img/blog/about.png&quot; alt=&quot;about-page&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;https://i.imgur.com/vRGFclV.png&quot; alt=&quot;about-page&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;And you can turn on or off your skills tree in &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt; :&lt;br /&gt;
-&lt;img src=&quot;https://itisbenjamin.github.io/Nice_Blog/img/blog/skillstree.png&quot; alt=&quot;skills-tree&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;https://i.imgur.com/ssSOj57.png&quot; alt=&quot;skills-tree&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Posts will be listed by years in &lt;code class=&quot;highlighter-rouge&quot;&gt;Archive&lt;/code&gt; page:&lt;br /&gt;
-&lt;img src=&quot;https://itisbenjamin.github.io/Nice_Blog/img/blog/archive.png&quot; alt=&quot;archive-page&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;https://i.imgur.com/8bQZtkD.png&quot; alt=&quot;archive-page&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Post will be listed by categories in &lt;code class=&quot;highlighter-rouge&quot;&gt;Category&lt;/code&gt; page:&lt;br /&gt;
-&lt;img src=&quot;https://itisbenjamin.github.io/Nice_Blog/img/blog/category.png&quot; alt=&quot;category-page&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;https://i.imgur.com/cRHuAWi.png&quot; alt=&quot;category-page&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Post will be listed by tags in &lt;code class=&quot;highlighter-rouge&quot;&gt;Tags&lt;/code&gt; page:&lt;br /&gt;
-&lt;img src=&quot;https://itisbenjamin.github.io/Nice_Blog/img/blog/tags.png&quot; alt=&quot;tags-page&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;https://i.imgur.com/pnRdDD0.png&quot; alt=&quot;tags-page&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;You can put your &lt;code class=&quot;highlighter-rouge&quot;&gt;PGP&lt;/code&gt; publickey in &lt;code class=&quot;highlighter-rouge&quot;&gt;Contact&lt;/code&gt; page:&lt;br /&gt;
-&lt;img src=&quot;https://itisbenjamin.github.io/Nice_Blog/img/blog/contact.png&quot; alt=&quot;contact-page&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;https://i.imgur.com/8wHb5lX.png&quot; alt=&quot;contact-page&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now you have a &lt;code class=&quot;highlighter-rouge&quot;&gt;404&lt;/code&gt; page and it will jump back to &lt;code class=&quot;highlighter-rouge&quot;&gt;index&lt;/code&gt; page itself:&lt;br /&gt;
-&lt;img src=&quot;https://itisbenjamin.github.io/Nice_Blog/img/blog/404.png&quot; alt=&quot;404-page&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;https://i.imgur.com/mtkM64q.png&quot; alt=&quot;404-page&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;If you add &lt;code class=&quot;highlighter-rouge&quot;&gt;finshed: true&lt;/code&gt; in your post header, then an &lt;code class=&quot;highlighter-rouge&quot;&gt;EOF&lt;/code&gt; container will show under your post like this:&lt;/p&gt;
 &lt;div class=&quot;eof&quot;&gt;&lt;/div&gt;
@@ -59,11 +760,9 @@
 
 &lt;p&gt;Change the settings in &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt; file and then you can use this theme.&lt;/p&gt;
 
-&lt;p&gt;Easy, right?&lt;/p&gt;
+&lt;p&gt;Then change whatever you want. But first, you should know what you are doing.&lt;/p&gt;
 
-&lt;p&gt;If you wanna do more, then change whatever you want. But first, you should know what you are doing.&lt;/p&gt;
-
-&lt;p&gt;If you make all codes a mess, do not worry, just come back and download again.&lt;/p&gt;
+&lt;p&gt;If you messed it up, do not worry, just come back and clone it again.&lt;/p&gt;
 
 &lt;p&gt;Have fun.&lt;/p&gt;
 
@@ -71,14 +770,13 @@
 
 &lt;p&gt;A normal person just wanna see this world.&lt;/p&gt;
 
-&lt;p&gt;&lt;i class=&quot;fa fa-twitter&quot;&gt;&lt;/i&gt;  &lt;a href=&quot;https://twitter.com/itisbenjamin1&quot;&gt;Twitter&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://gabriel-chen.github.io&quot;&gt;Gabriel&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;license&quot;&gt;License&lt;/h2&gt;
 
 &lt;p&gt;Use MIT License.&lt;/p&gt;
-
 </description>
-        <pubDate>Wed, 30 Mar 2016 00:00:00 -0700</pubDate>
+        <pubDate>Wed, 30 Mar 2016 00:00:00 +0800</pubDate>
         <link>http://localhost:4000/jekyll/welcome.html</link>
         <guid isPermaLink="true">http://localhost:4000/jekyll/welcome.html</guid>
         
@@ -428,7 +1126,7 @@
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>Tue, 29 Mar 2016 00:00:00 -0700</pubDate>
+        <pubDate>Tue, 29 Mar 2016 00:00:00 +0800</pubDate>
         <link>http://localhost:4000/coding/markdown.html</link>
         <guid isPermaLink="true">http://localhost:4000/coding/markdown.html</guid>
         
@@ -1075,7 +1773,7 @@
 &lt;p&gt;至於輿論，在未莊是無異議，自然都說阿Ｑ壞，被槍斃便是他的壞的證據：不壞又何至於被槍斃呢？而城裡的輿論卻不佳，他們多半不滿足，以為槍斃並無殺頭這般好看；而且那是怎樣的一個可笑的死囚呵，游了那麼久的街，竟沒有唱一句戲：他們白跟一趟了。&lt;/p&gt;
 
 </description>
-        <pubDate>Thu, 01 Dec 1921 00:00:00 -0800</pubDate>
+        <pubDate>Thu, 01 Dec 1921 00:00:00 +0800</pubDate>
         <link>http://localhost:4000/books/aqzhengzhuan.html</link>
         <guid isPermaLink="true">http://localhost:4000/books/aqzhengzhuan.html</guid>
         
@@ -1273,7 +1971,7 @@
 &lt;p&gt;救救孩子……&lt;/p&gt;
 
 </description>
-        <pubDate>Mon, 01 Apr 1918 00:00:00 -0700</pubDate>
+        <pubDate>Mon, 01 Apr 1918 00:00:00 +0800</pubDate>
         <link>http://localhost:4000/books/kuangrenriji.html</link>
         <guid isPermaLink="true">http://localhost:4000/books/kuangrenriji.html</guid>
         

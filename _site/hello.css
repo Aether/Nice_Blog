@@ -1,66 +1,15 @@
----
-# Only the main Sass file needs front matter (the dashes are enough)
----
-@charset "utf-8";
-
-
-// Our variables
-$base-font-family: 'Noto Sans', serif;
-$base-font-size:   18px;
-$base-font-weight: lighter;
-$base-font-color: #333;
-$small-font-size:  $base-font-size * 0.875;
-$base-line-height: 1.5;
-
-$spacing-unit:     30px;
-
-$text-color:       #111;
-$background-color: #fdfdfd;
-$brand-color:      #2a7ae2;
-
-$grey-color:       #828282;
-$grey-color-light: lighten($grey-color, 40%);
-$grey-color-dark:  darken($grey-color, 25%);
-
-// Width of the content area
-$content-width:    800px;
-
-$on-palm:          600px;
-$on-laptop:        800px;
-
-
-
-// Use media queries like this:
-// @include media-query($on-palm) {
-//     .wrapper {
-//         padding-right: $spacing-unit / 2;
-//         padding-left: $spacing-unit / 2;
-//     }
-// }
-@mixin media-query($device) {
-    @media screen and (max-width: $device) {
-        @content;
-    }
-}
-
-
-
-// Import partials from `sass_dir` (defaults to `_sass`)
-@import
-        "base",
-        "layout",
-        "syntax-highlighting"
-;
-
+@charset "UTF-8";
+/**
+ * Basic styling
+ */
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
 body {
-    font-weight: lighter;
-  font: 400 18px/1.5 "Noto Sans", serif;
-  color: #4e595e;
+  font: 400 15px/1.5 "Noto Sans", serif;
+  color: #111;
   background-color: #fdfdfd;
   -webkit-text-size-adjust: 100%;
   -webkit-font-feature-settings: "kern" 1;
@@ -93,15 +42,14 @@ figure > img {
   display: block; }
 
 figcaption {
-  font-size: 15.75px; }
+  font-size: 13.125px; }
 
 /**
  * Lists
  */
 ul, ol {
-  margin-left: 5px;
+  margin-left: 30px;
   color: #666;
-  line-height: 1.75;
   letter-spacing: 1px; }
 
 ul {
@@ -124,7 +72,7 @@ h6 {
  * Links
  */
 a {
-  color: #198a45;
+  color: #25b3bc;
   text-decoration: none;
   transition: border .5s; }
 
@@ -132,13 +80,13 @@ a:hover {
   border-bottom: 2px dotted #000; }
 
 .post-content h2:before {
-  content: "🍃";
+  content: "¶ ";
   margin-right: 20px;
-  color: #198a45; }
+  color: #25bcba; }
 
 .link {
   padding: 2px;
-  color: #198a45;
+  color: #25b3bc;
   text-decoration: none;
   transition: background-color .7s; }
 
@@ -172,9 +120,9 @@ a:hover {
  */
 blockquote {
   border-left: 5px solid #eee;
-  margin-left: 0px;
-  padding-left: 0px 20px;
-  color: #6e7f86; }
+  margin-left: 30px;
+  padding: 5px 15px;
+  color: #888888; }
 
 /**
  * Hr
@@ -191,20 +139,17 @@ hr {
  */
 pre,
 code {
-    font-weight: lighter;
-  font-size: 16px;
-  border: 1px solid #d4e0ec;
-  border-radius: 8px;
+  font-size: 15px;
+  border: 1px solid #f8f8f8;
+  border-radius: 3px;
   background-color: #f8f8f8;
-  color: #456976; }
+  color: #27badf; }
 
 code {
-
   padding: 1px 5px; }
 
 pre {
-
-  padding: 8px 20px;
+  padding: 8px 12px;
   overflow-x: auto; }
   pre > code {
     border: 0;
@@ -228,8 +173,8 @@ table, th {
  * Wrapper
  */
 .wrapper {
-  max-width: -webkit-calc(900px - (30px * 2));
-  max-width: calc(900px - (30px * 2));
+  max-width: -webkit-calc(800px - (30px * 2));
+  max-width: calc(800px - (30px * 2));
   margin-right: auto;
   margin-left: auto;
   padding-right: 30px;
@@ -315,7 +260,7 @@ table, th {
 
 .site-title {
   font-size: 26px;
-  font-weight: lighter;
+  font-weight: 300;
   line-height: 56px;
   letter-spacing: -1px;
   margin-bottom: 0;
@@ -379,18 +324,10 @@ table, th {
 .post-content {
   margin-bottom: 30px; }
   .post-content h1 {
-      font-weight: lighter;
-    color:#198a45;
-    font-size: 34px; }
+    font-size: 28px; }
   .post-content h2 {
-      font-weight: lighter;
-    color:#444;
-    font-size: 27px; }
-  .post-content h3{
-      font-weight: lighter;
-    color:#198a45;
-    margin-left: 0px;
-    font-size: 22px; }
+    font-size: 25px; }
+  .post-content h3,
   .post-content h4,
   .post-content h5,
   .post-content h6 {
@@ -398,9 +335,9 @@ table, th {
     margin: 24px; }
 
 .post-content p {
-  margin: 0px;
-  line-height: 1.7;
-  letter-spacing: 1.2px; }
+  margin: 24px;
+  line-height: 25px;
+  letter-spacing: 1px; }
 
 /**
  * Others
