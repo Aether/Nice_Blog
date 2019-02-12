@@ -8,7 +8,7 @@
   box-sizing: border-box; }
 
 body {
-  font: lighter 18px/1.5 "Noto Sans", serif;
+  font: lighter 18px/1.5 Consolas, "Noto Sans", serif;
   color: #111;
   background-color: #fdfdfd;
   -webkit-text-size-adjust: 100%;
@@ -603,7 +603,7 @@ table, th {
 
 body {
   font-weight: lighter;
-  font: 400 18px/1.5 "Noto Sans", serif;
+  font: 400 18px/1.5 Consolas,"Noto Sans",serif;
   color: #4e595e;
   background-color: #fdfdfd;
   -webkit-text-size-adjust: 100%;
@@ -740,7 +740,9 @@ code {
   border: 1px solid #d4e0ec;
   border-radius: 4px;
   background-color: #f8f8f8;
-  color: #456976; }
+  font-weight: lighter !important;
+  font-style: normal !important;
+  color: #456976 !important; }
 
 code {
   padding: 1px 5px; }
@@ -944,7 +946,9 @@ table, th {
   margin-left: 0px;
   font-size: 20px; }
 
-.post-content h5,
+.post-content h5 {
+  margin-left: 0px; }
+
 .post-content h6 {
   font-size: 18px;
   margin: 24px; }

@@ -6,8 +6,8 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 12 Feb 2019 14:55:30 +0800</pubDate>
-    <lastBuildDate>Tue, 12 Feb 2019 14:55:30 +0800</lastBuildDate>
+    <pubDate>Wed, 13 Feb 2019 01:10:55 +0800</pubDate>
+    <lastBuildDate>Wed, 13 Feb 2019 01:10:55 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -703,439 +703,231 @@ getchar等调用read系统函数，通过系统调用读取按键ascii码，直�
         
         <category>CSAPP</category>
         
-        <category>PROGRAM</category>
-        
-        <category>PROCESS</category>
-        
         
         <category>coding</category>
         
       </item>
     
       <item>
-        <title>Welcome to Nice Blog</title>
-        <description>&lt;h2 id=&quot;welcome&quot;&gt;Welcome&lt;/h2&gt;
+        <title>Kotlin</title>
+        <description>&lt;h2 id=&quot;basic-grammer&quot;&gt;Basic Grammer&lt;/h2&gt;
+&lt;h3 id=&quot;valvar&quot;&gt;val&amp;amp;var&lt;/h3&gt;
 
-&lt;p&gt;I think many blog themes are over designed, so I created this one.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;a:Int 
+val b:Int = 2 //val variable can only be assignmented once
+val c = &quot;Hello Kotlin&quot;
+val d // wrong
+val e:Int //right
+var f : Char = '1'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Just for using, not showing off.&lt;/p&gt;
+&lt;h3 id=&quot;fun&quot;&gt;fun&lt;/h3&gt;
 
-&lt;h2 id=&quot;nice-blog&quot;&gt;Nice Blog&lt;/h2&gt;
-
-&lt;p&gt;A Simple Jekyll Blog Theme.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://gabriel-chen.github.io/Nice_Blog&quot;&gt;Demo&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/BrmOMmv.png&quot; alt=&quot;index-page&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Introduce yourself in &lt;code class=&quot;highlighter-rouge&quot;&gt;About&lt;/code&gt; page  :
-&lt;img src=&quot;https://i.imgur.com/vRGFclV.png&quot; alt=&quot;about-page&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;And you can turn on or off your skills tree in &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt; :&lt;br /&gt;
-&lt;img src=&quot;https://i.imgur.com/ssSOj57.png&quot; alt=&quot;skills-tree&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Posts will be listed by years in &lt;code class=&quot;highlighter-rouge&quot;&gt;Archive&lt;/code&gt; page:&lt;br /&gt;
-&lt;img src=&quot;https://i.imgur.com/8bQZtkD.png&quot; alt=&quot;archive-page&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Post will be listed by categories in &lt;code class=&quot;highlighter-rouge&quot;&gt;Category&lt;/code&gt; page:&lt;br /&gt;
-&lt;img src=&quot;https://i.imgur.com/cRHuAWi.png&quot; alt=&quot;category-page&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Post will be listed by tags in &lt;code class=&quot;highlighter-rouge&quot;&gt;Tags&lt;/code&gt; page:&lt;br /&gt;
-&lt;img src=&quot;https://i.imgur.com/pnRdDD0.png&quot; alt=&quot;tags-page&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;You can put your &lt;code class=&quot;highlighter-rouge&quot;&gt;PGP&lt;/code&gt; publickey in &lt;code class=&quot;highlighter-rouge&quot;&gt;Contact&lt;/code&gt; page:&lt;br /&gt;
-&lt;img src=&quot;https://i.imgur.com/8wHb5lX.png&quot; alt=&quot;contact-page&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Now you have a &lt;code class=&quot;highlighter-rouge&quot;&gt;404&lt;/code&gt; page and it will jump back to &lt;code class=&quot;highlighter-rouge&quot;&gt;index&lt;/code&gt; page itself:&lt;br /&gt;
-&lt;img src=&quot;https://i.imgur.com/mtkM64q.png&quot; alt=&quot;404-page&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If you add &lt;code class=&quot;highlighter-rouge&quot;&gt;finshed: true&lt;/code&gt; in your post header, then an &lt;code class=&quot;highlighter-rouge&quot;&gt;EOF&lt;/code&gt; container will show under your post like this:&lt;/p&gt;
-&lt;div class=&quot;eof&quot;&gt;&lt;/div&gt;
-
-&lt;p&gt;Or it will show &lt;code class=&quot;highlighter-rouge&quot;&gt;TBC&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;tbc&quot;&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;how-to-use&quot;&gt;How to use&lt;/h2&gt;
-
-&lt;p&gt;Star it, fork it, and download it.&lt;/p&gt;
-
-&lt;p&gt;Change the settings in &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt; file and then you can use this theme.&lt;/p&gt;
-
-&lt;p&gt;Then change whatever you want. But first, you should know what you are doing.&lt;/p&gt;
-
-&lt;p&gt;If you messed it up, do not worry, just come back and clone it again.&lt;/p&gt;
-
-&lt;p&gt;Have fun.&lt;/p&gt;
-
-&lt;h2 id=&quot;author&quot;&gt;Author&lt;/h2&gt;
-
-&lt;p&gt;A normal person just wanna see this world.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://gabriel-chen.github.io&quot;&gt;Gabriel&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;license&quot;&gt;License&lt;/h2&gt;
-
-&lt;p&gt;Use MIT License.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 30 Mar 2016 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/jekyll/welcome.html</link>
-        <guid isPermaLink="true">http://localhost:4000/jekyll/welcome.html</guid>
-        
-        <category>jekyll</category>
-        
-        <category>github</category>
-        
-        <category>blog</category>
-        
-        
-        <category>Jekyll</category>
-        
-      </item>
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fun main(arg:Array&amp;lt;String&amp;gt;) {
     
-      <item>
-        <title>Markdown Gramma</title>
-        <description>&lt;h2 id=&quot;heading&quot;&gt;Heading&lt;/h2&gt;
+    fun sum(): Unit {
+        print(&quot;param:void,return:void&quot;)
+    }
+    
+    fun sum(): Unit {
+        print(&quot;Unit can be omitted&quot;)
+    }
+    
+    fun sum(a:Int): Int {
+        print(&quot;param:int,return:int&quot;)
+    }
+    
+    fun sum(a:Int, b:Int) = a + b;
+    
+    fun maxOf(a: Int, b: Int) = if (a &amp;gt; b) a else b
+    
+    fun parseInt(str: String): Int? {
+        return null;//?means possible return null
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;string&quot;&gt;String&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val boy = 5
+var girl = 7
+var all = &quot;There are $boy boys and $girl girls&quot;
+print(all)
+val text = &quot;&quot;&quot;
+    for (c in &quot;foo&quot;)
+        print(c)
+    &quot;&quot;&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;instanceof&quot;&gt;instanceof()&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var a:Any = &quot;123&quot;//Any is commom parent class of all classes
+if (a is String){
+    print(a.length)//meanwhile type conversion
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;circulation&quot;&gt;Circulation&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var a = listOf(1, 2, 3, 1)
+for (b in a) {
+    print(b + &quot;\n&quot;) //wrong
+    print(&quot;$b \n&quot;)  //right
+}
+for (b in a.indices) {
+    print(&quot;item:&quot; + b + &quot;值&quot; + a[b] + &quot;\n&quot;)
+}
+print(&quot;item:$b 值${a[b]}\n&quot;)
+for ((a,b)in items.withIndex()) print(&quot;$a, $b\n&quot;)
+//0,1 1,2 2,3 3,1
+var items = listOf(1, 3, 5, 7, 9)
+
+for (a in items) {
+    if (a == 5) {
+        continue | break | return
+    }
+    print(&quot;$a \n&quot;)//1,3,7,9
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;when&quot;&gt;When&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var x = 1;
+var y = 1;
+when (x) {
+    1 -&amp;gt;
+        if (x + y &amp;gt; 5) {
+            print(&quot;a&quot;)
+        } else {
+            print(&quot;b&quot;)
+        }
+    2 -&amp;gt; print(&quot;x == 2&quot;)
+    else -&amp;gt; { 
+        print(&quot;x is neither 1 nor 2&quot;)
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;range&quot;&gt;Range&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val x = 5
+if (x in 1..10) {
+    println(&quot;fits in range&quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;set&quot;&gt;Set&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var a = listOf(1, 2, 3, 1)
+for (b in a) {
+    print(&quot;$b \n&quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;underline&quot;&gt;Underline&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val oneMillion = 1_000_000 //100000
+val creditCardNumber = 1234_5678_9012_3456L //1234567890123456
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;equals&quot;&gt;equals&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val a: Int = 10000
+print(a === a) //true
+val boxedA: Int? = a
+val anotherBoxedA: Int? = a
+print(boxedA === anotherBoxedA) //false 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;type-conversion&quot;&gt;Type Conversion&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val b: Byte = 1
+val i: Int = b.toInt()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;array&quot;&gt;Array&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val items = listOf&amp;lt;String&amp;gt;(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;)
+val itemNulls = arrayOfNulls&amp;lt;Int&amp;gt;(10)
+//null
+val asc = Array(5, { i -&amp;gt; (i * i).toString() }) 
+//[&quot;0&quot;, &quot;1&quot;, &quot;4&quot;, &quot;9&quot;, &quot;16&quot;]
+val asc = Array(5, {i -&amp;gt; (i * i)})
+// [0, 1, 4, 9, 16]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;constructor&quot;&gt;Constructor&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class TestClass {
+    class TestClass constructor(firstName: String) {
+        init {
+            //Initialize 
+        }
+    }
+    constructor(firstName: String) {
+        print(&quot;subconstructor&quot;)
+    }
+}
+class Person {
+    constructor(parent: Person) {
+        parent.children.add(this)
+    }
+}
+class Test{
+    val test = TestClass(&quot;Kotlin&quot;);//new object
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;extend&quot;&gt;Extend&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;open class BaseClass {
+    class BaseClass constructor(str:String){
+    
+    }
+ }
+class SubClass : BaseClass(){
+
+} If there isn't a constructor in class, every subconstructor must use the key word &quot;super&quot; to initialize.
+
+class MyView : View {
+    constructor(ctx: Context) : super(ctx)
+    constructor(ctx: Context, attrs: AttributeSet) : super(ctx, attrs)
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;override&quot;&gt;Override&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;open class Base {
+    open var a = 9;
+    open fun v() {
+        print(&quot;Base...&quot;)
+    }
+    fun nv() {}
+}
+class Subclass() : Base() {
+    override var a = 8;//override attribute
+    override fun v() {
+        //super.v() call the method in baseclass
+        print(&quot;Subclass...&quot;)//override method
+    }
+}
+fun main(args: Array&amp;lt;String&amp;gt;) {
+    val sub = Subclass();
+    son.v()
+    print(son.a)
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Heading is really simple in Markdown, you can use &lt;code class=&quot;highlighter-rouge&quot;&gt;#&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;=&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;-&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;# H1. Heading&lt;/code&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;h1-heading&quot;&gt;H1. Heading&lt;/h1&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;## H2. Heading&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;h2-heading&quot;&gt;H2. Heading&lt;/h2&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;### H3. Heading&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;h3-heading&quot;&gt;H3. Heading&lt;/h3&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;#### H4. Heading&lt;/code&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;h4-heading&quot;&gt;H4. Heading&lt;/h4&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;##### H5. Heading&lt;/code&gt;&lt;/p&gt;
-
-&lt;h5 id=&quot;h5-heading&quot;&gt;H5. Heading&lt;/h5&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;###### H6. Heading&lt;/code&gt;&lt;/p&gt;
-
-&lt;h6 id=&quot;h6-heading&quot;&gt;H6. Heading&lt;/h6&gt;
-
-&lt;p&gt;And like this:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-md&quot; data-lang=&quot;md&quot;&gt;Heading
-======&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h1 id=&quot;heading-1&quot;&gt;Heading&lt;/h1&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-md&quot; data-lang=&quot;md&quot;&gt;Heading
-&lt;span class=&quot;p&quot;&gt;-------&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h2 id=&quot;heading-2&quot;&gt;Heading&lt;/h2&gt;
-
-&lt;p&gt;See? Really easy.&lt;/p&gt;
-
-&lt;h2 id=&quot;font&quot;&gt;Font&lt;/h2&gt;
-
-&lt;p&gt;There are three kinds of font in Markdown.&lt;/p&gt;
-
-&lt;h3 id=&quot;italic&quot;&gt;Italic：&lt;/h3&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;*Italic*&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Italic&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;_Italic_&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Italic&lt;/em&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;bold&quot;&gt;Bold：&lt;/h3&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;**Bold**&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Bold&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;__Bold__&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Bold&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;italic--bold&quot;&gt;Italic &amp;amp; Bold：&lt;/h3&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;***Italic &amp;amp; Bold***&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Italic &amp;amp; Bold&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;___Italic &amp;amp; Bold___&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Italic &amp;amp; Bold&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;You can also do this:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;**Markdown is _fun_**&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Markdown is &lt;em&gt;fun&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;list&quot;&gt;List&lt;/h2&gt;
-
-&lt;h3 id=&quot;ordered-list&quot;&gt;Ordered list:&lt;/h3&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;1. 2. 3. &lt;/code&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;First&lt;/li&gt;
-  &lt;li&gt;Second&lt;/li&gt;
-  &lt;li&gt;Third&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;unordered-list&quot;&gt;Unordered list:&lt;/h3&gt;
-
-&lt;p&gt;There are three ways to make an unordered list:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;* AAA&lt;/code&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;AAA&lt;/li&gt;
-  &lt;li&gt;BBB&lt;/li&gt;
-  &lt;li&gt;CCC&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;- AAA&lt;/code&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;AAA&lt;/li&gt;
-  &lt;li&gt;BBB&lt;/li&gt;
-  &lt;li&gt;CCC&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;+ AAA&lt;/code&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;AAA&lt;/li&gt;
-  &lt;li&gt;BBB&lt;/li&gt;
-  &lt;li&gt;CCC&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;block-quote&quot;&gt;Block quote&lt;/h2&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt; War is Peace&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt; Freedom is Slavery&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt; Ignorance is Strength&lt;/code&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;War is Peace&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Freedom is Slavery&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Ignorance is Strength&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;You can also do this:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt; * War is Peace&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt; * Freedom is Slavery&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt; * Ignorance is Stength&lt;/code&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;ul&gt;
-    &lt;li&gt;War is Peace&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;ul&gt;
-    &lt;li&gt;Freedom is Slavery&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;ul&gt;
-    &lt;li&gt;Ignorance is Stength&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;link&quot;&gt;Link&lt;/h2&gt;
-
-&lt;h3 id=&quot;simple-link&quot;&gt;Simple link&lt;/h3&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;http://itisbenjamin.github.io&amp;gt;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://itisbenjamin.github.io&quot;&gt;http://itisbenjamin.github.io&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;You can also do this when you insert an email address.&lt;/p&gt;
-
-&lt;h3 id=&quot;link-1&quot;&gt;Link&lt;/h3&gt;
-
-&lt;p&gt;You can add your link just behind your words:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[Ben](www.itisbenjamin.github.io)&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;www.itisbenjamin.github.io&quot;&gt;Ben&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;And you can also do it like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[about this link][1]&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Then put this line at anywhere you want in your post:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[1]: link address&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;link-description&quot;&gt;Link description&lt;/h3&gt;
-
-&lt;p&gt;Add the link description behind the link address like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[Ben](www.itisbenjamin.github.io &quot;Ben&quot;)&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;www.itisbenjamin.github.io&quot; title=&quot;Ben&quot;&gt;Ben&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;image&quot;&gt;Image&lt;/h2&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;![Codes](/img/code.png)&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/code.png&quot; alt=&quot;Codes&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;How to write the images’ descriptions are the same way as how you do it in links:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;![Codes](/img/code.png &quot;Codes&quot;)&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/code.png&quot; alt=&quot;Codes&quot; title=&quot;Codes&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;code&quot;&gt;Code&lt;/h2&gt;
-
-&lt;p&gt;You can use &lt;code&gt;``&lt;/code&gt; to show your codes:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;`.default`&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;.default&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;If you wanna show a piece of codes, use 4 spaces or 1 tab.&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;post-header-container&amp;gt;
-  &amp;lt;div class=&quot;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;scrim&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;header&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;post-header&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;title&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Markdown Gramma&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;info&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;by &lt;span class=&quot;nt&quot;&gt;&amp;lt;strong&amp;gt;&lt;/span&gt;Gabriel&lt;span class=&quot;nt&quot;&gt;&amp;lt;/strong&amp;gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/header&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h2 id=&quot;others&quot;&gt;Others&lt;/h2&gt;
-
-&lt;h3 id=&quot;breaker&quot;&gt;Breaker&lt;/h3&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;---&lt;/code&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;***&lt;/code&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;- - - -&lt;/code&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;They all show a breaker.&lt;/p&gt;
-
-&lt;h2 id=&quot;footnote&quot;&gt;Footnote&lt;/h2&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Something needs a footnote[^1].&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[^1]: This is a footnote.&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Something needs a footnote&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
-
-&lt;p&gt;Then this footnote will show at the end of this post.&lt;/p&gt;
-
-&lt;h2 id=&quot;delete&quot;&gt;Delete&lt;/h2&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;~~There is no tree waiting for me.~~&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;del&gt;There is no tree waiting for me.&lt;/del&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;table&quot;&gt;Table&lt;/h2&gt;
-
-&lt;h3 id=&quot;a-simple-way&quot;&gt;A simple way&lt;/h3&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;A     | B     | C     | D &lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;----- | ----- | ----- | -----&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;a     | b     | c     | d&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;A&lt;/th&gt;
-      &lt;th&gt;B&lt;/th&gt;
-      &lt;th&gt;C&lt;/th&gt;
-      &lt;th&gt;D&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;a&lt;/td&gt;
-      &lt;td&gt;b&lt;/td&gt;
-      &lt;td&gt;c&lt;/td&gt;
-      &lt;td&gt;d&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&quot;make-words-at-left-center-or-right&quot;&gt;Make words at left, center or right&lt;/h3&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;left      | center       | center       | right&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;:-------- | :----------: | :----------: | -----:&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;a         | b            | c            | d&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th style=&quot;text-align: left&quot;&gt;left&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;center&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;center&lt;/th&gt;
-      &lt;th style=&quot;text-align: right&quot;&gt;right&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;a&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;b&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;c&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;d&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;div class=&quot;footnotes&quot;&gt;
-  &lt;ol&gt;
-    &lt;li id=&quot;fn:1&quot;&gt;
-      &lt;p&gt;This is a footnote. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/div&gt;
 </description>
-        <pubDate>Tue, 29 Mar 2016 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/markdown.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/markdown.html</guid>
+        <pubDate>Fri, 02 Feb 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/Kotlin.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Kotlin.html</guid>
         
         <category>code</category>
         
-        <category>markdown</category>
+        <category>Kotlin</category>
         
-        <category>github</category>
+        <category>Android</category>
         
         
         <category>coding</category>
@@ -1143,847 +935,1046 @@ getchar等调用read系统函数，通过系统调用读取按键ascii码，直�
       </item>
     
       <item>
-        <title>阿Q正傳 (Traditional Chinese)</title>
-        <description>&lt;h2 id=&quot;第一章序&quot;&gt;第一章　序&lt;/h2&gt;
-
-&lt;p&gt;我要給阿Ｑ做正傳，已經不止一兩年了。但一面要做，一面又往回想，這足見我不是一個「立言」的人，因為從來不朽之筆，須傳不朽之人，於是人以文傳，文以人傳——究竟誰靠誰傳，漸漸的不甚瞭然起來，而終於歸接到傳阿Ｑ，彷彿思想裡有鬼似的。&lt;/p&gt;
-
-&lt;p&gt;然而要做這一篇速朽的文章，才下筆，便感到萬分的困難了。第一是文章的名目。孔子曰，「名不正則言不順」。這原是應該極註意的。傳的名目很繁多：列傳，自傳，內傳，外傳，別傳，家傳，小傳……，而可惜都不合。「列傳」麽，這一篇並非和許多闊人排在「正史」裡；「自傳」麽，我又並非就是阿Ｑ。說是「外傳」，「內傳」在那裡呢？倘用「內傳」，阿Ｑ又決不是神仙。「別傳」呢，阿Ｑ實在未曾有大總統上諭宣付國史館立「本傳」——雖說英國正史上並無「博徒列傳」，而文豪迭更司也做過《博徒別傳》這一部書，但文豪則可，在我輩卻不可。其次是「家傳」，則我既不知與阿Ｑ是否同宗，也未曾受他子孫的拜託；或「小傳」，則阿Ｑ又更無別的「大傳」了。總而言之，這一篇也便是「本傳」，但從我的文章著想，因為文體卑下，是「引車賣漿者流」所用的話，所以不敢僭稱，便從不入三教九流的小說家所謂「閑話休題言歸正傳」這一句套話裡，取出「正傳」兩個字來，作為名目，即使與古人所撰《書法正傳》的「正傳」字面上很相混，也顧不得了。&lt;/p&gt;
-
-&lt;p&gt;第二，立傳的通例，開首大抵該是「某，字某，某地人也」，而我並不知道阿Ｑ姓什麼。有一回，他似乎是姓趙，但第二日便模糊了。那是趙太爺的兒子進了秀才的時候，鑼聲鏜鏜的報到村裡來，阿Ｑ正喝了兩碗黃酒，便手舞足蹈的說，這於他也很光採，因為他和趙太爺原來是本家，細細的排起來他還比秀才長三輩呢。其時幾個旁聽人倒也肅然的有些起敬了。那知道第二天，地保便叫阿Ｑ到趙太爺家裡去；太爺一見，滿臉濺朱，喝道：&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;「阿Ｑ，你這渾小子！你說我是你的本家麽？」
-&lt;br /&gt;阿Ｑ不開口。
-&lt;br /&gt;趙太爺愈看愈生氣了，搶進幾步說：「你敢胡說！我怎麼會有你這樣的本家？你姓趙麽？」
-&lt;br /&gt;阿Ｑ不開口，想往後退了；趙太爺跳過去，給了他一個嘴巴。
-&lt;br /&gt;「你怎麼會姓趙！——你那裡配姓趙！」&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;阿Ｑ並沒有抗辯他確鑿姓趙，只用手摸著左頰，和地保退出去了；外面又被地保訓斥了一番，謝了地保二百文酒錢。知道的人都說阿Ｑ太荒唐，自己去招打；他大約未必姓趙，即使真姓趙，有趙太爺在這裡，也不該如此胡說的。此後便再沒有人提起他的氏族來，所以我終於不知道阿Ｑ究竟什麼姓。&lt;/p&gt;
-
-&lt;p&gt;第三，我又不知道阿Ｑ的名字是怎麼寫的。他活著的時候，人都叫他阿Ｑｕｅｉ，死了以後，便沒有一個人再叫阿Ｑｕｅｉ了，那裡還會有「著之竹帛」的事。若論「著之竹帛」，這篇文章要算第一次，所以先遇著了這第一個難關。我曾仔細想：阿Ｑｕｅｉ，阿桂還是阿貴呢？倘使他號月亭，或者在八月間做過生日，那一定是阿桂了；而他既沒有號——也許有號，只是沒有人知道他，——又未嘗散過生日徵文的帖子：寫作阿桂，是武斷的。又倘使他有一位老兄或令弟叫阿富，那一定是阿貴了；而他又只是一個人：寫作阿貴，也沒有佐證的。其餘音Ｑｕｅｉ的偏僻字樣，更加湊不上了。先前，我也曾問過趙太爺的兒子茂才先生，誰料博雅如此公，竟也茫然，但據結論說，是因為陳獨秀辦了《新青年》提倡洋字，所以國粹淪亡，無可查考了。我的最後的手段，只有托一個同鄉去查阿Ｑ犯事的案卷，八個月之後才有回信，說案卷裡並無與阿Ｑｕｅｉ的聲音相近的人。我雖不知道是真沒有，還是沒有查，然而也再沒有別的方法了。生怕註音字母還未通行，只好用了「洋字」，照英國流行的拼法寫他為阿Ｑｕｅｉ，略作阿Ｑ。這近於盲從《新青年》，自己也很抱歉，但茂才公尚且不知，我還有什麼好辦法呢。&lt;/p&gt;
-
-&lt;p&gt;第四，是阿Ｑ的籍貫了。倘他姓趙，則據現在好稱郡望的老例，可以照《郡名百家姓》上的註解，說是「隴西天水人也」，但可惜這姓是不甚可靠的，因此籍貫也就有些決不定。他雖然多住未莊，然而也常常宿在別處，不能說是未莊人，即使說是「未莊人也」，也仍然有乖史法的。&lt;/p&gt;
-
-&lt;p&gt;我所聊以自慰的，是還有一個「阿」字非常正確，絕無附會假借的缺點，頗可以就正於通人。至於其餘，卻都非淺學所能穿鑿，只希望有「歷史癖與考據癖」的胡適之先生的門人們，將來或者能夠尋出許多新端緒來，但是我這《阿Ｑ正傳》到那時卻又怕早經消滅了。&lt;/p&gt;
-
-&lt;p&gt;以上可以算是序。&lt;/p&gt;
-
-&lt;h2 id=&quot;第二章優勝紀略&quot;&gt;第二章　優勝紀略&lt;/h2&gt;
-
-&lt;p&gt;阿Ｑ不獨是姓名籍貫有些渺茫，連他先前的「行狀」也渺茫。因為未莊的人們之於阿Ｑ，只要他幫忙，只拿他玩笑，從來沒有留心他的「行狀」的。而阿Ｑ自己也不說，獨有和別人口角的時候，間或瞪著眼睛道：&lt;/p&gt;
-
-&lt;p&gt;「我先前——比你闊的多啦！你算是什麼東西！」&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ沒有家，住在未莊的土穀祠裡；也沒有固定的職業，只給人家做短工，割麥便割麥，舂米便舂米，撐船便撐船。工作略長久時，他也或住在臨時主人的家裡，但一完就走了。所以，人們忙碌的時候，也還記起阿Ｑ來，然而記起的是做工，並不是「行狀」；一閑空，連阿Ｑ都早忘卻，更不必說「行狀」了。只是有一回，有一個老頭子頌揚說：「阿Ｑ真能做！」這時阿Ｑ赤著膊，懶洋洋的瘦伶仃的正在他面前，別人也摸不著這話是真心還是譏笑，然而阿Ｑ很喜歡。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ又很自尊，所有未莊的居民，全不在他眼神裡，甚而至於對於兩位「文童」也有以為不值一笑的神情。夫文童者，將來恐怕要變秀才者也；趙太爺錢太爺大受居民的尊敬，除有錢之外，就因為都是文童的爹爹，而阿Ｑ在精神上獨不表格外的崇奉，他想：我的兒子會闊得多啦！加以進了幾回城，阿Ｑ自然更自負，然而他又很鄙薄城裡人，譬如用三尺三寸寬的木板做成的凳子，未莊人叫「長凳」，他也叫「長凳」，城裡人卻叫「條凳」，他想：這是錯的，可笑！油煎大頭魚，未莊都加上半寸長的蔥葉，城裡卻加上切細的蔥絲，他想：這也是錯的，可笑！然而未莊人真是不見世面的可笑的鄉下人呵，他們沒有見過城裡的煎魚！&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ「先前闊」，見識高，而且「真能做」，本來幾乎是一個「完人」了，但可惜他體質上還有一些缺點。最惱人的是在他頭皮上，頗有幾處不知於何時的癩瘡疤。這雖然也在他身上，而看阿Ｑ的意思，倒也似乎以為不足貴的，因為他諱說「癩」以及一切近於「賴」的音，後來推而廣之，「光」也諱，「亮」也諱，再後來，連「燈」「燭」都諱了。一犯諱，不問有心與無心，阿Ｑ便全疤通紅的發起怒來，估量了對手，口訥的他便罵，氣力小的他便打；然而不知怎麼一回事，總還是阿Ｑ吃虧的時候多。於是他漸漸的變換了方針，大抵改為怒目而視了。&lt;/p&gt;
-
-&lt;p&gt;誰知道阿Ｑ採用怒目主義之後，未莊的閑人們便愈喜歡玩笑他。一見面，他們便假作吃驚的說：&lt;/p&gt;
-
-&lt;p&gt;「噲，亮起來了。」&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ照例的發了怒，他怒目而視了。&lt;/p&gt;
-
-&lt;p&gt;「原來有保險燈在這裡！」他們並不怕。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ沒有法，只得另外想出報複的話來：&lt;/p&gt;
-
-&lt;p&gt;「你還不配……」這時候，又彷彿在他頭上的是一種高尚的光容的癩頭瘡，並非平常的癩頭瘡了；但上文說過，阿Ｑ是有見識的，他立刻知道和「犯忌」有點抵觸，便不再往底下說。&lt;/p&gt;
-
-&lt;p&gt;閒人還不完，只撩他，於是終而至於打。阿Ｑ在形式上打敗了，被人揪住黃辮子，在壁上碰了四五個響頭，閒人這才心滿意足的得勝的走了，阿Ｑ站了一刻，心裡想，「我總算被兒子打了，現在的世界真不像樣……」於是也心滿意足的得勝的走了。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ想在心裡的，後來每每說出口來，所以凡是和阿Ｑ玩笑的人們，幾乎全知道他有這一種精神上的勝利法，此後每逢揪住他黃辮子的時候，人就先一著對他說：&lt;/p&gt;
-
-&lt;p&gt;「阿Ｑ，這不是兒子打老子，是人打畜生。自己說：人打畜生！」&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ兩隻手都捏住了自己的辮根，歪著頭，說道：&lt;/p&gt;
-
-&lt;p&gt;「打蟲豸，好不好？我是蟲豸——還不放麽？」&lt;/p&gt;
-
-&lt;p&gt;但雖然是蟲豸，閒人也並不放，仍舊在就近什麼地方給他碰了五六個響頭，這才心滿意足的得勝的走了，他以為阿Ｑ這回可遭了瘟。然而不到十秒鐘，阿Ｑ也心滿意足的得勝的走了，他覺得他是第一個能夠自輕自賤的人，除了「自輕自賤」不算外，餘下的就是「第一個」。狀元不也是「第一個」麽？「你算是什麼東西」呢！？&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ以如是等等妙法剋服怨敵之後，便愉快的跑到酒店裡喝幾碗酒，又和別人調笑一通，口角一通，又得了勝，愉快的回到土穀祠，放倒頭睡著了。假使有錢，他便去押牌寶，一堆人蹲在地面上，阿Ｑ即汗流滿面的夾在這中間，聲音他最響：&lt;/p&gt;
-
-&lt;p&gt;「青龍四百！」&lt;/p&gt;
-
-&lt;p&gt;「咳～～開～～啦！」樁家揭開盒子蓋，也是汗流滿面的唱。「天門啦～～角回啦～～！人和穿堂空在那裡啦～～！阿Ｑ的銅錢拿過來～～！」&lt;/p&gt;
-
-&lt;p&gt;「穿堂一百——一百五十！」&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ的錢便在這樣的歌吟之下，漸漸的輸入別個汗流滿面的人物的腰間。他終於只好擠出堆外，站在後面看，替別人著急，一直到散場，然後戀戀的回到土穀祠，第二天，腫著眼睛去工作。&lt;/p&gt;
-
-&lt;p&gt;但真所謂「塞翁失馬安知非福」罷，阿Ｑ不幸而贏了一回，他倒幾乎失敗了。&lt;/p&gt;
-
-&lt;p&gt;這是未莊賽神的晚上。這晚上照例有一臺戲，戲臺左近，也照例有許多的賭攤。做戲的鑼鼓，在阿Ｑ耳朵裡彷彿在十裡之外；他只聽得樁家的歌唱了。他贏而又贏，銅錢變成角洋，角洋變成大洋，大洋又成了疊。他興高採烈得非常：&lt;/p&gt;
-
-&lt;p&gt;「天門兩塊！」&lt;/p&gt;
-
-&lt;p&gt;他不知道誰和誰為什麼打起架來了。罵聲打聲腳步聲，昏頭昏腦的一大陣，他才爬起來，賭攤不見了，人們也不見了，身上有幾處很似乎有些痛，似乎也挨了幾拳幾腳似的，幾個人詫異的對他看。他如有所失的走進土穀祠，定一定神，知道他的一堆洋錢不見了。趕賽會的賭攤多不是本村人，還到那裡去尋根柢呢？&lt;/p&gt;
-
-&lt;p&gt;很白很亮的一堆洋錢！而且是他的——現在不見了！說是算被兒子拿去了罷，總還是忽忽不樂；說自己是蟲豸罷，也還是忽忽不樂：他這回才有些感到失敗的苦痛了。&lt;/p&gt;
-
-&lt;p&gt;但他立刻轉敗為勝了。他擎起右手，用力的在自己臉上連打了兩個嘴巴，熱剌剌的有些痛；打完之後，便心平氣和起來，似乎打的是自己，被打的是別一個自己，不久也就彷彿是自己打了別個一般，——雖然還有些熱剌剌，——心滿意足的得勝的躺下了。&lt;/p&gt;
-
-&lt;p&gt;他睡著了。&lt;/p&gt;
-
-&lt;h2 id=&quot;第三章續優勝記略&quot;&gt;第三章　續優勝記略&lt;/h2&gt;
-
-&lt;p&gt;然而阿Ｑ雖然常優勝，卻直待蒙趙太爺打他嘴巴之後，這才出了名。&lt;/p&gt;
-
-&lt;p&gt;他付過地保二百文酒錢，憤憤的躺下了，後來想：「現在的世界太不成話，兒子打老子……」於是忽而想到趙太爺的威風，而現在是他的兒子了，便自己也漸漸的得意起來，爬起身，唱著《小孤孀上墳》到酒店去。這時候，他又覺得趙太爺高人一等了。&lt;/p&gt;
-
-&lt;p&gt;說也奇怪，從此之後，果然大家也彷彿格外尊敬他。這在阿Ｑ，或者以為因為他是趙太爺的父親，而其實也不然。未莊通例，倘如阿七打阿八，或者李四打張三，向來本不算口碑。一上口碑，則打的既有名，被打的也就托庇有了名。至於錯在阿Ｑ，那自然是不必說。所以者何？就因為趙太爺是不會錯的。但他既然錯，為什麼大家又彷彿格外尊敬他呢？這可難解，穿鑿起來說，或者因為阿Ｑ說是趙太爺的本家，雖然挨了打，大家也還怕有些真，總不如尊敬一些穩當。否則，也如孔廟裡的太牢一般，雖然與豬羊一樣，同是畜生，但既經聖人下箸，先儒們便不敢妄動了。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ此後倒得意了許多年。&lt;/p&gt;
-
-&lt;p&gt;有一年的春天，他醉醺醺的在街上走，在牆根的日光下，看見王胡在那裡赤著膊捉蝨子，他忽然覺得身上也癢起來了。這王胡，又癩又胡，別人都叫他王癩胡，阿Ｑ卻刪去了一個癩字，然而非常渺視他。阿Ｑ的意思，以為癩是不足為奇的，只有這一部絡腮鬍子，實在太新奇，令人看不上眼。他於是併排坐下去了。倘是別的閑人們，阿Ｑ本不敢大意坐下去。但這王胡旁邊，他有什麼怕呢？老實說：他肯坐下去，簡直還是抬舉他。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ也脫下破夾襖來，翻檢了一回，不知道因為新洗呢還是因為粗心，許多工夫，只捉到三四個。他看那王胡，卻是一個又一個，兩個又三個，只放在嘴裡畢畢剝剝的響。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ最初是失望，後來卻不平了：看不上眼的王胡尚且那麼多，自己倒反這樣少，這是怎樣的大失體統的事呵！他很想尋一兩個大的，然而竟沒有，好容易才捉到一個中的，恨恨的塞在厚嘴唇裡，狠命一咬，劈的一聲，又不及王胡的響。&lt;/p&gt;
-
-&lt;p&gt;他癩瘡疤塊塊通紅了，將衣服摔在地上，吐一口唾沫，說：&lt;/p&gt;
-
-&lt;p&gt;「這毛蟲！」&lt;/p&gt;
-
-&lt;p&gt;「癩皮狗，你罵誰？」王胡輕蔑的抬起眼來說。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ近來雖然比較的受人尊敬，自己也更高傲些，但和那些打慣的閑人們見面還膽怯，獨有這回卻非常武勇了。這樣滿臉鬍子的東西，也敢出言無狀麽？&lt;/p&gt;
-
-&lt;p&gt;「誰認便罵誰！」他站起來，兩手叉在腰間說。&lt;/p&gt;
-
-&lt;p&gt;「你的骨頭癢了麽？」王胡也站起來，披上衣服說。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ以為他要逃了，搶進去就是一拳。這拳頭還未達到身上，已經被他抓住了，只一拉，阿Ｑ蹌蹌踉踉的跌進去，立刻又被王胡扭住了辮子，要拉到牆上照例去碰頭。&lt;/p&gt;
-
-&lt;p&gt;「‘君子動口不動手’！」阿Ｑ歪著頭說。&lt;/p&gt;
-
-&lt;p&gt;王胡似乎不是君子，並不理會，一連給他碰了五下，又用力的一推，至於阿Ｑ跌出六尺多遠，這才滿足的去了。&lt;/p&gt;
-
-&lt;p&gt;在阿Ｑ的記憶上，這大約要算是生平第一件的屈辱，因為王胡以絡腮鬍子的缺點，向來只被他奚落，從沒有奚落他，更不必說動手了。而他現在竟動手，很意外，難道真如市上所說，皇帝已經停了，不要秀才和舉人了，因此趙家減了威風，因此他們也便小覷了他麽？&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ無可適從的站著。&lt;/p&gt;
-
-&lt;p&gt;遠遠的走來了一個人，他的對頭又到了。這也是阿Ｑ最厭惡的一個人，就是錢太爺的大兒子。他先前跑上城裡去進洋學堂，不知怎麼又跑到東洋去了，半年之後他回到家裡來，腿也直了，辮子也不見了，他的母親大哭了十幾場，他的老婆跳了三回井。後來，他的母親到處說，「這辮子是被壞人灌醉了酒剪去了。本來可以做大官，現在只好等留長再說了。」然而阿Ｑ不肯信，偏稱他「假洋鬼子」，也叫作「裡通外國的人」，一見他，一定在肚子裡暗暗的咒罵。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ尤其「深惡而痛絕之」的，是他的一條假辮子。辮子而至於假，就是沒有了做人的資格；他的老婆不跳第四回井，也不是好女人。&lt;/p&gt;
-
-&lt;p&gt;這「假洋鬼子」近來了。&lt;/p&gt;
-
-&lt;p&gt;「禿兒。驢……」阿Ｑ歷來本只在肚子裡罵，沒有出過聲，這回因為正氣忿，因為要報仇，便不由的輕輕的說出來了。&lt;/p&gt;
-
-&lt;p&gt;不料這禿兒卻拿著一支黃漆的棍子——就是阿Ｑ所謂哭喪棒——大蹋步走了過來。阿Ｑ在這剎那，便知道大約要打了，趕緊抽緊筋骨，聳了肩膀等候著，果然，拍的一聲，似乎確鑿打在自己頭上了。&lt;/p&gt;
-
-&lt;p&gt;「我說他！」阿Ｑ指著近旁的一個孩子，分辯說。&lt;/p&gt;
-
-&lt;p&gt;拍！拍拍！&lt;/p&gt;
-
-&lt;p&gt;在阿Ｑ的記憶上，這大約要算是生平第二件的屈辱。幸而拍拍的響了之後，於他倒似乎完結了一件事，反而覺得輕鬆些，而且「忘卻」這一件祖傳的寶貝也發生了效力，他慢慢的走，將到酒店門口，早已有些高興了。&lt;/p&gt;
-
-&lt;p&gt;但對面走來了靜修庵裡的小尼姑。阿Ｑ便在平時，看見伊也一定要唾罵，而況在屈辱之後呢？他於是發生了回憶，又發生了敵愾了。&lt;/p&gt;
-
-&lt;p&gt;「我不知道我今天為什麼這樣晦氣，原來就因為見了你！」他想。&lt;/p&gt;
-
-&lt;p&gt;他迎上去，大聲的吐一口唾沫：&lt;/p&gt;
-
-&lt;p&gt;「咳，呸！」&lt;/p&gt;
-
-&lt;p&gt;小尼姑全不睬，低了頭只是走。阿Ｑ走近伊身旁，突然伸出手去摩著伊新剃的頭皮，呆笑著，說：&lt;/p&gt;
-
-&lt;p&gt;「禿兒！快回去，和尚等著你……」&lt;/p&gt;
-
-&lt;p&gt;「你怎麼動手動腳……」尼姑滿臉通紅的說，一面趕快走。&lt;/p&gt;
-
-&lt;p&gt;酒店裡的人大笑了。阿Ｑ看見自己的勛業得了賞識，便愈加興高採烈起來：&lt;/p&gt;
-
-&lt;p&gt;「和尚動得，我動不得？」他扭住伊的面頰。&lt;/p&gt;
-
-&lt;p&gt;酒店裡的人大笑了。阿Ｑ更得意，而且為了滿足那些賞鑒家起見，再用力的一擰，才放手。&lt;/p&gt;
-
-&lt;p&gt;他這一戰，早忘卻了王胡，也忘卻了假洋鬼子，似乎對於今天的一切「晦氣」都報了仇；而且奇怪，又彷彿全身比拍拍的響了之後輕鬆，飄飄然的似乎要飛去了。&lt;/p&gt;
-
-&lt;p&gt;「這斷子絕孫的阿Ｑ！」遠遠地聽得小尼姑的帶哭的聲音。&lt;/p&gt;
-
-&lt;p&gt;「哈哈哈！」阿Ｑ十分得意的笑。&lt;/p&gt;
-
-&lt;p&gt;「哈哈哈！」酒店裡的人也九分得意的笑。&lt;/p&gt;
-
-&lt;p&gt;第四章　戀愛的悲劇[編輯]
-有人說：有些勝利者，願意敵手如虎，如鷹，他才感得勝利的歡喜；假使如羊，如小雞，他便反覺得勝利的無聊。又有些勝利者，當剋服一切之後，看見死的死了，降的降了，「臣誠惶誠恐死罪死罪」，他於是沒有了敵人，沒有了對手，沒有了朋友，只有自己在上，一個，孤另另，淒涼，寂寞，便反而感到了勝利的悲哀。然而我們的阿Ｑ卻沒有這樣乏，他是永遠得意的：這或者也是中國精神文明冠於全球的一個證據了。&lt;/p&gt;
-
-&lt;p&gt;看那，他飄飄然的似乎要飛去了！&lt;/p&gt;
-
-&lt;p&gt;然而這一次的勝利，卻又使他有些異樣。他飄飄然的飛了大半天，飄進土穀祠，照例應該躺下便打鼾。誰知道這一晚，他很不容易合眼，他覺得自己的大拇指和第二指有點古怪：彷彿比平常滑膩些。不知道是小尼姑的臉上有一點滑膩的東西粘在他指上，還是他的指頭在小尼姑臉上磨得滑膩了？……&lt;/p&gt;
-
-&lt;p&gt;「斷子絕孫的阿Ｑ！」&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ的耳朵裡又聽到這句話。他想：不錯，應該有一個女人，斷子絕孫便沒有人供一碗飯，……應該有一個女人。夫「不孝有三無後為大」，而「若敖之鬼餒而」，也是一件人生的大哀，所以他那思想，其實是樣樣合於聖經賢傳的，只可惜後來有些「不能收其放心」了。&lt;/p&gt;
-
-&lt;p&gt;「女人，女人！……」他想。&lt;/p&gt;
-
-&lt;p&gt;「……和尚動得……女人，女人！……女人！」他又想。&lt;/p&gt;
-
-&lt;p&gt;我們不能知道這晚上阿Ｑ在什麼時候才打鼾。但大約他從此總覺得指頭有些滑膩，所以他從此總有些飄飄然；「女……」他想。&lt;/p&gt;
-
-&lt;p&gt;即此一端，我們便可以知道女人是害人的東西。&lt;/p&gt;
-
-&lt;p&gt;中國的男人，本來大半都可以做聖賢，可惜全被女人毀掉了。商是妲己鬧亡的；周是褒姒弄壞的；秦……雖然史無明文，我們也假定他因為女人，大約未必十分錯；而董卓可是的確給貂蟬害死了。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ本來也是正人，我們雖然不知道他曾蒙什麼明師指授過，但他對於「男女之大防」卻歷來非常嚴；也很有排斥異端——如小尼姑及假洋鬼子之類——的正氣。他的學說是：凡尼姑，一定與和尚私通；一個女人在外面走，一定想引誘野男人；一男一女在那裡講話，一定要有勾當了。為懲治他們起見，所以他往往怒目而視，或者大聲說幾句「誅心」話，或者在冷僻處，便從後面擲一塊小石頭。&lt;/p&gt;
-
-&lt;p&gt;誰知道他將到「而立」之年，竟被小尼姑害得飄飄然了。這飄飄然的精神，在禮教上是不應該有的，——所以女人真可惡，假使小尼姑的臉上不滑膩，阿Ｑ便不至於被蠱，又假使小尼姑的臉上蓋一層布，阿Ｑ便也不至於被蠱了，——他五六年前，曾在戲臺下的人叢中擰過一個女人的大腿，但因為隔一層褲，所以此後並不飄飄然，——而小尼姑並不然，這也足見異端之可惡。&lt;/p&gt;
-
-&lt;p&gt;「女……」阿Ｑ想。&lt;/p&gt;
-
-&lt;p&gt;他對於以為「一定想引誘野男人」的女人，時常留心看，然而伊並不對他笑。他對於和他講話的女人，也時常留心聽，然而伊又並不提起關於什麼勾當的話來。哦，這也是女人可惡之一節：伊們全都要裝「假正經」的。&lt;/p&gt;
-
-&lt;p&gt;這一天，阿Ｑ在趙太爺家裡舂了一天米，吃過晚飯，便坐在廚房裡吸旱煙。倘在別家，吃過晚飯本可以回去的了，但趙府上晚飯早，雖說定例不准掌燈，一吃完便睡覺，然而偶然也有一些例外：其一，是趙大爺未進秀才的時候，准其點燈讀文章；其二，便是阿Ｑ來做短工的時候，准其點燈舂米。因為這一條例外，所以阿Ｑ在動手舂米之前，還坐在廚房裡吸旱煙。&lt;/p&gt;
-
-&lt;p&gt;吳媽，是趙太爺家裡唯一的女僕，洗完了碗碟，也就在長凳上坐下了，而且和阿Ｑ談閑天：&lt;/p&gt;
-
-&lt;p&gt;「太太兩天沒有吃飯哩，因為老爺要買一個小的……」&lt;/p&gt;
-
-&lt;p&gt;「女人……吳媽……這小孤孀……」阿Ｑ想。&lt;/p&gt;
-
-&lt;p&gt;「我們的少奶奶是八月裡要生孩子了……」&lt;/p&gt;
-
-&lt;p&gt;「女人……」阿Ｑ想。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ放下煙管，站了起來。&lt;/p&gt;
-
-&lt;p&gt;「我們的少奶奶……」吳媽還嘮叨說。&lt;/p&gt;
-
-&lt;p&gt;「我和你困覺，我和你困覺！」阿Ｑ忽然搶上去，對伊跪下了。&lt;/p&gt;
-
-&lt;p&gt;一剎時中很寂然。&lt;/p&gt;
-
-&lt;p&gt;「阿呀！」吳媽楞了一息，突然發抖，大叫著往外跑，且跑且嚷，似乎後來帶哭了。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ對了牆壁跪著也發楞，於是兩手扶著空板凳，慢慢的站起來，彷彿覺得有些糟。他這時確也有些忐忑了，慌張的將煙管插在褲帶上，就想去舂米。蓬的一聲，頭上著了很粗的一下，他急忙迴轉身去，那秀才便拿了一支大竹槓站在他面前。&lt;/p&gt;
-
-&lt;p&gt;「你反了，……你這……」&lt;/p&gt;
-
-&lt;p&gt;大竹槓又向他劈下來了。阿Ｑ兩手去抱頭，拍的正打在指節上，這可很有些痛。他衝出廚房門，彷彿背上又著了一下似的。&lt;/p&gt;
-
-&lt;p&gt;「忘八蛋！」秀才在後面用了官話這樣罵。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ奔入舂米場，一個人站著，還覺得指頭痛，還記得「忘八蛋」，因為這話是未莊的鄉下人從來不用，專是見過官府的闊人用的，所以格外怕，而印象也格外深。但這時，他那「女……」的思想卻也沒有了。而且打罵之後，似乎一件事也已經收束，倒反覺得一無掛礙似的，便動手去舂米。舂了一會，他熱起來了，又歇了手脫衣服。&lt;/p&gt;
-
-&lt;p&gt;脫下衣服的時候，他聽得外面很熱鬧，阿Ｑ生平本來最愛看熱鬧，便即尋聲走出去了。尋聲漸漸的尋到趙太爺的內院裡，雖然在昏黃中，卻辨得出許多人，趙府一家連兩日不吃飯的太太也在內，還有間壁的鄒七嫂，真正本家的趙白眼，趙司晨。&lt;/p&gt;
-
-&lt;p&gt;少奶奶正拖著吳媽走出下房來，一面說：&lt;/p&gt;
-
-&lt;p&gt;「你到外面來，……不要躲在自己房裡想……」&lt;/p&gt;
-
-&lt;p&gt;「誰不知道你正經，……短見是萬萬尋不得的。」鄒七嫂也從旁說。&lt;/p&gt;
-
-&lt;p&gt;吳媽只是哭，夾些話，卻不甚聽得分明。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ想：「哼，有趣，這小孤孀不知道鬧著什麼玩意兒了？」他想打聽，走近趙司晨的身邊。這時他猛然間看見趙大爺向他奔來，而且手裡捏著一支大竹槓。他看見這一支大竹槓，便猛然間悟到自己曾經被打，和這一場熱鬧似乎有點相關。他翻身便走，想逃回舂米場，不圖這支竹槓阻了他的去路，於是他又翻身便走，自然而然的走出後門，不多工夫，已在土穀祠內了。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ坐了一會，皮膚有些起粟，他覺得冷了，因為雖在春季，而夜間頗有餘寒，尚不宜於赤膊。他也記得布衫留在趙家，但倘若去取，又深怕秀才的竹槓。然而地保進來了。&lt;/p&gt;
-
-&lt;p&gt;「阿Ｑ，你的媽媽的！你連趙家的用人都調戲起來，簡直是造反。害得我晚上沒有覺睡，你的媽媽的！……」&lt;/p&gt;
-
-&lt;p&gt;如是雲雲的教訓了一通，阿Ｑ自然沒有話。臨末，因為在晚上，應該送地保加倍酒錢四百文，阿Ｑ正沒有現錢，便用一頂氈帽做抵押，並且訂定了五條件：&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;一　明天用紅燭——要一斤重的——一對，香一封，到趙府上去賠罪。
-&lt;br /&gt;二　趙府上請道士祓除縊鬼，費用由阿Ｑ負擔。
-&lt;br /&gt;三　阿Ｑ從此不准踏進趙府的門檻。
-&lt;br /&gt;四　吳媽此後倘有不測，惟阿Ｑ是問。
-&lt;br /&gt;五　阿Ｑ不准再去索取工錢和布衫。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;阿Ｑ自然都答應了，可惜沒有錢。幸而已經春天，棉被可以無用，便質了二千大錢，履行條約。赤膊磕頭之後，居然還剩幾文，他也不再贖氈帽，統統喝了酒了。但趙家也並不燒香點燭，因為太太拜佛的時候可以用，留著了。那破布衫是大半做了少奶奶八月間生下來的孩子的襯尿布，那小半破爛的便都做了吳媽的鞋底。&lt;/p&gt;
-
-&lt;h2 id=&quot;第五章生計問題&quot;&gt;第五章　生計問題&lt;/h2&gt;
-
-&lt;p&gt;阿Ｑ禮畢之後，仍舊回到土穀祠，太陽下去了，漸漸覺得世上有些古怪。他仔細一想，終於省悟過來：其原因蓋在自己的赤膊。他記得破夾襖還在，便披在身上，躺倒了，待張開眼睛，原來太陽又已經照在西牆上頭了。他坐起身，一面說道，「媽媽的……」&lt;/p&gt;
-
-&lt;p&gt;他起來之後，也仍舊在街上逛，雖然不比赤膊之有切膚之痛，卻又漸漸的覺得世上有些古怪了。彷彿從這一天起，未莊的女人們忽然都怕了羞，伊們一見阿Ｑ走來，便個個躲進門裡去。甚而至於將近五十歲的鄒七嫂，也跟著別人亂鑽，而且將十一歲的女兒都叫進去了。阿Ｑ很以為奇，而且想：「這些東西忽然都學起小姐模樣來了。這娼婦們……」&lt;/p&gt;
-
-&lt;p&gt;但他更覺得世上有些古怪，卻是許多日以後的事。其一，酒店不肯賒欠了；其二，管土穀祠的老頭子說些廢話，似乎叫他走；其三，他雖然記不清多少日，但確乎有許多日，沒有一個人來叫他做短工。酒店不賒，熬著也罷了；老頭子催他走，嚕囌一通也就算了；只是沒有人來叫他做短工，卻使阿Ｑ肚子餓：這委實是一件非常「媽媽的」的事情。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ忍不下去了，他只好到老主顧的家裡去探問，——但獨不許踏進趙府的門檻，——然而情形也異樣：一定走出一個男人來，現了十分煩厭的相貌，像回覆乞丐一般的搖手道：&lt;/p&gt;
-
-&lt;p&gt;「沒有沒有！你出去！」&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ愈覺得稀奇了。他想，這些人家向來少不了要幫忙，不至於現在忽然都無事，這總該有些蹊蹺在裡面了。他留心打聽，才知道他們有事都去叫小Ｄｏｎ。這小Ｄ，是一個窮小子，又瘦又乏，在阿Ｑ的眼睛裡，位置是在王胡之下的，誰料這小子竟謀了他的飯碗去。所以阿Ｑ這一氣，更與平常不同，當氣憤憤的走著的時候，忽然將手一揚，唱道：&lt;/p&gt;
-
-&lt;p&gt;「我手執鋼鞭將你打！……」&lt;/p&gt;
-
-&lt;p&gt;幾天之後，他竟在錢府的照壁前遇見了小Ｄ。「仇人相見分外眼明」，阿Ｑ便迎上去，小Ｄ也站住了。&lt;/p&gt;
-
-&lt;p&gt;「畜生！」阿Ｑ怒目而視的說，嘴角上飛出唾沫來。&lt;/p&gt;
-
-&lt;p&gt;「我是蟲豸，好麽？……」小Ｄ說。&lt;/p&gt;
-
-&lt;p&gt;這謙遜反使阿Ｑ更加憤怒起來，但他手裡沒有鋼鞭，於是只得撲上去，伸手去拔小Ｄ的辮子。小Ｄ一手護住了自己的辮根，一手也來拔阿Ｑ的辮子，阿Ｑ便也將空著的一隻手護住了自己的辮根。從先前的阿Ｑ看來，，小Ｄ本來是不足齒數的，但他近來挨了餓，又瘦又乏已經不下於小Ｄ，所以便成了勢均力敵的現象，四隻手拔著兩顆頭，都彎了腰，在錢家粉牆上映出一個藍色的虹形，至於半點鐘之久了。&lt;/p&gt;
-
-&lt;p&gt;「好了，好了！」看的人們說，大約是解勸的。&lt;/p&gt;
-
-&lt;p&gt;「好，好！」看的人們說，不知道是解勸，是頌揚，還是煽動。&lt;/p&gt;
-
-&lt;p&gt;然而他們都不聽。阿Ｑ進三步，小Ｄ便退三步，都站著；小Ｄ進三步，阿Ｑ便退三步，又都站著。大約半點鐘，——未莊少有自鳴鐘，所以很難說，或者二十分，——他們的頭髮裡便都冒煙，額上便都流汗，阿Ｑ的手放鬆了，在同一瞬間，小Ｄ的手也正放鬆了，同時直起，同時退開，都擠出人叢去。&lt;/p&gt;
-
-&lt;p&gt;「記著罷，媽媽的……」阿Ｑ回過頭去說。&lt;/p&gt;
-
-&lt;p&gt;「媽媽的，記著罷……」小Ｄ也回過頭來說。&lt;/p&gt;
-
-&lt;p&gt;這一場「龍虎鬥」似乎並無勝敗，也不知道看的人可滿足，都沒有發什麼議論，而阿Ｑ卻仍然沒有人來叫他做短工。&lt;/p&gt;
-
-&lt;p&gt;有一日很溫和，微風拂拂的頗有些夏意了，阿Ｑ卻覺得寒冷起來，但這還可擔當，第一倒是肚子餓。棉被，氈帽，布衫，早已沒有了，其次就賣了棉襖；現在有褲子，卻萬不可脫的；有破夾襖，又除了送人做鞋底之外，決定賣不出錢。他早想在路上拾得一註錢，但至今還沒有見；他想在自己的破屋裡忽然尋到一註錢，慌張的四顧，但屋內是空虛而且瞭然。於是他決計出門求食去了。&lt;/p&gt;
-
-&lt;p&gt;他在路上走著要「求食」，看見熟識的酒店，看見熟識的饅頭，但他都走過了，不但沒有暫停，而且並不想要。他所求的不是這類東西了；他求的是什麼東西，他自己不知道。&lt;/p&gt;
-
-&lt;p&gt;未莊本不是大村鎮，不多時便走盡了。村外多是水田，滿眼是新秧的嫩綠，夾著幾個圓形的活動的黑點，便是耕田的農夫。阿Ｑ並不賞鑒這田家樂，卻只是走，因為他直覺的知道這與他的「求食」之道是很遼遠的。但他終於走到靜修庵的牆外了。&lt;/p&gt;
-
-&lt;p&gt;庵周圍也是水田，粉牆突出在新綠裡，後面的低土牆裡是菜園。阿Ｑ遲疑了一會，四面一看，並沒有人。他便爬上這矮牆去，扯著何首烏藤，但泥土仍然簌簌的掉，阿Ｑ的腳也索索的抖；終於攀著桑樹枝，跳到裡面了。裡面真是鬱鬱蔥蔥，但似乎並沒有黃酒饅頭，以及此外可吃的之類。靠西牆是竹叢，下麵許多筍，只可惜都是並未煮熟的，還有油菜早經結子，芥菜已將開花，小白菜也很老了。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ彷彿文童落第似的覺得很冤屈，他慢慢走近園門去，忽而非常驚喜了，這分明是一畦老蘿蔔。他於是蹲下便拔，而門口突然伸出一個很圓的頭來，又即縮回去了，這分明是小尼姑。小尼姑之流是阿Ｑ本來視若草芥的，但世事須「退一步想」，所以他便趕緊拔起四個蘿蔔，擰下青葉，兜在大襟裡。然而老尼姑已經出來了。&lt;/p&gt;
-
-&lt;p&gt;「阿彌陀佛，阿Ｑ，你怎麼跳進園裡來偷蘿蔔！……阿呀，罪過呵，阿唷，阿彌陀佛！……」&lt;/p&gt;
-
-&lt;p&gt;「我什麼時候跳進你的園裡來偷蘿蔔？」阿Ｑ且看且走的說。&lt;/p&gt;
-
-&lt;p&gt;「現在……這不是？」老尼姑指著他的衣兜。&lt;/p&gt;
-
-&lt;p&gt;「這是你的？你能叫得他答應你麽？你……」&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ沒有說完話，拔步便跑；追來的是一匹很肥大的黑狗。這本來在前門的，不知怎的到後園來了。黑狗哼而且追，已經要咬著阿Ｑ的腿，幸而從衣兜裡落下一個蘿蔔來，那狗給一嚇，略略一停，阿Ｑ已經爬上桑樹，跨到土牆，連人和蘿蔔都滾出牆外面了。只剩著黑狗還在對著桑樹嗥，老尼姑念著佛。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ怕尼姑又放出黑狗來，拾起蘿蔔便走，沿路又撿了幾塊小石頭，但黑狗卻並不再現。阿Ｑ於是拋了石塊，一面走一面吃，而且想道，這裡也沒有什麼東西尋，不如進城去……&lt;/p&gt;
-
-&lt;p&gt;待三個蘿蔔吃完時，他已經打定了進城的主意了。&lt;/p&gt;
-
-&lt;h2 id=&quot;第六章從中興到末路&quot;&gt;第六章　從中興到末路&lt;/h2&gt;
-
-&lt;p&gt;在未莊再看見阿Ｑ出現的時候，是剛過了這年的中秋。人們都驚異，說是阿Ｑ回來了，於是又回上去想道，他先前那裡去了呢？阿Ｑ前幾回的上城，大抵早就興高採烈的對人說，但這一次卻並不，所以也沒有一個人留心到。他或者也曾告訴過管土穀祠的老頭子，然而未莊老例，只有趙太爺錢太爺和秀才大爺上城才算一件事。假洋鬼子尚且不足數，何況是阿Ｑ：因此老頭子也就不替他宣傳，而未莊的社會上也就無從知道了。&lt;/p&gt;
-
-&lt;p&gt;但阿Ｑ這回的回來，卻與先前大不同，確乎很值得驚異。天色將黑，他睡眼蒙朧的在酒店門前出現了，他走近櫃臺，從腰間伸出手來，滿把是銀的和銅的，在櫃上一扔說，「現錢！打酒來！」穿的是新夾襖，看去腰間還掛著一個大搭連，沈鈿鈿的將褲帶墜成了很彎很彎的弧線。未莊老例，看見略有些醒目的人物，是與其慢也寧敬的，現在雖然明知道是阿Ｑ，但因為和破夾襖的阿Ｑ有些兩樣了，古人雲，「士別三日便當刮目相待」，所以堂倌，掌櫃，酒客，路人，便自然顯出一種凝而且敬的形態來。掌櫃既先之以點頭，又繼之以談話：&lt;/p&gt;
-
-&lt;p&gt;「豁，阿Ｑ，你回來了！」&lt;/p&gt;
-
-&lt;p&gt;「回來了。」&lt;/p&gt;
-
-&lt;p&gt;「發財發財，你是——在……」&lt;/p&gt;
-
-&lt;p&gt;「上城去了！」&lt;/p&gt;
-
-&lt;p&gt;這一件新聞，第二天便傳遍了全未莊。人人都願意知道現錢和新夾襖的阿Ｑ的中興史，所以在酒店裡，茶館裡，廟簷下，便漸漸的探聽出來了。這結果，是阿Ｑ得了新敬畏。&lt;/p&gt;
-
-&lt;p&gt;據阿Ｑ說，他是在舉人老爺家裡幫忙。這一節，聽的人都肅然了。這老爺本姓白，但因為合城裡只有他一個舉人，所以不必再冠姓，說起舉人來就是他。這也不獨在未莊是如此，便是一百里方圓之內也都如此，人們幾乎多以為他的姓名就叫舉人老爺的了。在這人的府上幫忙，那當然是可敬的。但據阿Ｑ又說，他卻不高興再幫忙了，因為這舉人老爺實在太「媽媽的」了。這一節，聽的人都嘆息而且快意，因為阿Ｑ本不配在舉人老爺家裡幫忙，而不幫忙是可惜的。&lt;/p&gt;
-
-&lt;p&gt;據阿Ｑ說，他的回來，似乎也由於不滿意城裡人，這就在他們將長凳稱為條凳，而且煎魚用蔥絲，加以最近觀察所得的缺點，是女人的走路也扭得不很好。然而也偶有大可佩服的地方，即如未莊的鄉下人不過打三十二張的竹牌，只有假洋鬼子能夠叉「麻醬」，城裡卻連小烏龜子都叉得精熟的。什麼假洋鬼子，只要放在城裡的十幾歲的小烏龜子的手裡，也就立刻是「小鬼見閻王」。這一節，聽的人都赧然了。&lt;/p&gt;
-
-&lt;p&gt;「你們可看見過殺頭麽？」阿Ｑ說，「咳，好看。殺革命黨。唉，好看好看，……」他搖搖頭，將唾沫飛在正對面的趙司晨的臉上。這一節，聽的人都凜然了。但阿Ｑ又四面一看，忽然揚起右手，照著伸長脖子聽得出神的王胡的後項窩上直劈下去道：&lt;/p&gt;
-
-&lt;p&gt;「嚓！」&lt;/p&gt;
-
-&lt;p&gt;王胡驚得一跳，同時電光石火似的趕快縮了頭，而聽的人又都悚然而且欣然了。從此王胡瘟頭瘟腦的許多日，並且再不敢走近阿Ｑ的身邊；別的人也一樣。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ這時在未莊人眼睛裡的地位，雖不敢說超過趙太爺，但謂之差不多，大約也就沒有什麼語病的了。&lt;/p&gt;
-
-&lt;p&gt;然而不多久，這阿Ｑ的大名忽又傳遍了未莊的閨中。雖然未莊只有錢趙兩姓是大屋，此外十之九都是淺閨，但閨中究竟是閨中，所以也算得一件神異。女人們見面時一定說，鄒七嫂在阿Ｑ那裡買了一條藍綢裙，舊固然是舊的，但只化了九角錢。還有趙白眼的母親，——一說是趙司晨的母親，待考，——也買了一件孩子穿的大紅洋紗衫，七成新，只用三百大錢九二串。於是伊們都眼巴巴的想見阿Ｑ，缺綢裙的想問他買綢裙，要洋紗衫的想問他買洋紗衫，不但見了不逃避，有時阿Ｑ已經走過了，也還要追上去叫住他，問道：&lt;/p&gt;
-
-&lt;p&gt;「阿Ｑ，你還有綢裙麽？沒有？紗衫也要的，有罷？」&lt;/p&gt;
-
-&lt;p&gt;後來這終於從淺閨傳進深閨裡去了。因為鄒七嫂得意之餘，將伊的綢裙請趙太太去鑒賞，趙太太又告訴了趙太爺而且著實恭維了一番。趙太爺便在晚飯桌上，和秀才大爺討論，以為阿Ｑ實在有些古怪，我們門窗應該小心些；但他的東西，不知道可還有什麼可買，也許有點好東西罷。加以趙太太也正想買一件價廉物美的皮背心。於是家族決議，便托鄒七嫂即刻去尋阿Ｑ，而且為此新闢了第三種的例外：這晚上也姑且特准點油燈。&lt;/p&gt;
-
-&lt;p&gt;油燈幹了不少了，阿Ｑ還不到。趙府的全眷都很焦急，打著呵欠，或恨阿Ｑ太飄忽，或怨鄒七嫂不上緊。趙太太還怕他因為春天的條件不敢來，而趙太爺以為不足慮：因為這是「我」去叫他的。果然，到底趙太爺有見識，阿Ｑ終於跟著鄒七嫂進來了。&lt;/p&gt;
-
-&lt;p&gt;「他只說沒有沒有，我說你自己當面說去，他還要說，我說……」鄒七嫂氣喘吁吁的走著說。&lt;/p&gt;
-
-&lt;p&gt;「太爺！」阿Ｑ似笑非笑的叫了一聲，在簷下站住了。&lt;/p&gt;
-
-&lt;p&gt;「阿Ｑ，聽說你在外面發財，」趙太爺踱開去，眼睛打量著他的全身，一面說。「那很好，那很好的。這個，……聽說你有些舊東西，……可以都拿來看一看，……這也並不是別的，因為我倒要……」&lt;/p&gt;
-
-&lt;p&gt;「我對鄒七嫂說過了。都完了。」&lt;/p&gt;
-
-&lt;p&gt;「完了？」趙太爺不覺失聲的說，「那裡會完得這樣快呢？」&lt;/p&gt;
-
-&lt;p&gt;「那是朋友的，本來不多。他們買了些，……」&lt;/p&gt;
-
-&lt;p&gt;「總該還有一點罷。」&lt;/p&gt;
-
-&lt;p&gt;「現在，只剩了一張門幕了。」&lt;/p&gt;
-
-&lt;p&gt;「就拿門幕來看看罷。」趙太太慌忙說。&lt;/p&gt;
-
-&lt;p&gt;「那麼，明天拿來就是，」趙太爺卻不甚熱心了。「阿Ｑ，你以後有什麼東西的時候，你儘先送來給我們看，……」&lt;/p&gt;
-
-&lt;p&gt;「價錢決不會比別家出得少！」秀才說。秀才娘子忙一瞥阿Ｑ的臉，看他感動了沒有。&lt;/p&gt;
-
-&lt;p&gt;「我要一件皮背心。」趙太太說。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ雖然答應著，卻懶洋洋的出去了，也不知道他是否放在心上。這使趙太爺很失望，氣憤而且擔心，至於停止了打呵欠。秀才對於阿Ｑ的態度也很不平，於是說，這忘八蛋要提防，或者不如吩咐地保，不許他住在未莊。但趙太爺以為不然，說這也怕要結怨，況且做這路生意的大概是「老鷹不吃窩下食」，本村倒不必擔心的；只要自己夜裡警醒點就是了。秀才聽了這「庭訓」，非常之以為然，便即刻撤銷了驅逐阿Ｑ的提議，而且叮囑鄒七嫂，請伊千萬不要向人提起這一段話。&lt;/p&gt;
-
-&lt;p&gt;但第二日，鄒七嫂便將那藍裙去染了皂，又將阿Ｑ可疑之點傳揚出去了，可是確沒有提起秀才要驅逐他這一節。然而這已經於阿Ｑ很不利。最先，地保尋上門了，取了他的門幕去，阿Ｑ說是趙太太要看的，而地保也不還並且要議定每月的孝敬錢。其次，是村人對於他的敬畏忽而變相了，雖然還不敢來放肆，卻很有遠避的神情，而這神情和先前的防他來「嚓」的時候又不同，頗混著「敬而遠之」的分子了。&lt;/p&gt;
-
-&lt;p&gt;只有一班閑人們卻還要尋根究底的去探阿Ｑ的底細。阿Ｑ也並不諱飾，傲然的說出他的經驗來。從此他們才知道，他不過是一個小腳色，不但不能上牆，並且不能進洞，只站在洞外接東西。有一夜，他剛纔接到一個包，正手再進去，不一會，只聽得裡面大嚷起來，他便趕緊跑，連夜爬出城，逃回未莊來了，從此不敢再去做。然而這故事卻於阿Ｑ更不利，村人對於阿Ｑ的「敬而遠之」者，本因為怕結怨，誰料他不過是一個不敢再偷的偷兒呢？這實在是「斯亦不足畏也矣」。&lt;/p&gt;
-
-&lt;h2 id=&quot;第七章革命&quot;&gt;第七章　革命&lt;/h2&gt;
-
-&lt;p&gt;宣統三年九月十四日——即阿Ｑ將搭連賣給趙白眼的這一天——三更四點，有一隻大烏篷船到了趙府上的河埠頭。這船從黑魆魆中盪來，鄉下人睡得熟，都沒有知道；出去時將近黎明，卻很有幾個看見的了。據探頭探腦的調查來的結果，知道那竟是舉人老爺的船！&lt;/p&gt;
-
-&lt;p&gt;那船便將大不安載給了未莊，不到正午，全村的人心就很動搖。船的使命，趙家本來是很秘密的，但茶坊酒肆裡卻都說，革命黨要進城，舉人老爺到我們鄉下來逃難了。惟有鄒七嫂不以為然，說那不過是幾口破衣箱，舉人老爺想來寄存的，卻已被趙太爺回覆轉去。其實舉人老爺和趙秀才素不相能，在理本不能有「共患難」的情誼，況且鄒七嫂又和趙家是鄰居，見聞較為切近，所以大概該是伊對的。&lt;/p&gt;
-
-&lt;p&gt;然而謠言很旺盛，說舉人老爺雖然似乎沒有親到，卻有一封長信，和趙家排了「轉折親」。趙太爺肚裡一輪，覺得於他總不會有壞處，便將箱子留下了，現就塞在太太的床底下。至於革命黨，有的說是便在這一夜進了城，個個白盔白甲：穿著崇正皇帝的素。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ的耳朵裡，本來早聽到過革命黨這一句話，今年又親眼見過殺掉革命黨。但他有一種不知從那裡來的意見，以為革命黨便是造反，造反便是與他為難，所以一向是「深惡而痛絕之」的。殊不料這卻使百裡聞名的舉人老爺有這樣怕，於是他未免也有些「神往」了，況且未莊的一群鳥男女的慌張的神情，也使阿Ｑ更快意。&lt;/p&gt;
-
-&lt;p&gt;「革命也好罷，」阿Ｑ想，「革這夥媽媽的的命，太可惡！太可恨！……便是我，也要投降革命黨了。」&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ近來用度窘，大約略略有些不平；加以午間喝了兩碗空肚酒，愈加醉得快，一面想一面走，便又飄飄然起來。不知怎麼一來，忽而似乎革命黨便是自己，未莊人卻都是他的俘虜了。他得意之餘，禁不住大聲的嚷道：&lt;/p&gt;
-
-&lt;p&gt;「造反了！造反了！」&lt;/p&gt;
-
-&lt;p&gt;未莊人都用了驚懼的眼光對他看。這一種可憐的眼光，是阿Ｑ從來沒有見過的，一見之下，又使他舒服得如六月裡喝了雪水。他更加高興的走而且喊道：&lt;/p&gt;
-
-&lt;p&gt;「好，……我要什麼就是什麼，我歡喜誰就是誰。得得，鏘鏘！悔不該，酒醉錯斬了鄭賢弟，悔不該，呀呀呀……得得，鏘鏘，得，鏘令鏘！我手執鋼鞭將你打……」&lt;/p&gt;
-
-&lt;p&gt;趙府上的兩位男人和兩個真本家，也正站在大門口論革命。阿Ｑ沒有見，昂了頭直唱過去。&lt;/p&gt;
-
-&lt;p&gt;「得得，……」&lt;/p&gt;
-
-&lt;p&gt;「老Ｑ，」趙太爺怯怯的迎著低聲的叫。&lt;/p&gt;
-
-&lt;p&gt;「鏘鏘，」阿Ｑ料不到他的名字會和「老」字聯結起來，以為是一句別的話，與己無幹，只是唱。「得，鏘，鏘令鏘，鏘！」&lt;/p&gt;
-
-&lt;p&gt;「老Ｑ。」&lt;/p&gt;
-
-&lt;p&gt;「悔不該……」&lt;/p&gt;
-
-&lt;p&gt;「阿Ｑ！」秀才只得直呼其名了。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ這才站住，歪著頭問道，「什麼？」&lt;/p&gt;
-
-&lt;p&gt;「老Ｑ，……現在……」趙太爺卻又沒有話，「現在……發財麽？」&lt;/p&gt;
-
-&lt;p&gt;「發財？自然。要什麼就是什麼……」&lt;/p&gt;
-
-&lt;p&gt;「阿……Ｑ哥，像我們這樣窮朋友是不要緊的……」趙白眼惴惴的說，似乎想探革命黨的口風。&lt;/p&gt;
-
-&lt;p&gt;「窮朋友？你總比我有錢。」阿Ｑ說著自去了。&lt;/p&gt;
-
-&lt;p&gt;大家都憮然，沒有話。趙太爺父子回家，晚上商量到點燈。趙白眼回家，便從腰間扯下搭連來，交給他女人藏在箱底裡。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ飄飄然的飛了一通，回到土穀祠，酒已經醒透了。這晚上，管祠的老頭子也意外的和氣，請他喝茶；阿Ｑ便向他要了兩個餅，吃完之後，又要了一支點過的四兩燭和一個樹燭臺，點起來，獨自躺在自己的小屋裡。他說不出的新鮮而且高興，燭火像元夜似的閃閃的跳，他的思想也迸跳起來了：&lt;/p&gt;
-
-&lt;p&gt;「造反？有趣，……來了一陣白盔白甲的革命黨，都拿著板刀，鋼鞭，炸彈，洋炮，三尖兩刃刀，鉤鐮槍，走過土穀祠，叫道，‘阿Ｑ！同去同去！’於是一同去。……&lt;/p&gt;
-
-&lt;p&gt;「這時未莊的一夥鳥男女才好笑哩，跪下叫道，‘阿Ｑ，饒命！’誰聽他！第一個該死的是小Ｄ和趙太爺，還有秀才，還有假洋鬼子，……留幾條麽？王胡本來還可留，但也不要了。……&lt;/p&gt;
-
-&lt;p&gt;「東西，……直走進去打開箱子來：元寶，洋錢，洋紗衫，……秀才娘子的一張寧式床先搬到土穀祠，此外便擺了錢家的桌椅，——或者也就用趙家的罷。自己是不動手的了，叫小Ｄ來搬，要搬得快，搬得不快打嘴巴。……&lt;/p&gt;
-
-&lt;p&gt;「趙司晨的妹子真醜。鄒七嫂的女兒過幾年再說。假洋鬼子的老婆會和沒有辮子的男人睡覺，嚇，不是好東西！秀才的老婆是眼胞上有疤的。……吳媽長久不見了，不知道在那裡，——可惜腳太大。」&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ沒有想得十分停當，已經發了鼾聲，四兩燭還只點去了小半寸，紅焰焰的光照著他張開的嘴。&lt;/p&gt;
-
-&lt;p&gt;「荷荷！」阿Ｑ忽而大叫起來，抬了頭倉皇的四顧，待到看見四兩燭，卻又倒頭睡去了。&lt;/p&gt;
-
-&lt;p&gt;第二天他起得很遲，走出街上看時，樣樣都照舊。他也仍然肚餓，他想著，想不起什麼來；但他忽而似乎有了主意了，慢慢的跨開步，有意無意的走到靜修庵。&lt;/p&gt;
-
-&lt;p&gt;庵和春天時節一樣靜，白的牆壁和漆黑的門。他想了一想，前去打門，一隻狗在裡面叫。他急急拾了幾塊斷磚，再上去較為用力的打，打到黑門上生出許多麻點的時候，才聽得有人來開門。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ連忙捏好磚頭，擺開馬步，準備和黑狗來開戰。但庵門只開了一條縫，並無黑狗從中衝出，望進去只有一個老尼姑。&lt;/p&gt;
-
-&lt;p&gt;「你又來什麼事？」伊大吃一驚的說。&lt;/p&gt;
-
-&lt;p&gt;「革命了……你知道？……」阿Ｑ說得很含糊。&lt;/p&gt;
-
-&lt;p&gt;「革命革命，革過一革的，……你們要革得我們怎麼樣呢？」老尼姑兩眼通紅的說。&lt;/p&gt;
-
-&lt;p&gt;「什麼？……」阿Ｑ詫異了。&lt;/p&gt;
-
-&lt;p&gt;「你不知道，他們已經來革過了！」&lt;/p&gt;
-
-&lt;p&gt;「誰？……」阿Ｑ更其詫異了。&lt;/p&gt;
-
-&lt;p&gt;「那秀才和洋鬼子！」&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ很出意外，不由的一錯愕；老尼姑見他失了銳氣，便飛速的關了門，阿Ｑ再推時，牢不可開，再打時，沒有回答了。&lt;/p&gt;
-
-&lt;p&gt;那還是上午的事。趙秀才消息靈，一知道革命黨已在夜間進城，便將辮子盤在頂上，一早去拜訪那歷來也不相能的錢洋鬼子。這是「咸與維新」的時候了，所以他們便談得很投機，立刻成了情投意合的同志，也相約去革命。他們想而又想，才想出靜修庵裡有一塊「皇帝萬歲萬萬歲」的龍牌，是應該趕緊革掉的，於是又立刻同到庵裡去革命。因為老尼姑來阻擋，說了三句話，他們便將伊當作滿政府，在頭上很給了不少的棍子和栗鑿。尼姑待他們走後，定了神來檢點，龍牌固然已經碎在地上了，而且又不見了觀音娘娘座前的一個宣德爐。&lt;/p&gt;
-
-&lt;p&gt;這事阿Ｑ後來才知道。他頗悔自己睡著，但也深怪他們不來招呼他。他又退一步想道：&lt;/p&gt;
-
-&lt;p&gt;「難道他們還沒有知道我已經投降了革命黨麽？」&lt;/p&gt;
-
-&lt;h2 id=&quot;第八章不准革命&quot;&gt;第八章　不准革命&lt;/h2&gt;
-
-&lt;p&gt;未莊的人心日見其安靜了。據傳來的消息，知道革命黨雖然進了城，倒還沒有什麼大異樣。知縣大老爺還是原官，不過改稱了什麼，而且舉人老爺也做了什麼——這些名目，未莊人都說不明白——官，帶兵的也還是先前的老把總。只有一件可怕的事是另有幾個不好的革命黨夾在裡面搗亂，第二天便動手剪辮子，聽說那鄰村的航船七斤便著了道兒，弄得不像人樣子了。但這卻還不算大恐怖，因為未莊人本來少上城，即使偶有想進城的，也就立刻變了計，碰不著這危險。阿Ｑ本也想進城去尋他的老朋友，一得這消息，也只得作罷了。&lt;/p&gt;
-
-&lt;p&gt;但未莊也不能說是無改革。幾天之後，將辮子盤在頂上的逐漸增加起來了，早經說過，最先自然是茂才公，其次便是趙司晨和趙白眼，後來是阿Ｑ。倘在夏天，大家將辮子盤在頭頂上或者打一個結，本不算什麼稀奇事，但現在是暮秋，所以這「秋行夏令」的情形，在盤辮家不能不說是萬分的英斷，而在未莊也不能說無關於改革了。&lt;/p&gt;
-
-&lt;p&gt;趙司晨腦後空蕩盪的走來，看見的人大嚷說，&lt;/p&gt;
-
-&lt;p&gt;「豁，革命黨來了！」&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ聽到了很羨慕。他雖然早知道秀才盤辮的大新聞，但總沒有想到自己可以照樣做，現在看見趙司晨也如此，才有了學樣的意思，定下實行的決心。他用一支竹筷將辮子盤在頭頂上，遲疑多時，這才放膽的走去。&lt;/p&gt;
-
-&lt;p&gt;他在街上走，人也看他，然而不說什麼話，阿Ｑ當初很不快，後來便很不平。他近來很容易鬧脾氣了；其實他的生活，倒也並不比造反之前反艱難，人見他也客氣，店鋪也不說要現錢。而阿Ｑ總覺得自己太失意：既然革了命，不應該只是這樣的。況且有一回看見小Ｄ，愈使他氣破肚皮了。&lt;/p&gt;
-
-&lt;p&gt;小Ｄ也將辮子盤在頭頂上了，而且也居然用一支竹筷。阿Ｑ萬料不到他也敢這樣做，自己也決不准他這樣做！小Ｄ是什麼東西呢？他很想即刻揪住他，拗斷他的竹筷，放下他的辮子，並且批他幾個嘴巴，聊且懲罰他忘了生辰八字，也敢來做革命黨的罪。但他終於饒放了，單是怒目而視的吐一口唾沫道「呸！」&lt;/p&gt;
-
-&lt;p&gt;這幾日裡，進城去的只有一個假洋鬼子。趙秀才本也想靠著寄存箱子的淵源，親身去拜訪舉人老爺的，但因為有剪辮的危險，所以也中止了。他寫了一封「黃傘格」的信，托假洋鬼子帶上城，而且托他給自己紹介紹介，去進自由黨。假洋鬼子回來時，向秀才討還了四塊洋錢，秀才便有一塊銀桃子掛在大襟上了；未莊人都驚服，說這是柿油黨的頂子，抵得一個翰林；趙太爺因此也驟然大闊，遠過於他兒子初雋秀才的時候，所以目空一切，見了阿Ｑ，也就很有些不放在眼裡了。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ正在不平，又時時刻刻感著冷落，一聽得這銀桃子的傳說，他立即悟出自己之所以冷落的原因了：要革命，單說投降，是不行的；盤上辮子，也不行的；第一著仍然要和革命黨去結識。他生平所知道的革命黨只有兩個，城裡的一個早已「嚓」的殺掉了，現在只剩了一個假洋鬼子。他除卻趕緊去和假洋鬼子商量之外，再沒有別的道路了。&lt;/p&gt;
-
-&lt;p&gt;錢府的大門正開著，阿Ｑ便怯怯的躄進去。他一到裡面，很吃了驚，只見假洋鬼子正站在院子的中央，一身烏黑的大約是洋衣，身上也掛著一塊銀桃子，手裡是阿Ｑ曾經領教過的棍子，已經留到一尺多長的辮子都拆開了披在肩背上，蓬頭散髮的像一個劉海仙。對面挺直的站著趙白眼和三個閑人，正在必恭必敬的聽說話。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ輕輕的走近了，站在趙白眼的背後，心裡想招呼，卻不知道怎麼說才好：叫他假洋鬼子固然是不行的了，洋人也不妥，革命黨也不妥，或者就應該叫洋先生了罷。&lt;/p&gt;
-
-&lt;p&gt;洋先生卻沒有見他，因為白著眼睛講得正起勁：&lt;/p&gt;
-
-&lt;p&gt;「我是性急的，所以我們見面，我總是說：洪哥！我們動手罷！他卻總說道Ｎｏ！——這是洋話，你們不懂的。否則早已成功了。然而這正是他做事小心的地方。他再三再四的請我上湖北，我還沒有肯。誰願意在這小縣城裡做事情。……」&lt;/p&gt;
-
-&lt;p&gt;「唔，……這個……」阿Ｑ候他略停，終於用十二分的勇氣開口了，但不知道因為什麼，又並不叫他洋先生。&lt;/p&gt;
-
-&lt;p&gt;聽著說話的四個人都吃驚的回顧他。洋先生也才看見：&lt;/p&gt;
-
-&lt;p&gt;「什麼？」&lt;/p&gt;
-
-&lt;p&gt;「我……」&lt;/p&gt;
-
-&lt;p&gt;「出去！」&lt;/p&gt;
-
-&lt;p&gt;「我要投……」&lt;/p&gt;
-
-&lt;p&gt;「滾出去！」洋先生揚起哭喪棒來了。&lt;/p&gt;
-
-&lt;p&gt;趙白眼和閑人們便都吆喝道：「先生叫你滾出去，你還不聽麽！」&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ將手向頭上一遮，不自覺的逃出門外；洋先生倒也沒有追。他快跑了六十多步，這才慢慢的走，於是心裡便湧起了憂愁：洋先生不准他革命，他再沒有別的路；從此決不能望有白盔白甲的人來叫他，他所有的抱負，志向，希望，前程，全被一筆勾銷了。至於閑人們傳揚開去，給小Ｄ王胡等輩笑話，倒是還在其次的事。&lt;/p&gt;
-
-&lt;p&gt;他似乎從來沒有經驗過這樣的無聊。他對於自己的盤辮子，彷彿也覺得無意味，要侮蔑；為報仇起見，很想立刻放下辮子來，但也沒有竟放。他遊到夜間，賒了兩碗酒，喝下肚去，漸漸的高興起來了，思想裡才又出現白盔白甲的碎片。&lt;/p&gt;
-
-&lt;p&gt;有一天，他照例的混到夜深，待酒店要關門，才踱回土穀祠去。&lt;/p&gt;
-
-&lt;p&gt;拍，吧～～！&lt;/p&gt;
-
-&lt;p&gt;他忽而聽得一種異樣的聲音，又不是爆竹。阿Ｑ本來是愛看熱鬧，愛管閑事的，便在暗中直尋過去。似乎前面有些腳步聲；他正聽，猛然間一個人從對面逃來了。阿Ｑ一看見，便趕緊翻身跟著逃。那人轉彎，阿Ｑ也轉彎，那人站住了，阿Ｑ也站住。他看後面並無什麼，看那人便是小Ｄ。&lt;/p&gt;
-
-&lt;p&gt;「什麼？」阿Ｑ不平起來了。&lt;/p&gt;
-
-&lt;p&gt;「趙……趙家遭搶了！」小Ｄ氣喘吁吁的說。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ的心怦怦的跳了。小Ｄ說了便走；阿Ｑ卻逃而又停的兩三回。但他究竟是做過「這路生意」，格外膽大，於是躄出路角，仔細的聽，似乎有些嚷嚷，又仔細的看，似乎許多白盔白甲的人，絡繹的將箱子抬出了，器具抬出了，秀才娘子的寧式床也抬出了，但是不分明，他還想上前，兩隻腳卻沒有動。&lt;/p&gt;
-
-&lt;p&gt;這一夜沒有月，未莊在黑暗裡很寂靜，寂靜到像羲皇時候一般太平。阿Ｑ站著看到自己發煩，也似乎還是先前一樣，在那裡來來往往的搬，箱子抬出了，器具抬出了，秀才娘子的寧式床也抬出了，……抬得他自己有些不信他的眼睛了。但他決計不再上前，卻回到自己的祠裡去了。&lt;/p&gt;
-
-&lt;p&gt;土穀祠裡更漆黑；他關好大門，摸進自己的屋子裡。他躺了好一會，這才定了神，而且發出關於自己的思想來：白盔白甲的人明明到了，並不來打招呼，搬了許多好東西，又沒有自己的份，——這全是假洋鬼子可惡，不准我造反，否則，這次何至於沒有我的份呢？阿Ｑ越想越氣，終於禁不住滿心痛恨起來，毒毒的點一點頭：「不准我造反，只准你造反？媽媽的假洋鬼子，——好，你造反！造反是殺頭的罪名呵，我總要告一狀，看你抓進縣裡去殺頭，——滿門抄斬，——嚓！嚓！」&lt;/p&gt;
-
-&lt;h2 id=&quot;第九章大團圓&quot;&gt;第九章　大團圓&lt;/h2&gt;
-
-&lt;p&gt;趙家遭搶之後，未莊人大抵很快意而且恐慌，阿Ｑ也很快意而且恐慌。但四天之後，阿Ｑ在半夜裡忽被抓進縣城裡去了。那時恰是暗夜，一隊兵，一隊團丁，一隊員警，五個偵探，悄悄地到了未莊，乘昏暗圍住土穀祠，正對門架好機關槍；然而阿Ｑ不衝出。許多時沒有動靜，把總焦急起來了，懸了二十千的賞，才有兩個團丁冒了險，逾垣進去，裡應外合，一擁而入，將阿Ｑ抓出來；直待擒出祠外面的機關槍左近，他才有些清醒了。&lt;/p&gt;
-
-&lt;p&gt;到進城，已經是正午，阿Ｑ見自己被攙進一所破衙門，轉了五六個彎，便推在一間小屋裡。他剛剛一蹌踉，那用整株的木料做成的柵欄門便跟著他的腳跟闔上了，其餘的三面都是牆壁，仔細看時，屋角上還有兩個人。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ雖然有些忐忑，卻並不很苦悶，因為他那土穀祠裡的臥室，也並沒有比這間屋子更高明。那兩個也彷彿是鄉下人，漸漸和他兜搭起來了，一個說是舉人老爺要追他祖父欠下來的陳租，一個不知道為了什麼事。他們問阿Ｑ，阿Ｑ爽利的答道，「因為我想造反。」&lt;/p&gt;
-
-&lt;p&gt;他下半天便又被抓出柵欄門去了，到得大堂，上面坐著一個滿頭剃得精光的老頭子。阿Ｑ疑心他是和尚，但看見下麵站著一排兵，兩旁又站著十幾個長衫人物，也有滿頭剃得精光像這老頭子的，也有將一尺來長的頭髮披在背後像那假洋鬼子的，都是一臉橫肉，怒目而視的看他；他便知道這人一定有些來歷，膝關節立刻自然而然的寬鬆，便跪了下去了。&lt;/p&gt;
-
-&lt;p&gt;「站著說！不要跪！」長衫人物都吆喝說。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ雖然似乎懂得，但總覺得站不住，身不由己的蹲了下去，而且終於趁勢改為跪下了。&lt;/p&gt;
-
-&lt;p&gt;「奴隸性！……」長衫人物又鄙夷似的說，但也沒有叫他起來。&lt;/p&gt;
-
-&lt;p&gt;「你從實招來罷，免得吃苦。我早都知道了。招了可以放你。」那光頭的老頭子看定了阿Ｑ的臉，沈靜的清楚的說。&lt;/p&gt;
-
-&lt;p&gt;「招罷！」長衫人物也大聲說。&lt;/p&gt;
-
-&lt;p&gt;「我本來要……來投……」阿Ｑ胡裡胡塗的想了一通，這才斷斷續續的說。&lt;/p&gt;
-
-&lt;p&gt;「那麼，為什麼不來的呢？」老頭子和氣的問。&lt;/p&gt;
-
-&lt;p&gt;「假洋鬼子不准我！」&lt;/p&gt;
-
-&lt;p&gt;「胡說！此刻說，也遲了。現在你的同黨在那裡？」&lt;/p&gt;
-
-&lt;p&gt;「什麼？……」&lt;/p&gt;
-
-&lt;p&gt;「那一晚打劫趙家的一夥人。」&lt;/p&gt;
-
-&lt;p&gt;「他們沒有來叫我。他們自己搬走了。」阿Ｑ提起來便憤憤。&lt;/p&gt;
-
-&lt;p&gt;「走到那裡去了呢？說出來便放你了。」老頭子更和氣了。&lt;/p&gt;
-
-&lt;p&gt;「我不知道，……他們沒有來叫我……」&lt;/p&gt;
-
-&lt;p&gt;然而老頭子使了一個眼色，阿Ｑ便又被抓進柵欄門裡了。他第二次抓出柵欄門，是第二天的上午。&lt;/p&gt;
-
-&lt;p&gt;大堂的情形都照舊。上面仍然坐著光頭的老頭子，阿Ｑ也仍然下了跪。&lt;/p&gt;
-
-&lt;p&gt;老頭子和氣的問道，「你還有什麼話說麽？」&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ一想，沒有話，便回答說，「沒有。」&lt;/p&gt;
-
-&lt;p&gt;於是一個長衫人物拿了一張紙，並一支筆送到阿Ｑ的面前，要將筆塞在他手裡。阿Ｑ這時很吃驚，幾乎「魂飛魄散」了：因為他的手和筆相關，這回是初次。他正不知怎樣拿；那人卻又指著一處地方教他畫花押。&lt;/p&gt;
-
-&lt;p&gt;「我……我……不認得字。」阿Ｑ一把抓住了筆，惶恐而且慚愧的說。&lt;/p&gt;
-
-&lt;p&gt;「那麼，便宜你，畫一個圓圈！」&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ要畫圓圈了，那手捏著筆卻只是抖。於是那人替他將紙鋪在地上，阿Ｑ伏下去，使盡了平生的力氣畫圓圈。他生怕被人笑話，立志要畫得圓，但這可惡的筆不但很沈重，並且不聽話，剛剛一抖一抖的幾乎要合縫，卻又向外一聳，畫成瓜子模樣了。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ正羞愧自己畫得不圓，那人卻不計較，早已掣了紙筆去，許多人又將他第二次抓進柵欄門。&lt;/p&gt;
-
-&lt;p&gt;他第二次進了柵欄，倒也並不十分懊惱。他以為人生天地之間，大約本來有時要抓進抓出，有時要在紙上畫圓圈的，惟有圈而不圓，卻是他「行狀」上的一個汙點。但不多時也就釋然了，他想：孫子才畫得很圓的圓圈呢。於是他睡著了。&lt;/p&gt;
-
-&lt;p&gt;然而這一夜，舉人老爺反而不能睡：他和把總嘔了氣了。舉人老爺主張第一要追贓，把總主張第一要示眾。把總近來很不將舉人老爺放在眼裡了，拍案打凳的說道，「懲一儆百！你看，我做革命黨還不上二十天，搶案就是十幾件，全不破案，我的面子在那裡？破了案，你又來迂。不成！這是我管的！」舉人老爺窘急了，然而還堅持，說是倘若不追贓，他便立刻辭了幫辦民政的職務。而把總卻道，「請便罷！」於是舉人老爺在這一夜竟沒有睡，但幸第二天倒也沒有辭。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ第三次抓出柵欄門的時候，便是舉人老爺睡不著的那一夜的明天的上午了。他到了大堂，上面還坐著照例的光頭老頭子；阿Ｑ也照例的下了跪。&lt;/p&gt;
-
-&lt;p&gt;老頭子很和氣的問道，「你還有什麼話麽？」&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ一想，沒有話，便回答說，「沒有。」&lt;/p&gt;
-
-&lt;p&gt;許多長衫和短衫人物，忽然給他穿上一件洋布的白背心，上面有些黑字。阿Ｑ很氣苦：因為這很像是帶孝，而帶孝是晦氣的。然而同時他的兩手反縛了，同時又被一直抓出衙門外去了。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ被抬上了一輛沒有蓬的車，幾個短衣人物也和他同坐在一處。這車立刻走動了，前面是一班背著洋炮的兵們和團丁，兩旁是許多張著嘴的看客，後面怎樣，阿Ｑ沒有見。但他突然覺到了：這豈不是去殺頭麽？他一急，兩眼發黑，耳朵裡喤的一聲，似乎發昏了。然而他又沒有全發昏，有時雖然著急，有時卻也泰然；他意思之間，似乎覺得人生天地間，大約本來有時也未免要殺頭的。&lt;/p&gt;
-
-&lt;p&gt;他還認得路，於是有些詫異了：怎麼不向著法場走呢？他不知道這是在遊街，在示眾。但即使知道也一樣，他不過便以為人生天地間，大約本來有時也未免要遊街要示眾罷了。&lt;/p&gt;
-
-&lt;p&gt;他省悟了，這是繞到法場去的路，這一定是「嚓」的去殺頭。他惘惘的向左右看，全跟著馬蟻似的人，而在無意中，卻在路旁的人叢中發見了一個吳媽。很久違，伊原來在城裡做工了。阿Ｑ忽然很羞愧自己沒志氣：竟沒有唱幾句戲。他的思想彷彿旋風似的在腦裡一迴旋：《小孤孀上墳》欠堂皇，《龍虎鬥》裡的「悔不該……」也太乏，還是「手執鋼鞭將你打」罷。他同時想手一揚，才記得這兩手原來都捆著，於是「手執鋼鞭」也不唱了。&lt;/p&gt;
-
-&lt;p&gt;「過了二十年又是一個……」阿Ｑ在百忙中，「無師自通」的說出半句從來不說的話。&lt;/p&gt;
-
-&lt;p&gt;「好！！！」從人叢裡，便發出豺狼的嗥叫一般的聲音來。&lt;/p&gt;
-
-&lt;p&gt;車子不住的前行，阿Ｑ在喝采聲中，輪轉眼睛去看吳媽，似乎伊一向並沒有見他，卻只是出神的看著兵們背上的洋炮。&lt;/p&gt;
-
-&lt;p&gt;阿Ｑ於是再看那些喝采的人們。&lt;/p&gt;
-
-&lt;p&gt;這剎那中，他的思想又彷彿旋風似的在腦裡一迴旋了。四年之前，他曾在山腳下遇見一隻餓狼，永是不近不遠的跟定他，要吃他的肉。他那時嚇得幾乎要死，幸而手裡有一柄斫柴刀，才得仗這壯了膽，支持到未莊；可是永遠記得那狼眼睛，又凶又怯，閃閃的像兩顆鬼火，似乎遠遠的來穿透了他的皮肉。而這回他又看見從來沒有見過的更可怕的眼睛了，又鈍又鋒利，不但已經咀嚼了他的話，並且還要咀嚼他皮肉以外的東西，永是不近不遠的跟他走。&lt;/p&gt;
-
-&lt;p&gt;這些眼睛們似乎連成一氣，已經在那裡咬他的靈魂。&lt;/p&gt;
-
-&lt;p&gt;「救命，……」&lt;/p&gt;
-
-&lt;p&gt;然而阿Ｑ沒有說。他早就兩眼發黑，耳朵裡嗡的一聲，覺得全身彷彿微塵似的迸散了。&lt;/p&gt;
-
-&lt;p&gt;至於當時的影響，最大的倒反在舉人老爺，因為終於沒有追贓，他全家都號啕了。其次是趙府，非特秀才因為上城去報官，被不好的革命黨剪了辮子，而且又破費了二十千的賞錢，所以全家也號啕了。從這一天以來，他們便漸漸的都發生了遺老的氣味。&lt;/p&gt;
-
-&lt;p&gt;至於輿論，在未莊是無異議，自然都說阿Ｑ壞，被槍斃便是他的壞的證據：不壞又何至於被槍斃呢？而城裡的輿論卻不佳，他們多半不滿足，以為槍斃並無殺頭這般好看；而且那是怎樣的一個可笑的死囚呵，游了那麼久的街，竟沒有唱一句戲：他們白跟一趟了。&lt;/p&gt;
-
+        <title>Crawler</title>
+        <description>&lt;h2 id=&quot;requests-library&quot;&gt;Requests Library&lt;/h2&gt;
+
+&lt;h3 id=&quot;seven-main-methods&quot;&gt;Seven main methods&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;requests.request()&lt;/li&gt;
+  &lt;li&gt;requests.get()&lt;/li&gt;
+  &lt;li&gt;requests.head()&lt;/li&gt;
+  &lt;li&gt;requests.post()&lt;/li&gt;
+  &lt;li&gt;requests.put()&lt;/li&gt;
+  &lt;li&gt;requests.patch()&lt;/li&gt;
+  &lt;li&gt;requests.delete()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import requests
+r = requests.get(&quot;http://www.baidu.com&quot;)
+r.status_code
+#200 (Succeed) 404 (Failed)
+R.encoding = 'utf-8'
+r.text
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;request-method&quot;&gt;request method&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;requests.request(method, url, **kwargs)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;method:GET, HEAD, POST, PUT, PATCH, DELETE, OPTION&lt;/p&gt;
+
+&lt;p&gt;**kwargs:params data json headers cookies auth files timeout proxies allow_redirects stream verify cert(True/False)&lt;/p&gt;
+
+&lt;h3 id=&quot;response-object-properties&quot;&gt;Response Object Properties&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;r.status_code&lt;/li&gt;
+  &lt;li&gt;r.text&lt;/li&gt;
+  &lt;li&gt;r.encoding ( If charset didn’t apparent in header,default:ISO-8859-1)&lt;/li&gt;
+  &lt;li&gt;r.apparent_encoding&lt;/li&gt;
+  &lt;li&gt;r.content&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;code-framework&quot;&gt;Code Framework&lt;/h3&gt;
+&lt;h5 id=&quot;exceptions-in-requests-library&quot;&gt;Exceptions in Requests Library&lt;/h5&gt;
+&lt;ul&gt;
+  &lt;li&gt;requests.ConnectionError&lt;/li&gt;
+  &lt;li&gt;requests.HTTPError&lt;/li&gt;
+  &lt;li&gt;requests.URLRequired&lt;/li&gt;
+  &lt;li&gt;requests.TooManyRedirects&lt;/li&gt;
+  &lt;li&gt;requests.ConnectTimeout&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;requests.Timeout&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;r.raise_for_status 
+ ( If return value isn’t 200,it will throw requests.HTTPError exception)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import requests
+def getHTMLText(url):
+    try:
+        r = requests.get(url, timeout = 30)
+        r.raise_for_status()
+        r.encoding = r.apparent_encoding
+        return r.text
+    except:
+        return &quot;产生异常&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;http-protocol&quot;&gt;HTTP Protocol&lt;/h3&gt;
+
+&lt;p&gt;URL: http://host[:port][path]&lt;/p&gt;
+
+&lt;p&gt;host:legal Internet host domain name or IP address&lt;/p&gt;
+
+&lt;p&gt;port:port number, defalt 80&lt;/p&gt;
+
+&lt;p&gt;http://www.hit.edu.cn&lt;/p&gt;
+
+&lt;p&gt;http://220.181.111.188/duty&lt;/p&gt;
+
+&lt;p&gt;HTTP protocol operation :GET, HEAD, POST, PUT, PATCH, DELETE&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;payload{'key1':'value1', 'key2','value2'}
+r = requests.post('http://httpbin.org/post', data = payload)
+print(r.text)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;robot-protocol&quot;&gt;Robot Protocol&lt;/h3&gt;
+&lt;p&gt;User-agent: *&lt;/p&gt;
+
+&lt;p&gt;Disallow: /&lt;/p&gt;
+
+&lt;h3 id=&quot;crawl-web-pictures&quot;&gt;Crawl Web pictures&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import requests
+import os
+
+url = &quot;http://news.hit.edu.cn/_upload/article/images/8e/ea/8376999048edb1b3ca17cce1e5f2/78f2ba13-d001-4546-b4bf-77f43caf8c6f.jpg&quot;
+root = &quot;Users/ucla/&quot;
+path = root + url.split('/')[-1]
+   
+try:
+    if not os.path.exists(root):
+        os.mkdir(root)
+    if not os.path.get(url):
+        r = requests.get(url)
+        with open(path,'wb') as f:
+            f.write(r.content)
+            f.close()
+            print(&quot;文件保存成功&quot;)
+    else:
+        print(&quot;文件已存在&quot;)
+except:
+    print(&quot;爬取失败&quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;get-method&quot;&gt;get method&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;r = requests.get(url) 
+#return Response 
+requests.get(url,params=None,**kwargs)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;modify-user-agent&quot;&gt;Modify User-agent:&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kv = {'user-agent':'Mozilla/5.0'}
+url = 'https://www.amazon.cn/gp/product/B01M8L5Z3Y'
+r = requestts.get(url, headers = kv)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;use-search-engine&quot;&gt;Use Search engine:&lt;/h4&gt;
+
+&lt;p&gt;http://www.baidu.com/s?wd=keyword&lt;/p&gt;
+
+&lt;p&gt;http://www.so.com/s?q=keyword&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import requests
+kv = {'wd':'Python'}
+r = requests.get(&quot;http://www.baidu.com/s&quot;, params = kv)
+r.request.url  #'http://www.baidu.com/s?wd=Python'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;ip-address-searching&quot;&gt;IP address Searching&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import requests
+url = &quot;http://m.ip138.com/ip.asp?ip=&quot;
+r = requests.get(url + '202.204.80.112')
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;beautiful-soup&quot;&gt;Beautiful Soup&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import requests
+r = requests.get(&quot;http://python123.io/ws/demo.html&quot;)
+demo = r.text
+from bs4 import BeautifulSoup
+soup = BeautifulSoup(demo, &quot;html.parser&quot;)
+soup2 = BeautifulSoup(open(&quot;Users/ucla/demo.html&quot;), &quot;html.parser&quot;)
+print(soup.prettify())
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;tag&quot;&gt;Tag&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;titile&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Basic Element:
+Tag, Name, Attributes, NavigableString, Comment.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;from bs4 import BeautifulSoup
+soup = BeautifulSoup(demo, &quot;html.parser&quot;)
+soup.a.name 
+soup.a.parent.name
+soup.a.parent.parent.name 
+tag = soup.a
+tag.attrs['class']
+type(tag.attrs) #&amp;lt;class 'dict'&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;traversal&quot;&gt;Traversal&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;.contents&lt;/li&gt;
+  &lt;li&gt;.children&lt;/li&gt;
+  &lt;li&gt;.descendants&lt;/li&gt;
+  &lt;li&gt;.parent&lt;/li&gt;
+  &lt;li&gt;.parents&lt;/li&gt;
+  &lt;li&gt;.next_sibling&lt;/li&gt;
+  &lt;li&gt;.previous_sibling&lt;/li&gt;
+  &lt;li&gt;.next_siblings&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;.previous_siblings&lt;/p&gt;
+
+    &lt;p&gt;for sibling in soup.a.next_siblings:
+      print(sibling)&lt;/p&gt;
+
+    &lt;p&gt;for sibling in soup.a.previous_siblings:
+      print(sibling)&lt;/p&gt;
+
+    &lt;p&gt;for child in soup.body.children:
+      print(child)&lt;/p&gt;
+
+    &lt;p&gt;for child in soup.body.children:
+      print(child)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;markup-language&quot;&gt;Markup Language&lt;/h3&gt;
+&lt;h4 id=&quot;xml&quot;&gt;XML&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;name&amp;gt; ... &amp;lt;/name&amp;gt;
+&amp;lt;name ... /&amp;gt;
+&amp;lt;!-- --&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;yaml&quot;&gt;YAML&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;key : value
+key : #Comment
+-value1
+-value2
+key :
+    subkey : subvalue
+text : |
+bundle data
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;json&quot;&gt;JSON&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&quot;key&quot; : &quot;value&quot;
+&quot;key&quot; : [&quot;value1&quot;, &quot;value2&quot;]
+&quot;key&quot; :{
+    &quot;subkey&quot;:&quot;subvalue&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;process-information&quot;&gt;Process Information&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;from bs4 import BeautifulSoup
+soup = BeautifulSoup(demo, &quot;http.parser&quot;)
+for link in soup.find_all('a')
+    print(link.get('href'))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;find_all&quot;&gt;find_all&lt;/h4&gt;
+&lt;p&gt;&amp;lt;&amp;gt;.find_all(name,attrs,recursive,string,**kwargs)&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;for tag in soup.find_all(True):
+    print(tag)
+    
+import re
+for tag in soup.find_all(re.compile('b')):
+    print(tag.name)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;attrs:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;soup.find_all('p', 'course')
+soup.findall('id=link1')
+import re
+soup.find_all(id=re.compile('link'))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;recursive:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;soup.find_all('a')
+soup.find_all('a',recursive=False)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;string:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;soup.find_all(string = &quot;Basic Python&quot;)
+soup.find_all(string = re.compile(&quot;python&quot;))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Extension Methods&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;soup() #soup.find_all(...) 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&amp;lt;&amp;gt;.find()&lt;/li&gt;
+  &lt;li&gt;&amp;lt;&amp;gt;.find_parents()&lt;/li&gt;
+  &lt;li&gt;&amp;lt;&amp;gt;.find_parent()&lt;/li&gt;
+  &lt;li&gt;&amp;lt;&amp;gt;.find_next_siblings()&lt;/li&gt;
+  &lt;li&gt;&amp;lt;&amp;gt;.find_next_sibling()&lt;/li&gt;
+  &lt;li&gt;&amp;lt;&amp;gt;.find_previous_siblings()&lt;/li&gt;
+  &lt;li&gt;&amp;lt;&amp;gt;.find_previous_sibling()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;re&quot;&gt;RE&lt;/h2&gt;
+
+&lt;h3 id=&quot;grammer&quot;&gt;Grammer&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;[abc] [a-z] [^abc]&lt;/li&gt;
+  &lt;li&gt;abc*  ab  abc  abc  abccc…&lt;/li&gt;
+  &lt;li&gt;abc+ abc abcc abccc…&lt;/li&gt;
+  &lt;li&gt;abc? ab abc&lt;/li&gt;
+  &lt;li&gt;abc|def  abc def&lt;/li&gt;
+  &lt;li&gt;ab{2}c abbc&lt;/li&gt;
+  &lt;li&gt;ab{1,2}c abc abbc&lt;/li&gt;
+  &lt;li&gt;^abc  abclskejg&lt;/li&gt;
+  &lt;li&gt;abc$  sldkjgabc&lt;/li&gt;
+  &lt;li&gt;\d  [0-9]&lt;/li&gt;
+  &lt;li&gt;\w  [A-Za-z0-9_]&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;example&quot;&gt;Example&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;\^[A-Za-z]+$&lt;/li&gt;
+  &lt;li&gt;\^[A-Za-z0-9]+$&lt;/li&gt;
+  &lt;li&gt;\^-?\d+$&lt;/li&gt;
+  &lt;li&gt;\^[0-9]*[1-9][0-9]*$&lt;/li&gt;
+  &lt;li&gt;[1-9]\d{5}&lt;/li&gt;
+  &lt;li&gt;[\u4e00-\u9fa5]   judge character in utf-8&lt;/li&gt;
+  &lt;li&gt;(([1-9]?\d|1\d{2}|2[0-4]\d|25[0-5]).){3}[1-9]?\d|1\d{2}|2[0-4]\d|25[0-5]  IP address&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;main-functions&quot;&gt;Main Functions&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;re.search() return match object&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;re.search(pattern, string, flags=0)&lt;/p&gt;
+
+&lt;p&gt;flags:re.I re.IGNORECASE, re.M re.MULTILINE, re.S re.DOTALL&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;re.match() return match object&lt;/li&gt;
+  &lt;li&gt;re.findall()&lt;/li&gt;
+  &lt;li&gt;re.split() return list&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;re.split(pattern, string, maxsplit=0, flags=0)&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;re.finditer() return match object&lt;/li&gt;
+  &lt;li&gt;re.sub()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;re.sub(pattern, repl, string, count=0, flags=0)&lt;/p&gt;
+
+&lt;p&gt;match.string
+match.re
+match.pos
+match.endpos&lt;/p&gt;
+
+&lt;p&gt;match.group(0)
+match.start()
+match.end()
+match.span()&lt;/p&gt;
+
+&lt;p&gt;*?   +?  ??  {m,n}?  return min&lt;/p&gt;
 </description>
-        <pubDate>Thu, 01 Dec 1921 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/books/aqzhengzhuan.html</link>
-        <guid isPermaLink="true">http://localhost:4000/books/aqzhengzhuan.html</guid>
+        <pubDate>Tue, 30 Jan 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/Crawler.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Crawler.html</guid>
         
-        <category>chinese</category>
+        <category>code</category>
         
-        <category>luxun</category>
-        
-        <category>nahan</category>
+        <category>Python</category>
         
         
-        <category>books</category>
+        <category>coding</category>
         
       </item>
     
       <item>
-        <title>狂人日记 (Simplified Chinese)</title>
-        <description>&lt;h2 id=&quot;一&quot;&gt;一&lt;/h2&gt;
-
-&lt;p&gt;今天晚上，很好的月光。&lt;/p&gt;
-
-&lt;p&gt;我不见他，已是三十多年；今天见了，精神分外爽快。才知道以前的三十多年，全是发昏；然而须十分小心。不然，那赵家的狗，何以看我两眼呢？&lt;/p&gt;
-
-&lt;p&gt;我怕得有理。&lt;/p&gt;
-
-&lt;h2 id=&quot;二&quot;&gt;二&lt;/h2&gt;
-
-&lt;p&gt;今天全没月光，我知道不妙。早上小心出门，赵贵翁的眼色便怪：似乎怕我，似乎想害我。还有七八个人，交头接耳的议论我，又怕我看见。一路上的人，都是如此。其中最凶的一个人，张着嘴，对我笑了一笑；我便从头直冷到脚根，晓得他们布置，都已妥当了。&lt;/p&gt;
-
-&lt;p&gt;我可不怕，仍旧走我的路。前面一伙小孩子，也在那里议论我；眼色也同赵贵翁一样，脸色也铁青。我想我同小孩子有什么仇，他也这样。忍不住大声说，“你告诉我！”他们可就跑了。&lt;/p&gt;
-
-&lt;p&gt;我想：我同赵贵翁有什么仇，同路上的人又有什么仇；只有廿年以前，把古久先生的陈年流水簿子，踹了一脚，古久先生很不高兴。赵贵翁虽然不认识他，一定也听到风声，代抱不平；约定路上的人，同我作冤对。但是小孩子呢？那时候，他们还没有出世，何以今天也睁着怪眼睛，似乎怕我，似乎想害我。这真教我怕，教我纳罕而且伤心。&lt;/p&gt;
-
-&lt;p&gt;我明白了。这是他们娘老子教的！&lt;/p&gt;
-
-&lt;h2 id=&quot;三&quot;&gt;三&lt;/h2&gt;
-
-&lt;p&gt;晚上总是睡不着。凡事须得研究，才会明白。&lt;/p&gt;
-
-&lt;p&gt;他们——也有给知县打枷过的，也有给绅士掌过嘴的，也有衙役占了他妻子的，也有老子娘被债主逼死的；他们那时候的脸色，全没有昨天这么怕，也没有这么凶。&lt;/p&gt;
-
-&lt;p&gt;最奇怪的是昨天街上的那个女人，打他儿子，嘴里说道，“老子呀！我要咬你几口才出气！”他眼睛却看着我。我出了一惊，遮掩不住；那青面獠牙的一伙人，便都哄笑起来。陈老五赶上前，硬把我拖回家中了。&lt;/p&gt;
-
-&lt;p&gt;拖我回家，家里的人都装作不认识我；他们的眼色，也全同别人一样。进了书房，便反扣上门，宛然是关了一只鸡鸭。这一件事，越教我猜不出底细。&lt;/p&gt;
-
-&lt;p&gt;前几天，狼子村的佃户来告荒，对我大哥说，他们村里的一个大恶人，给大家打死了；几个人便挖出他的心肝来，用油煎炒了吃，可以壮壮胆子。我插了一句嘴，佃户和大哥便都看我几眼。今天才晓得他们的眼光，全同外面的那伙人一模一样。&lt;/p&gt;
-
-&lt;p&gt;想起来，我从顶上直冷到脚跟。&lt;/p&gt;
-
-&lt;p&gt;他们会吃人，就未必不会吃我。&lt;/p&gt;
-
-&lt;p&gt;你看那女人“咬你几口”的话，和一伙青面獠牙人的笑，和前天佃户的话，明明是暗号。我看出他话中全是毒，笑中全是刀。他们的牙齿，全是白厉厉的排着，这就是吃人的家伙。&lt;/p&gt;
-
-&lt;p&gt;照我自己想，虽然不是恶人，自从踹了古家的簿子，可就难说了。他们似乎别有心思，我全猜不出。况且他们一翻脸，便说人是恶人。我还记得大哥教我做论，无论怎样好人，翻他几句，他便打上几个圈；原谅坏人几句，他便说“翻天妙手，与众不同”。我那里猜得到他们的心思，究竟怎样；况且是要吃的时候。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;凡事总须研究，才会明白。古来时常吃人，我也还记得，可是不甚清楚。我翻开历史一查，这历史没有年代，歪歪斜斜的每页上都写着“仁义道德”几个字。我横竖睡不着，仔细看了半夜，才从字缝里看出字来，满本都写着两个字是“吃人”！&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;书上写着这许多字，佃户说了这许多话，却都笑吟吟的睁着怪眼看我。&lt;/p&gt;
-
-&lt;p&gt;我也是人，他们想要吃我了！&lt;/p&gt;
-
-&lt;h2 id=&quot;四&quot;&gt;四&lt;/h2&gt;
-
-&lt;p&gt;早上，我静坐了一会儿。陈老五送进饭来，一碗菜，一碗蒸鱼；这鱼的眼睛，白而且硬，张着嘴，同那一伙想吃人的人一样。吃了几筷，滑溜溜的不知是鱼是人，便把它兜肚连肠的吐出。&lt;/p&gt;
-
-&lt;p&gt;我说“老五，对大哥说，我闷得慌，想到园里走走。”老五不答应，走了；停一会，可就来开了门。&lt;/p&gt;
-
-&lt;p&gt;我也不动，研究他们如何摆布我；知道他们一定不肯放松。果然！我大哥引了一个老头子，慢慢走来；他满眼凶光，怕我看出，只是低头向着地，从眼镜横边暗暗看我。大哥说，“今天你仿佛很好。”我说“是的。”大哥说，“今天请何先生来，给你诊一诊。”我说“可以！”其实我岂不知道这老头子是刽子手扮的！无非借了看脉这名目，揣一揣肥瘠：因这功劳，也分一片肉吃。我也不怕；虽然不吃人，胆子却比他们还壮。伸出两个拳头，看他如何下手。老头子坐着，闭了眼睛，摸了好一会，呆了好一会；便张开他鬼眼睛说，“不要乱想。静静的养几天，就好了。”&lt;/p&gt;
-
-&lt;p&gt;不要乱想，静静的养！养肥了，他们是自然可以多吃；我有什么好处，怎么会“好了”？他们这群人，又想吃人，又是鬼鬼祟祟，想法子遮掩，不敢直截下手，真要令我笑死。我忍不住，便放声大笑起来，十分快活。自己晓得这笑声里面，有的是义勇和正气。老头子和大哥，都失了色，被我这勇气正气镇压住了。&lt;/p&gt;
-
-&lt;p&gt;但是我有勇气，他们便越想吃我，沾光一点这勇气。老头子跨出门，走不多远，便低声对大哥说道，“赶紧吃罢！”大哥点点头。原来也有你！这一件大发见，虽似意外，也在意中：合伙吃我的人，便是我的哥哥！&lt;/p&gt;
-
-&lt;p&gt;吃人的是我哥哥！&lt;/p&gt;
-
-&lt;p&gt;我是吃人的人的兄弟！&lt;/p&gt;
-
-&lt;p&gt;我自己被人吃了，可仍然是吃人的人的兄弟！&lt;/p&gt;
-
-&lt;h2 id=&quot;五&quot;&gt;五&lt;/h2&gt;
-
-&lt;p&gt;这几天是退一步想：假使那老头子不是刽子手扮的，真是医生，也仍然是吃人的人。他们的祖师李时珍做的“本草什么”上，明明写着人肉可以煎吃；他还能说自己不吃人么？&lt;/p&gt;
-
-&lt;p&gt;至于我家大哥，也毫不冤枉他。他对我讲书的时候，亲口说过可以“易子而食”；又一回偶然议论起一个不好的人，他便说不但该杀，还当“食肉寝皮”。我那时年纪还小，心跳了好半天。前天狼子村佃户来说吃心肝的事，他也毫不奇怪，不住的点头。可见心思是同从前一样狠。既然可以“易子而食”，便什么都易得，什么人都吃得。我从前单听他讲道理，也胡涂过去；现在晓得他讲道理的时候，不但唇边还抹着人油，而且心里满装着吃人的意思。&lt;/p&gt;
-
-&lt;h2 id=&quot;六&quot;&gt;六&lt;/h2&gt;
-
-&lt;p&gt;黑漆漆的，不知是日是夜。赵家的狗又叫起来了。&lt;/p&gt;
-
-&lt;p&gt;狮子似的凶心，兔子的怯弱，狐狸的狡猾，……&lt;/p&gt;
-
-&lt;h2 id=&quot;七&quot;&gt;七&lt;/h2&gt;
-
-&lt;p&gt;我晓得他们的方法，直捷杀了，是不肯的，而且也不敢，怕有祸祟。所以他们大家联络，布满了罗网，逼我自戕。试看前几天街上男女的样子，和这几天我大哥的作为，便足可悟出八九分了。最好是解下腰带，挂在梁上，自己紧紧勒死；他们没有杀人的罪名，又偿了心愿，自然都欢天喜地的发出一种呜呜咽咽的笑声。否则惊吓忧愁死了，虽则略瘦，也还可以首肯几下。&lt;/p&gt;
-
-&lt;p&gt;他们是只会吃死肉的！——记得什么书上说，有一种东西，叫”海乙那”的，眼光和样子都很难看；时常吃死肉，连极大的骨头，都细细嚼烂，咽下肚子去，想起来也教人害怕。”海乙那”是狼的亲眷，狼是狗的本家。前天赵家的狗，看我几眼，可见他也同谋，早已接洽。老头子眼看着地，岂能瞒得我过。&lt;/p&gt;
-
-&lt;p&gt;最可怜的是我的大哥，他也是人，何以毫不害怕；而且合伙吃我呢？还是历来惯了，不以为非呢？还是丧了良心，明知故犯呢？&lt;/p&gt;
-
-&lt;p&gt;我诅咒吃人的人，先从他起头；要劝转吃人的人，也先从他下手。&lt;/p&gt;
-
-&lt;h2 id=&quot;八&quot;&gt;八&lt;/h2&gt;
-
-&lt;p&gt;其实这种道理，到了现在，他们也该早已懂得，……&lt;/p&gt;
-
-&lt;p&gt;忽然来了一个人；年纪不过二十左右，相貌是不很看得清楚，满面笑容，对了我点头，他的笑也不像真笑。我便问他，“吃人的事，对么？”他仍然笑着说，“不是荒年，怎么会吃人。”我立刻就晓得，他也是一伙，喜欢吃人的；便自勇气百倍，偏要问他。&lt;/p&gt;
-
-&lt;p&gt;“对么？”&lt;/p&gt;
-
-&lt;p&gt;“这等事问他什么。你真会……说笑话。……今天天气很好。”&lt;/p&gt;
-
-&lt;p&gt;天气是好，月色也很亮了。可是我要问你，“对么？”&lt;/p&gt;
-
-&lt;p&gt;他不以为然了。含含糊胡的答道，“不……”&lt;/p&gt;
-
-&lt;p&gt;“不对？他们何以竟吃？！”&lt;/p&gt;
-
-&lt;p&gt;“没有的事……”&lt;/p&gt;
-
-&lt;p&gt;“没有的事？狼子村现吃；还有书上都写着，通红斩新！”&lt;/p&gt;
-
-&lt;p&gt;他便变了脸，铁一般青。睁着眼说，“有许有的，这是从来如此……”&lt;/p&gt;
-
-&lt;p&gt;“从来如此，便对么？”&lt;/p&gt;
-
-&lt;p&gt;“我不同你讲这些道理；总之你不该说，你说便是你错！”&lt;/p&gt;
-
-&lt;p&gt;我直跳起来，张开眼，这人便不见了。全身出了一大片汗。他的年纪，比我大哥小得远，居然也是一伙；这一定是他娘老子先教的。还怕已经教给他儿子了；所以连小孩子，也都恶狠狠的看我。&lt;/p&gt;
-
-&lt;h2 id=&quot;九&quot;&gt;九&lt;/h2&gt;
-
-&lt;p&gt;&lt;span class=&quot;evidence&quot;&gt;自己想吃人，又怕被别人吃了&lt;/span&gt;，都用着疑心极深的眼光，面面相觑。&lt;/p&gt;
-
-&lt;p&gt;去了这心思，放心做事走路吃饭睡觉，何等舒服。这只是一条门槛，一个关头。他们可是父子兄弟夫妇朋友师生仇敌和各不相识的人，都结成一伙，互相劝勉，互相牵掣，死也不肯跨过这一步。&lt;/p&gt;
-
-&lt;h2 id=&quot;十&quot;&gt;十&lt;/h2&gt;
-
-&lt;p&gt;大清早，去寻我大哥；他立在堂门外看天，我便走到他背后，拦住门，格外沉静，格外和气的对他说，&lt;/p&gt;
-
-&lt;p&gt;“大哥，我有话告诉你。”&lt;/p&gt;
-
-&lt;p&gt;“你说就是，”他赶紧回过脸来，点点头。&lt;/p&gt;
-
-&lt;p&gt;“我只有几句话，可是说不出来。大哥，大约当初野蛮的人，都吃过一点人。后来因为心思不同，有的不吃人了，一味要好，便变了人，变了真的人。有的却还吃，——也同虫子一样，有的变了鱼鸟猴子，一直变到人。有的不要好，至今还是虫子。这吃人的人比不吃人的人，何等惭愧。怕比虫子的惭愧猴子，还差得很远很远。&lt;/p&gt;
-
-&lt;p&gt;“易牙蒸了他儿子，给桀纣吃，还是一直从前的事。谁晓得从盘古开辟天地以后，一直吃到易牙的儿子；从易牙的儿子，一直吃到徐锡林；从徐锡林，又一直吃到狼子村捉住的人。去年城里杀了犯人，还有一个生痨病的人，用馒头蘸血舐。&lt;/p&gt;
-
-&lt;p&gt;“他们要吃我，你一个人，原也无法可想；然而又何必去入伙。吃人的人，什么事做不出；他们会吃我，也会吃你，一伙里面，也会自吃。但只要转一步，只要立刻改了，也就是人人太平。虽然从来如此，我们今天也可以格外要好，说是不能！大哥，我相信你能说，前天佃户要减租，你说过不能。”&lt;/p&gt;
-
-&lt;p&gt;当初，他还只是冷笑，随后眼光便凶狠起来，一到说破他们的隐情，那就满脸都变成青色了。大门外立着一伙人，赵贵翁和他的狗，也在里面，都探头探脑的挨进来。有的是看不出面貌，似乎用布蒙着；有的是仍旧青面獠牙，抿着嘴笑。我认识他们是一伙，都是吃人的人。可是也晓得他们心思很不一样，一种是以为从来如此，应该吃的；一种是知道不该吃，可是仍然要吃，又怕别人说破他，所以听了我的话，越发气愤不过，可是抿着嘴冷笑。&lt;/p&gt;
-
-&lt;p&gt;这时候，大哥也忽然显出凶相，高声喝道，&lt;/p&gt;
-
-&lt;p&gt;“都出去！疯子有什么好看！”&lt;/p&gt;
-
-&lt;p&gt;这时候，我又懂得一件他们的巧妙了。他们岂但不肯改，而且早已布置；预备下一个疯子的名目罩上我。将来吃了，不但太平无事，怕还会有人见情。佃户说的大家吃了一个恶人，正是这方法。这是他们的老谱！&lt;/p&gt;
-
-&lt;p&gt;陈老五也气愤愤的直走进来。如何按得住我的口，我偏要对这伙人说，&lt;/p&gt;
-
-&lt;p&gt;“你们可以改了，从真心改起！要晓得将来容不得吃人的人，活在世上。&lt;/p&gt;
-
-&lt;p&gt;“你们要不改，自己也会吃尽。即使生得多，也会给真的人除灭了，同猎人打完狼子一样！——同虫子一样！”&lt;/p&gt;
-
-&lt;p&gt;那一伙人，都被陈老五赶走了。大哥也不知那里去了。陈老五劝我回屋子里去。屋里面全是黑沉沉的。横梁和椽子都在头上发抖；抖了一会，就大起来，堆在我身上。&lt;/p&gt;
-
-&lt;p&gt;万分沉重，动弹不得；他的意思是要我死。我晓得他的沉重是假的，便挣扎出来，出了一身汗。可是偏要说，&lt;/p&gt;
-
-&lt;p&gt;“你们立刻改了，从真心改起！你们要晓得将来是容不得吃人的人，……”&lt;/p&gt;
-
-&lt;h2 id=&quot;十一&quot;&gt;十一&lt;/h2&gt;
-
-&lt;p&gt;太阳也不出，门也不开，日日是两顿饭。&lt;/p&gt;
-
-&lt;p&gt;我捏起筷子，便想起我大哥；晓得妹子死掉的缘故，也全在他。那时我妹子才五岁，可爱可怜的样子，还在眼前。母亲哭个不住，他却劝母亲不要哭；大约因为自己吃了，哭起来不免有点过意不去。如果还能过意不去，……&lt;/p&gt;
-
-&lt;p&gt;妹子是被大哥吃了，母亲知道没有，我可不得而知。&lt;/p&gt;
-
-&lt;p&gt;母亲想也知道；不过哭的时候，却并没有说明，大约也以为应当的了。记得我四五岁时，坐在堂前乘凉，大哥说爷娘生病，做儿子的须割下一片肉来，煮熟了请他吃，才算好人；母亲也没有说不行。一片吃得，整个的自然也吃得。但是那天的哭法，现在想起来，实在还教人伤心，这真是奇极的事！&lt;/p&gt;
-
-&lt;h2 id=&quot;十二&quot;&gt;十二&lt;/h2&gt;
-
-&lt;p&gt;不能想了。&lt;/p&gt;
-
-&lt;p&gt;四千年来时时吃人的地方，今天才明白，我也在其中混了多年；大哥正管着家务，妹子恰恰死了，他未必不和在饭菜里，暗暗给我们吃。&lt;/p&gt;
-
-&lt;p&gt;我未必无意之中，不吃了我妹子的几片肉，现在也轮到我自己，……&lt;/p&gt;
-
-&lt;p&gt;有了四千年吃人履历的我，当初虽然不知道，现在明白，难见真的人！&lt;/p&gt;
-
-&lt;h2 id=&quot;十三&quot;&gt;十三&lt;/h2&gt;
-
-&lt;p&gt;没有吃过人的孩子，或者还有？&lt;/p&gt;
-
-&lt;p&gt;救救孩子……&lt;/p&gt;
+        <title>Advance Grammer in Java</title>
+        <description>&lt;h3 id=&quot;hashmap&quot;&gt;HashMap&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class Coin {
+    private HashMap&amp;lt;Integer, String&amp;gt; coinnames = new HashMap&amp;lt;Integer, String&amp;gt;();
+    
+    public Coin() {
+    coinnames.put(1, &quot;penny&quot;);
+    coinnames.put(10, &quot;dime&quot;);
+    coinnames.put(25, &quot;quarter&quot;);
+    coinnames.put(50, &quot;half-dollar&quot;);
+    coinnames.put(50, &quot;0.5&quot;);
+    }
+    
+    public String getName(int amount) {
+        return coinnames.get(amount);
+    }
+    
+    public static void main(String[] args){
+        Scanner in = new Scanner(System.in);
+        int amount = in.nextInt();
+        Coin coin = new Coin();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;hashset&quot;&gt;HashSet&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static void main(String[] args) {
+    HashSet&amp;lt;String&amp;gt; s = new HashSet&amp;lt;String&amp;gt;();
+    s.add(&quot;first&quot;);
+    s.add(&quot;second&quot;);
+    s.add(&quot;first&quot;);//{first,second}
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;use-stringbuffer-instead-of-add-string&quot;&gt;Use StringBuffer instead of add string&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public String getExitDesc() {
+    StringBuffer sb = new StringBuffer();
+    if (northExit != null) {
+        sb.append(&quot;north &quot;);
+    }
+    if (southExit != null) {
+        sb.append(&quot;south &quot;);
+    }
+    if (eastExit != null) {
+        sb.append(&quot;east &quot;);
+    }
+    if (westExit != null) {
+        sb.append(&quot;west &quot;);
+    }
+    return sb.toString();
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;handler&quot;&gt;Handler&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class Game {
+    private HashMap&amp;lt;String, Handler&amp;gt; handlers = new HashMap&amp;lt;String, Handler&amp;gt;;
+    public Game() {
+        handlers.put(&quot;bye&quot;, new HandlerBye());
+    }
+}
+
+public class Handler {
+    public void doCmd(String word) {
+        public boolean isBye() {
+            return flase;
+        }
+    }
+}
+
+public class HandlerBye extends Handler {
+    @Override
+    public boolean isBye() {
+        return true;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;abstract&quot;&gt;Abstract&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public abstract class Shape {
+    
+    public abstract void draw(Graphics g);
+    
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Abstract class can’t generate object,but it can define variable.&lt;/p&gt;
+
+&lt;p&gt;A subclass of an abstractclass must override abstract function in the super class.&lt;/p&gt;
+
+&lt;h3 id=&quot;interface&quot;&gt;Interface&lt;/h3&gt;
+
+&lt;p&gt;Interface is abstract class.All member functions and member variables are &lt;strong&gt;public static final&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class Fox extends Animal implements Cell {
+    //......
+}
+
+public interface Cell {
+    //......
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Interface can inherit interface, but it can’t inherit class.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Class can implement many interfaces,but interface can’t implement interface.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;exception&quot;&gt;Exception&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;int[] a = new int[10];
+int idx;
+Scanner in = new Scanner(System.in);
+idx = in.nextInt();
+try {
+    a[idx] = 10;
+    System.out.println(&quot;hello&quot;);
+} catch (ArrayIndexOutOfBoundsException e) {
+    System.out.println(&quot;Caught&quot;);
+}
+
+try {
+    // possible exception
+} catch (Type1 id1){
+    // deal with it
+} catch (Type2 id2){
+    // deal with it
+} catch (Type3 id3){
+    // deal with it
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;When it catches an exception in a function,it won’t lead to the termination, instead, it will go back the code where the function was called,skip over the function and continue running.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;try {
+    
+} catch (Exception e) {
+    System.out.println(&quot;caught&quot;);
+    System.out.println(e.getMessage);
+    System.out.println(e);
+    e.printStackTrace();
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;String getMessage();&lt;/li&gt;
+  &lt;li&gt;void printStackTrace();&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;try{
+
+} catch (Exception e) {
+    System.err.println(&quot;An exception was thrown&quot;);
+    throw e;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If you can’t deal with the exception, you can throw it again.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class OpenException extends Throwable {
+    
+}
+
+public class ArrayIndex{
+
+    public static void readFile() throws OpenException {
+        throw new OpenException();
+    }
+    
+    public static void main(String[] args) {
+        try {
+            readFile();
+        } catch (OpenException e) {
+            
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;throw new Exception();&lt;/li&gt;
+  &lt;li&gt;throw new Exception(“ERROR~”);&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;When you override a function,subclass can’t declare more exception than superclass.&lt;/p&gt;
+
+&lt;p&gt;All the possible exceptions must be declared in the constructor of subclass.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;stream&quot;&gt;Stream&lt;/h3&gt;
+&lt;h4 id=&quot;inputstream&quot;&gt;InputStream&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;int available();&lt;/li&gt;
+  &lt;li&gt;void close;&lt;/li&gt;
+  &lt;li&gt;void mark(int readlimit);&lt;/li&gt;
+  &lt;li&gt;boolean markSupported();&lt;/li&gt;
+  &lt;li&gt;abstract int read();&lt;/li&gt;
+  &lt;li&gt;int read(byte[] b);&lt;/li&gt;
+  &lt;li&gt;int read(byte[] b, int off, int len);&lt;/li&gt;
+  &lt;li&gt;void reset();&lt;/li&gt;
+  &lt;li&gt;long skip(long n);&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;outputstream&quot;&gt;OutputStream&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;void close();&lt;/li&gt;
+  &lt;li&gt;void flush();&lt;/li&gt;
+  &lt;li&gt;void write(byte[] b);&lt;/li&gt;
+  &lt;li&gt;void write(byte[] b, int off, int len);&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;abstract void write(int b);&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public class Main{
+    public class void main(String[] args) {
+        System.out.println(&quot;hello world&quot;);
+        byte[] buffer = new byte[1024];
+        try {
+            int len = System.in.read(buffer);//len-&amp;gt;GB code
+                String s = new String(buffer, 0, len);//s.length-&amp;gt;Unicode
+        } catch (IOException e)
+        e.printStackTrace();
+    }
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;fileinputstreamfileoutputstream&quot;&gt;FileInputStream/FileOutputStream&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class Main{
+   public class void main(String[] args) {
+    System.out.println(&quot;hello world&quot;);
+    byte[] buffer = new byte[10];
+    for (int i = 0; i&amp;lt;buffer.length; i++) {
+        buffer[i] = (byte)i;
+    }
+    try {
+        FileOutputStream out = new FileOutputStream(&quot;a.dat&quot;);
+        out.write(buffer);
+        out.close
+    } catch (FileNotFoundException e)
+        e.printStackTrace();
+    } catch (IOException e)
+        e.printStackTrace();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;stream-filter&quot;&gt;Stream Filter&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;try {
+    DataOutputStream out = new DataOutputStream(
+                                new BufferedOutputStream(
+                                    new FileOutputStream(&quot;a.dat&quot;)));
+    binary input and output
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;readerwriter&quot;&gt;Reader/Writer&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PrintWriter out = new PrintWriter(
+    new BufferWriter(
+        new OutputStreamWriter(
+            new FileOutputStream(&quot;a.txt&quot;))));
+            
+int i = 123456;
+out.println(i); //Unicode -&amp;gt; ASCII or GB code
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;BufferedReader in = new BufferedReader(
+                        new InputStreamReader(
+                            new FileInputStream(&quot;src/hello/Main.java&quot;)));
+
+String line;
+while ((line = in.readLine()) != null) {
+    System.out.println(line);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;BufferedReader readLine();&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;LineNumberReader getLineNumber();&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt; BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(&quot;utf8.txt&quot;), &quot;utf8&quot;));&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;streamreaderscanner&quot;&gt;Stream/Reader/Scanner&lt;/h4&gt;
+&lt;p&gt;binary -&amp;gt; InputStream&lt;/p&gt;
+
+&lt;p&gt;text -&amp;gt; Reader&lt;/p&gt;
+
+&lt;p&gt;data -&amp;gt; Scanner&lt;/p&gt;
+
+&lt;h4 id=&quot;socket&quot;&gt;Socket&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class Main {
+    public static void main(String[] args) {
+        try {
+            Socket socket = new Socket(InetAddress.getByName(&quot;localhost&quot;),12345);
+            PrintWriter out = new PrintWriter(
+                new BufferedWriter(
+                    new OutputStreamWriter(socket.getOutputStream)));
+            out.println(&quot;Hello&quot;);
+            out.flush();
+            BufferedReader in = new BufferedReader(
+                new InputStreamReader(
+                    socket.getInputStream()));
+            String line;
+            line = in.readLine();
+            System.out.println(line);
+            out.close;
+            socket.close();
+        } catch(IOException e){
+            e.printStackTrace;
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;terminal&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nc -l 12345
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;the read()/nextInt()/readLine() function is blocked,you can use thread of use nio channel&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;for socket,we can set SO time&lt;/p&gt;
+
+    &lt;p&gt;setSoTimeout(int timeOut)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;object-serialization&quot;&gt;Object Serialization&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;ObjectInputStream class&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;readObject();&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Student implements Serializable {
+        private String name;
+        private int age;
+        private int grade;
+    
+    public Student(String name, int age, int grade) {
+        this.name = name;
+        this.age = age;
+        this.grade = grade;
+    }
+
+     public String toString() {
+         return name+&quot; &quot;+age+&quot; &quot;+grade;
+     }
+ }
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            Student s1 = new Student(&quot;John&quot;,18,5);
+            System.out.println(s1);
+            ObjectOutputStream out = new ObjectOutputStream(
+                    new FileOutputStream(&quot;obj.dat&quot;))
+            out.writeObject(s1);
+            out.close();
+            ObjectInputStream in = new ObjectInputStream(
+                new FileInputStream(&quot;obj.dat&quot;));
+            Student s2 = (Student)in.readObject();
+            System.out.println(s2);//s1!=s2
+            in.close;
+        } catch (IOException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;inversion-of-control&quot;&gt;Inversion of Control&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;JButton btnStep = new JButton(&quot;Button&quot;);
+frame.add(btnStep, BorderLayout.NORTH);
+btnStep.addActionListener(new ActionListener() { 
+    @Override
+    public void actionPerformed(Action e) {
+        //.....
+    }
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;inner-class&quot;&gt;Inner class&lt;/h4&gt;
+&lt;p&gt;Inner class is defined in class or function, it can access all the resources outside, including any private member.(If it is defined in a function,it can only access the final variable)&lt;/p&gt;
+
+&lt;h4 id=&quot;anonymous-class&quot;&gt;Anonymous Class&lt;/h4&gt;
+&lt;p&gt;Anonymous Class can inherit class and implement interface.&lt;/p&gt;
+
+&lt;h3 id=&quot;mvc&quot;&gt;MVC&lt;/h3&gt;
+&lt;p&gt;M = Model&lt;/p&gt;
+
+&lt;p&gt;V = View&lt;/p&gt;
+
+&lt;p&gt;C = Control&lt;/p&gt;
+</description>
+        <pubDate>Wed, 24 Jan 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/Java.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Java.html</guid>
+        
+        <category>code</category>
+        
+        <category>java</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>JSON in Android</title>
+        <description>&lt;h3 id=&quot;json&quot;&gt;JSON:&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
+    &quot;name&quot;:{
+        &quot;firstName&quot;:&quot;John&quot;,
+        &quot;lastName&quot;:&quot;Doe&quot;,
+    }
+    &quot;title&quot;:&quot;Missing Person&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;initialize-json-object-from-json-string&quot;&gt;Initialize JSON Object from JSON string&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;JSONObject contact = new JSONObject(contactJSONString);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;name-into-a-json-object&quot;&gt;Name into a JSON Object&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;JSONObject name = contact.getJSONObject(&quot;name&quot;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;first-and-last-names&quot;&gt;First and last names&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;String firstName = name.getString(&quot;firstName&quot;);
+String lastName = name.getString(&quot;lastName&quot;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;title&quot;&gt;Title&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;String title = contact.getString(&quot;title&quot;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 </description>
-        <pubDate>Mon, 01 Apr 1918 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/books/kuangrenriji.html</link>
-        <guid isPermaLink="true">http://localhost:4000/books/kuangrenriji.html</guid>
+        <pubDate>Mon, 15 Jan 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/JSON-in-Android.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/JSON-in-Android.html</guid>
         
-        <category>chinese</category>
+        <category>code</category>
         
-        <category>luxun</category>
+        <category>Android</category>
         
-        <category>story</category>
+        <category>Java</category>
         
         
-        <category>books</category>
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>Connect to the Internet in Android</title>
+        <description>&lt;h3 id=&quot;ask-permissions&quot;&gt;Ask permissions&lt;/h3&gt;
+&lt;p&gt;Android manifest.xml&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;connect-to-the-internet&quot;&gt;Connect to the Internet&lt;/h3&gt;
+
+&lt;p&gt;In order to get an http connection,we just call an &lt;strong&gt;open connnection&lt;/strong&gt; on URL.Note that doesn’t actually talk to the network yet. It just creates the http URL connection object.&lt;/p&gt;
+
+&lt;p&gt;At this point,we could set the request method,or add header fields,of change properties of the connection.&lt;/p&gt;
+
+&lt;p&gt;We then get an input stream from the open connection.Next we have to read the contents of this input stream.There are many ways to do this in Java,but we’ve chosen to do using scanner,which is used to tokenize Streams,because it’s simple an relatively fast.&lt;/p&gt;
+
+&lt;p&gt;By setting the delimiter to \\A, beginning of the Stream.We force the scanner to read the entire contents of the stream into the next token stream.&lt;/p&gt;
+
+&lt;p&gt;It buffers the data. This means that it not only pulls the data from the network in small chunks,but because http isn’t required to give us a content size,our code needs to be ready to handle buffers of different sizes.This code automatically allocates and deallocates the buffer as needed. It also handles the character encoding for us.Specifically,it translates from UTF-8 which is the default encoding for json and JavaScript to UTF-16,the format used by android.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static String getResponseFromHttpUrl(URL url) throws IOException {
+    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+    try {
+        InputStream in = urlConnection.getInputStream();
+
+        Scanner scanner = new Scanner(in);
+        scanner.useDelimiter(&quot;\\A&quot;);
+
+        boolean hasInput = scanner.hasNext();
+        if (hasInput) {
+            return scanner.next();
+        } else {
+            return null;
+        }
+    } finally {
+        urlConnection.disconnect();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then we just have to change the makeGitHubSearchQuery method to call network utils that get response from URL rather than simply displaying the URL.Store the response in a string called GithubSearchResults.What’s more,cache that io exception.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;private void makeGithubSeachQuery(){
+    String githubQuery = mSearchBoxEditText.getText().toString();
+    URL githubSearchUrl = NetworkUtils.buildUrl(githubQuery);
+    mUrlDisplayTextView.setText(githubSearchUrl.toString());
+    String githubSearchResults = null;
+    try {
+        githubSearchResults = NetworkUtils.getResponseFromHttpUrl(githubSearchUrl);
+        mSearchBoxEditText.setText(githubSearchResults);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;async-task&quot;&gt;Async task&lt;/h3&gt;
+&lt;p&gt;Android throws an exception when you try to access the network on the main tread.We need to run the network task on a secondary execution thread.&lt;/p&gt;
+
+&lt;p&gt;AsyncTask allows you to run a task on a background thread while publishing results to the UI thread.The three types used by an AsyncTask are the following.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Params&lt;/li&gt;
+  &lt;li&gt;Progress&lt;/li&gt;
+  &lt;li&gt;Result&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;These three parameters correspond to three primary functions you can override in AsyncTask.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;doInBackground&lt;/li&gt;
+  &lt;li&gt;onProgressUpdate&lt;/li&gt;
+  &lt;li&gt;onPostExecute&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;onPreExecute&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public class GithubQueryTask extends AsyncTask&amp;lt;URL, Void, String&amp;gt; {
+  @Override
+  protected String doInBackground(URL... urls) {
+      URL searchUrl = urls[0];
+      String githubSearchResults = null;
+      try {
+          githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+      return githubSearchResults;
+  }
+
+  @Override
+  protected void onPostExecute(String s) {
+      if (s != null &amp;amp;&amp;amp; !s.equals(&quot;&quot;)) {
+          mSearchResultsTextView.setText(s);
+      }
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Start our AsyncTask,&lt;code class=&quot;highlighter-rouge&quot;&gt;makeGitHubSearchQuery&lt;/code&gt; replace the networking code with instantiating and executing our GitHubQueryTask.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; private void makeGithubSeachQuery(){
+    String githubQuery = mSearchBoxEditText.getText().toString();
+    URL githubSearchUrl = NetworkUtils.buildUrl(githubQuery);
+    mUrlDisplayTextView.setText(githubSearchUrl.toString());
+    String githubSearchResults = null;
+    new GithubQueryTask().execute(githubSearchUrl);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Mon, 15 Jan 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/Connect-to-the-Internet.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Connect-to-the-Internet.html</guid>
+        
+        <category>code</category>
+        
+        <category>Android</category>
+        
+        <category>Java</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>URL in Android</title>
+        <description>&lt;p&gt;Constants:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;final static String GITHUB_BASE_URL =
+        &quot;https://api.github.com/search/repositories&quot;;
+final static String PARAM_QUERY = &quot;q&quot;;
+final static String PARAM_SORT = &quot;sort&quot;;
+final static String sortBy = &quot;stars&quot;;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To build our search URL,we can take advantage of the &lt;code class=&quot;highlighter-rouge&quot;&gt;Android URI.builder&lt;/code&gt; framework class. It allows us to create a well-formed URI,without having to worry about the particulars of URI components.&lt;/p&gt;
+
+&lt;p&gt;For example, adding&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;amp;&lt;/code&gt;between query parameters and encoding invalid characters with a percent followed by the character code.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;URL&lt;/code&gt; is a specific class of &lt;code class=&quot;highlighter-rouge&quot;&gt;Uri&lt;/code&gt;.Once we’ve created our base URI by parsing the &lt;code class=&quot;highlighter-rouge&quot;&gt;GITHUB_BASE_URL&lt;/code&gt; string we created a &lt;code class=&quot;highlighter-rouge&quot;&gt;Uri.builder&lt;/code&gt; using the buildUpon method.&lt;/p&gt;
+
+&lt;p&gt;Then we can call &lt;code class=&quot;highlighter-rouge&quot;&gt;appendQuery&lt;/code&gt; parameter for our search query and sort fields.Finally we call &lt;code class=&quot;highlighter-rouge&quot;&gt;build&lt;/code&gt; to produce the Uri we’ll use to query GITHUB.&lt;/p&gt;
+
+&lt;p&gt;However,this produces an &lt;strong&gt;Android Uri&lt;/strong&gt; while our method requires a &lt;strong&gt;Java URL&lt;/strong&gt;.We can convert our new built Uri to a Java URL by passing it as a string parameter to the Java URL constructor.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static URL buildUrl(String githubSearchQuery) {
+    Uri builtUri = Uri.parse(GITHUB_BASE_URL).buildUpon()
+            .appendQueryParameter(PARAM_QUERY,githubSearchQuery)
+            .appendQueryParameter(PARAM_SORT,sortBy)
+            .build();
+
+    URL url = null;
+    try {
+        url = new URL(builtUri.toString());
+    }catch (MalformedURLException e){
+        e.printStackTrace();
+    }
+    return url;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then make a method called &lt;code class=&quot;highlighter-rouge&quot;&gt;makeGithubSearchQuery&lt;/code&gt;. It pulls the githubQuery from the edit text,calls the &lt;code class=&quot;highlighter-rouge&quot;&gt;buildUrl&lt;/code&gt; method we just wrote, and displays the resulting URL in the Url DisplayTextView.&lt;/p&gt;
+
+&lt;p&gt;Finally,we call to the &lt;code class=&quot;highlighter-rouge&quot;&gt;makeGithubSearchQuery&lt;/code&gt; method from &lt;code class=&quot;highlighter-rouge&quot;&gt;onOptionItemSelected&lt;/code&gt;.Now when we hit the search button in the action bar,we’ll display the URL that we’re going to query.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;private void makeGithubSeachQuery(){
+    String githubQuery = mSearchBoxEditText.getText().toString();
+    URL githubSearchUrl = NetworkUtils.buildUrl(githubQuery);
+    mUrlDisplayTextView.setText(githubSearchUrl.toString());
+}
+
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+    int itemThatWasClickedId = item.getItemId();
+    if (itemThatWasClickedId == R.id.action_search) {
+        makeGithubSeachQuery();
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Sun, 14 Jan 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/URL.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/URL.html</guid>
+        
+        <category>code</category>
+        
+        <category>Android</category>
+        
+        <category>Java</category>
+        
+        
+        <category>coding</category>
         
       </item>
     

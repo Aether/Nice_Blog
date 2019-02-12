@@ -5,7 +5,7 @@ subtitle: ""
 date: 2018-12-20
 author: Aether
 category: coding
-tags: CSAPP PROGRAM PROCESS
+tags: CSAPP 
 finished: true
 ---
 

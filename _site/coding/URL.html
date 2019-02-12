@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- CSS -->
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/coding/URL.html">
+  <link rel="alternate" type="application/rss+xml" title="Aether's Blog" href="http://localhost:4000/feed.xml">
+
+<!-- Google font -->
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto Sans">
+
+<!-- font awesome -->
+
+<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
+
+</head>
+
+
+  
+
+  
+
+  </head>
+
+  <body>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>URL in Android</title>
+  <meta name="description" content="Constants:">
+</head>
+
+
+  <div class="wrapper">
+          <header class="post-header">
+
+    <center><div class="post-title" itemprop="name headline">URL in Android</div>
+
+		<div class="post-meta"><i class="fa fa-calendar-o"></i> <time datetime="14 Jan 2018" itemprop="datePublished">Jan 14 2018</time>
+
+		&nbsp;&nbsp;•&nbsp;&nbsp;<i class="fa fa-user-secret"></i> <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Aether</span>
+        
+		<br>
+	</div>
+
+        
+        <div class="post-tags">
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">code</a>
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">Android</a>
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">Java</a>
+        
+	</div>
+    </center>
+
+</header>
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<div class="post-content">
+    <center>
+	
+	<p></p>
+	
+    </center>
+</div>
+
+
+
+<div class="post-content" itemprop="articleBody">
+    <p>Constants:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>final static String GITHUB_BASE_URL =
+        "https://api.github.com/search/repositories";
+final static String PARAM_QUERY = "q";
+final static String PARAM_SORT = "sort";
+final static String sortBy = "stars";
+</code></pre></div></div>
+
+<p>To build our search URL,we can take advantage of the <code class="highlighter-rouge">Android URI.builder</code> framework class. It allows us to create a well-formed URI,without having to worry about the particulars of URI components.</p>
+
+<p>For example, adding<code class="highlighter-rouge">&amp;</code>between query parameters and encoding invalid characters with a percent followed by the character code.</p>
+
+<hr />
+
+<p><code class="highlighter-rouge">URL</code> is a specific class of <code class="highlighter-rouge">Uri</code>.Once we’ve created our base URI by parsing the <code class="highlighter-rouge">GITHUB_BASE_URL</code> string we created a <code class="highlighter-rouge">Uri.builder</code> using the buildUpon method.</p>
+
+<p>Then we can call <code class="highlighter-rouge">appendQuery</code> parameter for our search query and sort fields.Finally we call <code class="highlighter-rouge">build</code> to produce the Uri we’ll use to query GITHUB.</p>
+
+<p>However,this produces an <strong>Android Uri</strong> while our method requires a <strong>Java URL</strong>.We can convert our new built Uri to a Java URL by passing it as a string parameter to the Java URL constructor.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public static URL buildUrl(String githubSearchQuery) {
+    Uri builtUri = Uri.parse(GITHUB_BASE_URL).buildUpon()
+            .appendQueryParameter(PARAM_QUERY,githubSearchQuery)
+            .appendQueryParameter(PARAM_SORT,sortBy)
+            .build();
+
+    URL url = null;
+    try {
+        url = new URL(builtUri.toString());
+    }catch (MalformedURLException e){
+        e.printStackTrace();
+    }
+    return url;
+}
+</code></pre></div></div>
+
+<p>Then make a method called <code class="highlighter-rouge">makeGithubSearchQuery</code>. It pulls the githubQuery from the edit text,calls the <code class="highlighter-rouge">buildUrl</code> method we just wrote, and displays the resulting URL in the Url DisplayTextView.</p>
+
+<p>Finally,we call to the <code class="highlighter-rouge">makeGithubSearchQuery</code> method from <code class="highlighter-rouge">onOptionItemSelected</code>.Now when we hit the search button in the action bar,we’ll display the URL that we’re going to query.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>private void makeGithubSeachQuery(){
+    String githubQuery = mSearchBoxEditText.getText().toString();
+    URL githubSearchUrl = NetworkUtils.buildUrl(githubQuery);
+    mUrlDisplayTextView.setText(githubSearchUrl.toString());
+}
+
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+    int itemThatWasClickedId = item.getItemId();
+    if (itemThatWasClickedId == R.id.action_search) {
+        makeGithubSeachQuery();
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
+}
+</code></pre></div></div>
+
+</div>
+
+<div>
+	
+	<div class="eof"></div>
+	
+</div>
+
+<div class="share">
+    <p>Share this post with: </p>
+	<a href="https://twitter.com/intent/tweet?text=URL in Android@&amp;url=http://localhost:4000/coding/URL.html" class="twitter-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/coding/URL.html" class="facebook-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://plus.google.com/share?url=http://localhost:4000/coding/URL.html" class="googleplus-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+</div>
+
+
+<div id="disqus_thread"></div>
+
+
+ 
+</div>
+
+
+</article>
+
+  </div>
+
+</body>
+
+<foot>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <center>
+
+		<p><a class="link" href="/archive/">Archive</a> /
+		<a class="link" href="/category/">Category</a> /
+		<a class="link" href="/tags/">Tags</a> /
+		<a class="link" href="/about/">About</a> /
+		<a class="link" href="/contact/">Contact</a>
+        </p>
+
+        <span><script>document.write(new Date().getFullYear());</script></span>
+        <span>&copy;</span>
+
+		<a class="link" href="https://aether.github.io">Aether</a>
+		<br>
+
+    </center>
+
+  </div>
+
+</footer>
+
+    <foot>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Derictory -->
+
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script src="http://yandex.st/highlightjs/6.2/highlight.min.js"></script>
+
+<!-- Hit analytics -->
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Directory -->
+
+<script src="/js/main.js"></script>
+
+</foot>
+
+
+</foot>
+
+</html>

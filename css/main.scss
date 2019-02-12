@@ -5,7 +5,7 @@
 
 
 // Our variables
-$base-font-family: 'Noto Sans', serif;
+$base-font-family: Consolas,'Noto Sans', serif;
 $base-font-size:   18px;
 $base-font-weight: lighter;
 $base-font-color: #333;
@@ -59,7 +59,7 @@ $on-laptop:        800px;
 
 body {
     font-weight: lighter;
-  font: 400 18px/1.5 "Noto Sans", serif;
+  font: 400 18px/1.5 Consolas,"Noto Sans",serif;
   color: #4e595e;
   background-color: #fdfdfd;
   -webkit-text-size-adjust: 100%;
@@ -191,15 +191,16 @@ hr {
  */
 pre,
 code {
-    font-weight: lighter;
+  font-weight: lighter;
   font-size: 16px;
   border: 1px solid #d4e0ec;
   border-radius: 4px;
   background-color: #f8f8f8;
-  color: #456976; }
+  font-weight: lighter!important;
+  font-style: normal!important;
+  color: #456976!important; }
 
 code {
-
   padding: 1px 5px; }
 
 pre {
@@ -208,6 +209,7 @@ pre {
   overflow-x: auto; }
   pre > code {
     border: 0;
+
     padding-right: 0;
     padding-left: 0; }
 
@@ -396,7 +398,9 @@ table, th {
     margin-left: 0px;
     font-size: 20px;
   }
-  .post-content h5,
+  .post-content h5{
+    margin-left: 0px;
+  }
   .post-content h6 {
     font-size: 18px;
     margin: 24px; }
