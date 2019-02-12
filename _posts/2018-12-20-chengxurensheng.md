@@ -14,7 +14,7 @@ finished: true
 却在短短几分钟后惨遭每个菜鸟的无情抛弃（呜呜……），他们很快喜欢上sum、sort、matrix、PR、AI、IOT、BD、MIS……，从不回头。
 只有我自己知道，我的出身有多么高贵，我的一生多么坎坷！
 多年后，那些真懂我的大佬（也是曾经的菜鸟一枚），才恍然感悟我的伟大！
-想当年：            俺才是第一个玩 P2P的: From Program to Process
+想当年：俺才是第一个玩 P2P的: From Program to Process
 懵懵懂懂的你笨笨磕磕的将我一字一键敲进电脑存成hello.c（Program），无意识中将我预处理、编译、汇编、链接，历经艰辛，我-Hello一个完美的生命诞生了。
 你知道吗？在壳(Bash)里，伟大的OS（进程管理）为我fork（Process）,为我execve,为我mmap，分我时间片，让我得以在Hardware(CPU/RAM/IO)上驰骋（取指译码执行/流水线等）；
 你知道吗？OS（存储管理）与MMU为VA到PA操碎了心；TLB、4级页表、3级Cache，Pagefile等等各显神通为我加速；IO管理与信号处理使尽了浑身解数，软硬结合，才使我能在键盘、主板、显卡、屏幕间游刃有余, 虽然我在台上的表演只是一瞬间、演技看起来还很Low、效果很惨白。
@@ -24,13 +24,15 @@ finished: true
 
 本文从每个程序猿的初恋——hello.c出发，探究hello from Program to Process的生命周期。从代码hello.c如何一步步转变为可执行程序hello，再到shell中如何创建、加载、运行hello进程，运行过程中CPU、RAM、IO发生了什么，MMU、TLB、PageFile、四级页表、三级Cache访问在幕后贡献了多少力量，hello又是如何被回收……通过了解hello短暂而精彩的一生去理解计算机系统的具体实现。
 
-    // 大作业的 hello.c 程序
-    // gcc -m64 -no-pie -fno-PIC hello.c -o hello
-    // 程序运行过程中可以按键盘，如不停乱按，包括回车，Ctrl-Z，Ctrl-C等。
-    // 可以 运行 ps  jobs  pstree fg 等命令
-    
+    /**
+    * 大作业的 hello.c 程序
+    * gcc -m64 -no-pie -fno-PIC hello.c -o hello
+    * 程序运行过程中可以按键盘，如不停乱按，包括回车，Ctrl-Z，Ctrl-C等。
+    * 可以 运行 ps  jobs  pstree fg 等命令
+    **/
+
     #include <stdio.h>
-    #include <unistd.h> 
+    #include <unistd.h>
     #include <stdlib.h>
     
     int sleepsecs=2.5;
@@ -56,6 +58,7 @@ finished: true
 ---
     
 # 预处理
+
 ### 预处理的概念与作用
 预处理指在程序进行编译前对源代码进行处理的过程，生成.i文本文件。
 预处理器cpp对程序源代码文本进行处理：
@@ -179,14 +182,11 @@ C语言运算符中优先级最低的一种运算符。当顺序点用，结合�
 相对寻址 D(R) — Mem[Reg[R]+D]，D为常数偏移量。
 多维数组的储存为行优先
 
-<div align=center>
 ![](https://s1.ax1x.com/2018/12/29/FfnQLd.jpg){:height="60%" width="70%"}
-</div>
 
 多层次数组： 每个元素是一个指针类型，为数组首地址。
-<div align=center>
+
 ![Ffn4m9.jpg](https://s1.ax1x.com/2018/12/29/Ffn4m9.jpg){:height="60%" width="70%"}
-</div>
 **结构体**
 
 完整内存寻址 D(Rb, Ri, S) — Mem[Reg[Rb]+S*Reg[Ri]+D]
@@ -339,7 +339,8 @@ shell为hello调用fork()生成子进程，以argv envp 为参数调用execve在
 
 _start定义在系统目标文件ctrl.o中。_start调用系统启动函数__libc_start_main，__libc_start_main被定义在libc.so中，初始化执行环境。
 
-## 进程管理
+---
+# 进程管理
 ### 进程的概念与作用
 进程，是操作系统对一个正在运行的程序的一种抽象，是执行中程序的一个具体的实例。系统中每个程序都运行在**上下文**中。
 进程提供给应用程序两个关键的抽象：**一个独立的逻辑控制流**和**一个私有的地址空间**。
@@ -411,7 +412,7 @@ hello中的printf调用write函数，write函数通过产生陷阱使系统调�
 
 先简单介绍一下Linux虚拟内存系统。
 
-![FfnKQe.jpg](https://s1.ax1x.com/2018/12/29/FfnKQe.jpg){:height="30%" width="50%"}
+![FfnKQe.jpg](https://s1.ax1x.com/2018/12/29/FfnKQe.jpg){:height="30%" width="35%"}
 
 Linux将虚拟内存组织成一些段的集合去管理，图展示了一个Linux进程的虚拟内存，由内核代码段、内核数据段、用户代码段、用户数据段等组成。
 

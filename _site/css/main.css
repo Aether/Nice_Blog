@@ -626,8 +626,8 @@ ul, ol, dl, figure,
  * Images
  */
 img {
-  display: block;
-  margin: 0 auto;
+  display: run-in;
+  margin: 15px auto;
   max-width: 100%; }
 
 /**
@@ -738,7 +738,7 @@ code {
   font-weight: lighter;
   font-size: 16px;
   border: 1px solid #d4e0ec;
-  border-radius: 8px;
+  border-radius: 4px;
   background-color: #f8f8f8;
   color: #456976; }
 
@@ -940,7 +940,10 @@ table, th {
   margin-left: 0px;
   font-size: 22px; }
 
-.post-content h4,
+.post-content h4 {
+  margin-left: 0px;
+  font-size: 20px; }
+
 .post-content h5,
 .post-content h6 {
   font-size: 18px;
