@@ -6,9 +6,295 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 13 Feb 2019 01:10:55 +0800</pubDate>
-    <lastBuildDate>Wed, 13 Feb 2019 01:10:55 +0800</lastBuildDate>
+    <pubDate>Wed, 13 Feb 2019 01:30:54 +0800</pubDate>
+    <lastBuildDate>Wed, 13 Feb 2019 01:30:54 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
+    
+      <item>
+        <title>Caffe</title>
+        <description>&lt;h2 id=&quot;homebrew--macos-缺失的软件包的管理器&quot;&gt;Homebrew —— macOS 缺失的软件包的管理器&lt;/h2&gt;
+
+&lt;h3 id=&quot;安装homebrew&quot;&gt;安装Homebrew&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;使用 Homebrew 安装 Apple 没有预装但你需要的东西。Homebrew 会将软件包安装到独立目录，并将其文件软链接至 /usr/local。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ brew install wget
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;添加依赖&quot;&gt;添加依赖&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install -vd snappy leveldb gflags glog szip lmdb
+brew tap homebrew/science
+brew install hdf5 opencv
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;brew-edit-opencv-修改以下内容&quot;&gt;brew edit opencv 修改以下内容&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-DPYTHON_LIBRARY=#{py_prefix}/lib/libpython2.7.dylib
+-DPYTHON_INCLUDE_DIR=#{py_prefix}/include/python2.7
+
+# with Python pycaffe needs dependencies built from source
+brew install --build-from-source --with-python -vd protobuf
+brew install --build-from-source -vd boost boost-python
+# without Python the usual installation suffices
+brew install protobuf boost
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;编译&quot;&gt;编译&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir build
+cd build
+cmake ..
+make all
+make install
+make runtest
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;solutions&quot;&gt;Solutions&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python/caffe/_caffe.cpp:1:10: fatal error: 'Python.h' file not found
+
+export CPLUS_INCLUDE_PATH=&quot;$CPLUS_INCLUDE_PATH:/anaconda3/pkgs/python-3.6.5-hc167b69_1/include/python3.6m&quot;
+
+python/caffe/_caffe.cpp:10:10: fatal error: 'numpy/arrayobject.h' file not found
+
+export CPLUS_INCLUDE_PATH=&quot;$CPLUS_INCLUDE_PATH:/anaconda3/lib/python3.6/site-packages/numpy/core/include&quot;
+     
+conda create -n py2 python=2.7
+activate/deactivate py2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;修改环境变量&quot;&gt;修改环境变量&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; 打开配置文件
+ $ open ~/.bash_profile
+
+ 写入python的外部环境变量
+ export PATH=${PATH}:/Library/Frameworks/Python.framework/Versions/3.6/bin
+ 
+重命名python
+alias python=&quot;/Library/Frameworks/Python.framework/Versions/3.6/bin/python3.6&quot;
+（这步很重要，直接关系到默认启动的python版本是否修改）
+
+$ source ~/.bash_profile
+
+查看是否修改成功
+$ python
+
+export PYTHONPATH=&amp;lt;path_to_caffe&amp;gt;/caffe-1.0/python:$PYTHONPATH
+
+verify build
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;检验安装是否成功&quot;&gt;检验安装是否成功&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python -c 'import caffe'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;install--launch-digits&quot;&gt;install &amp;amp; launch DIGITS&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;添加环境变量
+export DIGITS_ROOT=&quot;~/Documents/DIGITS&quot;
+export CAFFE_ROOT='~/Documents/caffe'
+
+git clone https://github.com/NVIDIA/caffe.git $CAFFE_ROOT
+cd $DIGITS_ROOT
+sudo pip install -r $CAFFE_ROOT/python/requirements.txt
+open ./digits-devserver 修改最后一行 python 为 python2.7
+
+运行
+./digits-devserver
+
+http://localhost:5000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Caught PicklingError while saving job 20171212-140813-6b62: Can't pickle &amp;lt;class 'caffe.proto.caffe_pb2.NetParameter'&amp;gt;: it's not the same object as caffe.proto.caffe_pb2.NetParameter
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;this bug has a long story https://github.com/NVIDIA/DIGITS/issues/306&lt;/p&gt;
+
+&lt;p&gt;Replace all the &lt;code class=&quot;highlighter-rouge&quot;&gt;import caffe_pb2&lt;/code&gt; with &lt;code class=&quot;highlighter-rouge&quot;&gt;import caffe.proto.caffe_pb2 as caffe_pb2&lt;/code&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 10 Feb 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/Caffe.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Caffe.html</guid>
+        
+        <category>CAFFE</category>
+        
+        <category>INSTALL</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>Raspberry Pi</title>
+        <description>&lt;h2 id=&quot;wifi&quot;&gt;WIFI&lt;/h2&gt;
+&lt;p&gt;在根目录下添加&lt;code class=&quot;highlighter-rouge&quot;&gt;wpa_supplicant.conf&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;ssh&lt;/code&gt;两个文件，其中&lt;code class=&quot;highlighter-rouge&quot;&gt;ssh&lt;/code&gt;为空&lt;/p&gt;
+&lt;h3 id=&quot;bootwpa_supplicantconf&quot;&gt;/boot/wpa_supplicant.conf&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;country=GB
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+    ssid=&quot;WIFI名&quot;
+    psk=&quot;WIFI密码&quot;
+    key_mgmt=WPA-PSK
+    priority=1
+}
+
+network={
+    ssid=&quot;WIFI名&quot;
+    psk=&quot;WIFI密码&quot;
+    key_mgmt=WPA-PSK
+    priority=2
+} --- ## Bluetooth
+
+安装支持包
+sudo apt-get install pi-bluetooth
+sudo apt-get install bluetooth bluez blueman
+
+添加pi用户到蓝牙组 
+sudo usermod -G bluetooth -a pi
+
+启动/增加SPP
+sudo nano /etc/systemd/system/dbus-org.bluez.service 
+  
+修改内容如下:
+ExecStart=/usr/lib/bluetooth/bluetoothd -C
+ExecStartPost=/usr/bin/sdptool add SP
+
+连接蓝牙
+sudo rfcomm watch hci0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+&lt;h2 id=&quot;gps--l80-m39&quot;&gt;GPS  L80-M39&lt;/h2&gt;
+
+&lt;h3 id=&quot;1-安装gps模块需要的包&quot;&gt;1. 安装GPS模块需要的包&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get update &amp;amp;&amp;amp; sudo apt-get -y install gpsd gpsd-clients python-gps
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;2-重启树莓派重新配置gps服务&quot;&gt;2. 重启树莓派，重新配置GPS服务&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo dpkg-reconfigure gpsd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;3-开启gps模块服务&quot;&gt;3. 开启GPS模块服务:&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;4-停止gps服务&quot;&gt;4. 停止GPS服务:&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo killall gpsd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;5-你也可以使用systemctl命令管理gps服务但在那之前需要修改文件etcdefaultgpsd&quot;&gt;5. 你也可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;systemctl&lt;/code&gt;命令管理GPS服务，但在那之前需要修改文件&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/default/gpsd&lt;/code&gt;&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;START_DAEMON=&quot;true&quot;
+USBAUTO=&quot;true&quot;
+DEVICES=&quot;/dev/ttyUSB0&quot;
+GPSD_OPTIONS=&quot;-F /var/run/gpsd.socket&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;开始服务&quot;&gt;开始服务:&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo systemctl enable gpsd.sock sudo systemctl start gpsd.sock
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;停止服务&quot;&gt;停止服务:&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo systemctl stop gpsd.sock sudo systemctl disable gpsd.sock
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;获取模块信息&quot;&gt;获取模块信息&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo cgps -s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;如果不能正常获得信息使用以下命令检查串口工作是否正常&quot;&gt;如果不能正常获得信息，使用以下命令检查串口工作是否正常&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cat/dev/ttyUSB0 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;无定位情况下显示如下&quot;&gt;无定位情况下显示如下:&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pi@raspberrypi ~ $ sudo cat /dev/ttyUSB0
+$GPRMC,144034.00,V,,,,,,,090315,,,N*75
+$GPVTG,,,,,,,,,N*30
+$GPGGA,144034.00,,,,,0,00,99.99,,,,,,*60
+$GPGSA,A,1,,,,,,,,,,,,,99.99,99.99,99.99*30
+$GPGSV,1,1,01,15,,,25*7B
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;NO FIX&lt;/code&gt; 即未定位，将模块移动到室外空旷处将获得定位信息。&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h2 id=&quot;ssh&quot;&gt;SSH&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;使用ssh登陆pi 默认用户名pi 密码raspberry
+ssh pi@192.168.2.104
+
+新建vnc服务 VNCViewer中ip:port登陆 默认port为0
+vncservice
+
+停止对应的vnc服务进程
+vncservice -kill :1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;使用python解析串口数据并发送至蓝牙&quot;&gt;使用python解析串口数据并发送至蓝牙&lt;/h2&gt;
+
+&lt;h3 id=&quot;准备&quot;&gt;准备&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;安装python库
+sudo aptitude install python-dev
+sudo apt-get install python-serial
+python -m pip install pynmea2
+
+赋予串口读写权限
+sudo chmod 777 /dev/rfcomm0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;python代码&quot;&gt;python代码：&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import serial
+import pynmea2
+import time
+ser1 = serial.Serial(&quot;/dev/ttyUSB0&quot;,9600)
+ser2 = serial.Serial('/dev/rfcomm0',9600,parity=serial.PARITY_NONE)
+if ser2.isOpen == False:
+    ser2.open()
+ser2.write(&quot;serial turn on\n&quot;)
+
+try:
+    while True:
+        line = ser1.readline()
+        if line.startswith('$GPRMC'):
+            rmc = pynmea2.parse(line)
+            ser2.write(&quot;Latitude: &quot; +rmc.lat +&quot;Longitude: &quot;+rmc.lon+&quot;\n&quot;)
+        
+except KeyboardInterrupt:
+        ser2.close()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Wed, 23 Jan 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/Raspberry-Pi.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Raspberry-Pi.html</guid>
+        
+        <category>RaspberryPi</category>
+        
+        <category>INSTALL</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
     
       <item>
         <title>程序人生 ——Hello’s P2P</title>
@@ -923,11 +1209,11 @@ fun main(args: Array&amp;lt;String&amp;gt;) {
         <link>http://localhost:4000/coding/Kotlin.html</link>
         <guid isPermaLink="true">http://localhost:4000/coding/Kotlin.html</guid>
         
-        <category>code</category>
+        <category>CODE</category>
         
-        <category>Kotlin</category>
+        <category>KOTLIN</category>
         
-        <category>Android</category>
+        <category>ANDROID</category>
         
         
         <category>coding</category>
@@ -1292,9 +1578,9 @@ match.span()&lt;/p&gt;
         <link>http://localhost:4000/coding/Crawler.html</link>
         <guid isPermaLink="true">http://localhost:4000/coding/Crawler.html</guid>
         
-        <category>code</category>
+        <category>CODE</category>
         
-        <category>Python</category>
+        <category>PYTHON</category>
         
         
         <category>coding</category>
@@ -1718,9 +2004,9 @@ btnStep.addActionListener(new ActionListener() {
         <link>http://localhost:4000/coding/Java.html</link>
         <guid isPermaLink="true">http://localhost:4000/coding/Java.html</guid>
         
-        <category>code</category>
+        <category>CODE</category>
         
-        <category>java</category>
+        <category>JAVA</category>
         
         
         <category>coding</category>
@@ -1766,11 +2052,11 @@ String lastName = name.getString(&quot;lastName&quot;);
         <link>http://localhost:4000/coding/JSON-in-Android.html</link>
         <guid isPermaLink="true">http://localhost:4000/coding/JSON-in-Android.html</guid>
         
-        <category>code</category>
+        <category>CODE</category>
         
-        <category>Android</category>
+        <category>ANDROID</category>
         
-        <category>Java</category>
+        <category>JAVA</category>
         
         
         <category>coding</category>
@@ -1892,11 +2178,11 @@ String lastName = name.getString(&quot;lastName&quot;);
         <link>http://localhost:4000/coding/Connect-to-the-Internet.html</link>
         <guid isPermaLink="true">http://localhost:4000/coding/Connect-to-the-Internet.html</guid>
         
-        <category>code</category>
+        <category>CODE</category>
         
-        <category>Android</category>
+        <category>ANDROID</category>
         
-        <category>Java</category>
+        <category>JAVA</category>
         
         
         <category>coding</category>
@@ -1967,11 +2253,11 @@ public boolean onOptionsItemSelected(MenuItem item) {
         <link>http://localhost:4000/coding/URL.html</link>
         <guid isPermaLink="true">http://localhost:4000/coding/URL.html</guid>
         
-        <category>code</category>
+        <category>CODE</category>
         
-        <category>Android</category>
+        <category>ANDROID</category>
         
-        <category>Java</category>
+        <category>JAVA</category>
         
         
         <category>coding</category>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- CSS -->
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/coding/Caffe.html">
+  <link rel="alternate" type="application/rss+xml" title="Aether's Blog" href="http://localhost:4000/feed.xml">
+
+<!-- Google font -->
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto Sans">
+
+<!-- font awesome -->
+
+<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
+
+</head>
+
+
+  
+
+  
+
+  </head>
+
+  <body>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Caffe</title>
+  <meta name="description" content="Homebrew —— macOS 缺失的软件包的管理器安装Homebrew/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"使用 Homebrew 安装 Apple ...">
+</head>
+
+
+  <div class="wrapper">
+          <header class="post-header">
+
+    <center><div class="post-title" itemprop="name headline">Caffe</div>
+
+		<div class="post-meta"><i class="fa fa-calendar-o"></i> <time datetime="10 Feb 2019" itemprop="datePublished">Feb 10 2019</time>
+
+		&nbsp;&nbsp;•&nbsp;&nbsp;<i class="fa fa-user-secret"></i> <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Aether</span>
+        
+		<br>
+	</div>
+
+        
+        <div class="post-tags">
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">CAFFE</a>
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">INSTALL</a>
+        
+	</div>
+    </center>
+
+</header>
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<div class="post-content">
+    <center>
+	
+	<p></p>
+	
+    </center>
+</div>
+
+
+
+<div class="post-content" itemprop="articleBody">
+    <h2 id="homebrew--macos-缺失的软件包的管理器">Homebrew —— macOS 缺失的软件包的管理器</h2>
+
+<h3 id="安装homebrew">安装Homebrew</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+</code></pre></div></div>
+
+<p>使用 Homebrew 安装 Apple 没有预装但你需要的东西。Homebrew 会将软件包安装到独立目录，并将其文件软链接至 /usr/local。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ brew install wget
+</code></pre></div></div>
+
+<h3 id="添加依赖">添加依赖</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install -vd snappy leveldb gflags glog szip lmdb
+brew tap homebrew/science
+brew install hdf5 opencv
+</code></pre></div></div>
+
+<h3 id="brew-edit-opencv-修改以下内容">brew edit opencv 修改以下内容</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-DPYTHON_LIBRARY=#{py_prefix}/lib/libpython2.7.dylib
+-DPYTHON_INCLUDE_DIR=#{py_prefix}/include/python2.7
+
+# with Python pycaffe needs dependencies built from source
+brew install --build-from-source --with-python -vd protobuf
+brew install --build-from-source -vd boost boost-python
+# without Python the usual installation suffices
+brew install protobuf boost
+</code></pre></div></div>
+
+<h3 id="编译">编译</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir build
+cd build
+cmake ..
+make all
+make install
+make runtest
+</code></pre></div></div>
+
+<h3 id="solutions">Solutions</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python/caffe/_caffe.cpp:1:10: fatal error: 'Python.h' file not found
+
+export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/anaconda3/pkgs/python-3.6.5-hc167b69_1/include/python3.6m"
+
+python/caffe/_caffe.cpp:10:10: fatal error: 'numpy/arrayobject.h' file not found
+
+export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/anaconda3/lib/python3.6/site-packages/numpy/core/include"
+     
+conda create -n py2 python=2.7
+activate/deactivate py2
+</code></pre></div></div>
+
+<h3 id="修改环境变量">修改环境变量</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 打开配置文件
+ $ open ~/.bash_profile
+
+ 写入python的外部环境变量
+ export PATH=${PATH}:/Library/Frameworks/Python.framework/Versions/3.6/bin
+ 
+重命名python
+alias python="/Library/Frameworks/Python.framework/Versions/3.6/bin/python3.6"
+（这步很重要，直接关系到默认启动的python版本是否修改）
+
+$ source ~/.bash_profile
+
+查看是否修改成功
+$ python
+
+export PYTHONPATH=&lt;path_to_caffe&gt;/caffe-1.0/python:$PYTHONPATH
+
+verify build
+</code></pre></div></div>
+
+<h3 id="检验安装是否成功">检验安装是否成功</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python -c 'import caffe'
+</code></pre></div></div>
+
+<h3 id="install--launch-digits">install &amp; launch DIGITS</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>添加环境变量
+export DIGITS_ROOT="~/Documents/DIGITS"
+export CAFFE_ROOT='~/Documents/caffe'
+
+git clone https://github.com/NVIDIA/caffe.git $CAFFE_ROOT
+cd $DIGITS_ROOT
+sudo pip install -r $CAFFE_ROOT/python/requirements.txt
+open ./digits-devserver 修改最后一行 python 为 python2.7
+
+运行
+./digits-devserver
+
+http://localhost:5000
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Caught PicklingError while saving job 20171212-140813-6b62: Can't pickle &lt;class 'caffe.proto.caffe_pb2.NetParameter'&gt;: it's not the same object as caffe.proto.caffe_pb2.NetParameter
+</code></pre></div></div>
+
+<p>this bug has a long story https://github.com/NVIDIA/DIGITS/issues/306</p>
+
+<p>Replace all the <code class="highlighter-rouge">import caffe_pb2</code> with <code class="highlighter-rouge">import caffe.proto.caffe_pb2 as caffe_pb2</code>.</p>
+
+</div>
+
+<div>
+	
+	<div class="eof"></div>
+	
+</div>
+
+<div class="share">
+    <p>Share this post with: </p>
+	<a href="https://twitter.com/intent/tweet?text=Caffe@&amp;url=http://localhost:4000/coding/Caffe.html" class="twitter-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/coding/Caffe.html" class="facebook-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://plus.google.com/share?url=http://localhost:4000/coding/Caffe.html" class="googleplus-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+</div>
+
+
+<div id="disqus_thread"></div>
+
+
+ 
+</div>
+
+
+</article>
+
+  </div>
+
+</body>
+
+<foot>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <center>
+
+		<p><a class="link" href="/archive/">Archive</a> /
+		<a class="link" href="/category/">Category</a> /
+		<a class="link" href="/tags/">Tags</a> /
+		<a class="link" href="/about/">About</a> /
+		<a class="link" href="/contact/">Contact</a>
+        </p>
+
+        <span><script>document.write(new Date().getFullYear());</script></span>
+        <span>&copy;</span>
+
+		<a class="link" href="https://aether.github.io">Aether</a>
+		<br>
+
+    </center>
+
+  </div>
+
+</footer>
+
+    <foot>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Derictory -->
+
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script src="http://yandex.st/highlightjs/6.2/highlight.min.js"></script>
+
+<!-- Hit analytics -->
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Directory -->
+
+<script src="/js/main.js"></script>
+
+</foot>
+
+
+</foot>
+
+</html>

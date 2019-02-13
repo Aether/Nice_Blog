@@ -5,7 +5,7 @@ subtitle: ""
 date: 2018-01-15
 author: Aether
 category: coding
-tags: code Android Java
+tags: CODE ANDROID JAVA
 finished: true
 ---
 

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- CSS -->
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/coding/Raspberry-Pi.html">
+  <link rel="alternate" type="application/rss+xml" title="Aether's Blog" href="http://localhost:4000/feed.xml">
+
+<!-- Google font -->
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto Sans">
+
+<!-- font awesome -->
+
+<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
+
+</head>
+
+
+  
+
+  
+
+  </head>
+
+  <body>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Raspberry Pi</title>
+  <meta name="description" content="WIFI在根目录下添加wpa_supplicant.conf, ssh两个文件，其中ssh为空/boot/wpa_supplicant.conf">
+</head>
+
+
+  <div class="wrapper">
+          <header class="post-header">
+
+    <center><div class="post-title" itemprop="name headline">Raspberry Pi</div>
+
+		<div class="post-meta"><i class="fa fa-calendar-o"></i> <time datetime="23 Jan 2019" itemprop="datePublished">Jan 23 2019</time>
+
+		&nbsp;&nbsp;•&nbsp;&nbsp;<i class="fa fa-user-secret"></i> <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Aether</span>
+        
+		<br>
+	</div>
+
+        
+        <div class="post-tags">
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">RaspberryPi</a>
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">INSTALL</a>
+        
+	</div>
+    </center>
+
+</header>
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<div class="post-content">
+    <center>
+	
+	<p></p>
+	
+    </center>
+</div>
+
+
+
+<div class="post-content" itemprop="articleBody">
+    <h2 id="wifi">WIFI</h2>
+<p>在根目录下添加<code class="highlighter-rouge">wpa_supplicant.conf</code>, <code class="highlighter-rouge">ssh</code>两个文件，其中<code class="highlighter-rouge">ssh</code>为空</p>
+<h3 id="bootwpa_supplicantconf">/boot/wpa_supplicant.conf</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>country=GB
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+    ssid="WIFI名"
+    psk="WIFI密码"
+    key_mgmt=WPA-PSK
+    priority=1
+}
+
+network={
+    ssid="WIFI名"
+    psk="WIFI密码"
+    key_mgmt=WPA-PSK
+    priority=2
+} --- ## Bluetooth
+
+安装支持包
+sudo apt-get install pi-bluetooth
+sudo apt-get install bluetooth bluez blueman
+
+添加pi用户到蓝牙组 
+sudo usermod -G bluetooth -a pi
+
+启动/增加SPP
+sudo nano /etc/systemd/system/dbus-org.bluez.service 
+  
+修改内容如下:
+ExecStart=/usr/lib/bluetooth/bluetoothd -C
+ExecStartPost=/usr/bin/sdptool add SP
+
+连接蓝牙
+sudo rfcomm watch hci0
+</code></pre></div></div>
+
+<hr />
+<h2 id="gps--l80-m39">GPS  L80-M39</h2>
+
+<h3 id="1-安装gps模块需要的包">1. 安装GPS模块需要的包</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get update &amp;&amp; sudo apt-get -y install gpsd gpsd-clients python-gps
+</code></pre></div></div>
+
+<h3 id="2-重启树莓派重新配置gps服务">2. 重启树莓派，重新配置GPS服务</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo dpkg-reconfigure gpsd
+</code></pre></div></div>
+
+<h3 id="3-开启gps模块服务">3. 开启GPS模块服务:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock
+</code></pre></div></div>
+
+<h3 id="4-停止gps服务">4. 停止GPS服务:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo killall gpsd
+</code></pre></div></div>
+
+<h3 id="5-你也可以使用systemctl命令管理gps服务但在那之前需要修改文件etcdefaultgpsd">5. 你也可以使用<code class="highlighter-rouge">systemctl</code>命令管理GPS服务，但在那之前需要修改文件<code class="highlighter-rouge">/etc/default/gpsd</code></h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>START_DAEMON="true"
+USBAUTO="true"
+DEVICES="/dev/ttyUSB0"
+GPSD_OPTIONS="-F /var/run/gpsd.socket"
+</code></pre></div></div>
+
+<h3 id="开始服务">开始服务:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo systemctl enable gpsd.sock sudo systemctl start gpsd.sock
+</code></pre></div></div>
+
+<h3 id="停止服务">停止服务:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo systemctl stop gpsd.sock sudo systemctl disable gpsd.sock
+</code></pre></div></div>
+
+<h3 id="获取模块信息">获取模块信息</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo cgps -s
+</code></pre></div></div>
+
+<h3 id="如果不能正常获得信息使用以下命令检查串口工作是否正常">如果不能正常获得信息，使用以下命令检查串口工作是否正常</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat/dev/ttyUSB0 
+</code></pre></div></div>
+
+<h3 id="无定位情况下显示如下">无定位情况下显示如下:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pi@raspberrypi ~ $ sudo cat /dev/ttyUSB0
+$GPRMC,144034.00,V,,,,,,,090315,,,N*75
+$GPVTG,,,,,,,,,N*30
+$GPGGA,144034.00,,,,,0,00,99.99,,,,,,*60
+$GPGSA,A,1,,,,,,,,,,,,,99.99,99.99,99.99*30
+$GPGSV,1,1,01,15,,,25*7B
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">NO FIX</code> 即未定位，将模块移动到室外空旷处将获得定位信息。</p>
+
+<hr />
+<h2 id="ssh">SSH</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>使用ssh登陆pi 默认用户名pi 密码raspberry
+ssh pi@192.168.2.104
+
+新建vnc服务 VNCViewer中ip:port登陆 默认port为0
+vncservice
+
+停止对应的vnc服务进程
+vncservice -kill :1
+</code></pre></div></div>
+
+<h2 id="使用python解析串口数据并发送至蓝牙">使用python解析串口数据并发送至蓝牙</h2>
+
+<h3 id="准备">准备</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>安装python库
+sudo aptitude install python-dev
+sudo apt-get install python-serial
+python -m pip install pynmea2
+
+赋予串口读写权限
+sudo chmod 777 /dev/rfcomm0
+</code></pre></div></div>
+
+<h3 id="python代码">python代码：</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import serial
+import pynmea2
+import time
+ser1 = serial.Serial("/dev/ttyUSB0",9600)
+ser2 = serial.Serial('/dev/rfcomm0',9600,parity=serial.PARITY_NONE)
+if ser2.isOpen == False:
+    ser2.open()
+ser2.write("serial turn on\n")
+
+try:
+    while True:
+        line = ser1.readline()
+        if line.startswith('$GPRMC'):
+            rmc = pynmea2.parse(line)
+            ser2.write("Latitude: " +rmc.lat +"Longitude: "+rmc.lon+"\n")
+        
+except KeyboardInterrupt:
+        ser2.close()
+</code></pre></div></div>
+
+
+</div>
+
+<div>
+	
+	<div class="eof"></div>
+	
+</div>
+
+<div class="share">
+    <p>Share this post with: </p>
+	<a href="https://twitter.com/intent/tweet?text=Raspberry Pi@&amp;url=http://localhost:4000/coding/Raspberry-Pi.html" class="twitter-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/coding/Raspberry-Pi.html" class="facebook-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://plus.google.com/share?url=http://localhost:4000/coding/Raspberry-Pi.html" class="googleplus-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+</div>
+
+
+<div id="disqus_thread"></div>
+
+
+ 
+</div>
+
+
+</article>
+
+  </div>
+
+</body>
+
+<foot>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <center>
+
+		<p><a class="link" href="/archive/">Archive</a> /
+		<a class="link" href="/category/">Category</a> /
+		<a class="link" href="/tags/">Tags</a> /
+		<a class="link" href="/about/">About</a> /
+		<a class="link" href="/contact/">Contact</a>
+        </p>
+
+        <span><script>document.write(new Date().getFullYear());</script></span>
+        <span>&copy;</span>
+
+		<a class="link" href="https://aether.github.io">Aether</a>
+		<br>
+
+    </center>
+
+  </div>
+
+</footer>
+
+    <foot>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Derictory -->
+
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script src="http://yandex.st/highlightjs/6.2/highlight.min.js"></script>
+
+<!-- Hit analytics -->
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Directory -->
+
+<script src="/js/main.js"></script>
+
+</foot>
+
+
+</foot>
+
+</html>
