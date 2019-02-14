@@ -6,8 +6,8 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 13 Feb 2019 01:30:54 +0800</pubDate>
-    <lastBuildDate>Wed, 13 Feb 2019 01:30:54 +0800</lastBuildDate>
+    <pubDate>Thu, 14 Feb 2019 19:48:27 +0800</pubDate>
+    <lastBuildDate>Thu, 14 Feb 2019 19:48:27 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -290,6 +290,123 @@ except KeyboardInterrupt:
         <category>RaspberryPi</category>
         
         <category>INSTALL</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>Sort</title>
+        <description>&lt;h2 id=&quot;排序&quot;&gt;排序&lt;/h2&gt;
+
+&lt;h3 id=&quot;内部排序&quot;&gt;内部排序&lt;/h3&gt;
+&lt;ul class=&quot;task-list&quot;&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;插入排序
+    &lt;ul class=&quot;task-list&quot;&gt;
+      &lt;li&gt;[√] 直接插入排序
+        &lt;ul&gt;
+          &lt;li&gt;空间复杂度O(1)&lt;/li&gt;
+          &lt;li&gt;最好情况下时间复杂度O(n)
+最坏情况下时间复杂度O(n^2)
+平均情况下时间复杂度O(n^2)&lt;/li&gt;
+          &lt;li&gt;平均比较和移动次数n^2/4  时间复杂度O(n^2)&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;希尔排序
+        &lt;ul&gt;
+          &lt;li&gt;空间复杂度O(1)&lt;/li&gt;
+          &lt;li&gt;最坏情况下时间复杂度O(n^2)&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;交换排序
+    &lt;ul class=&quot;task-list&quot;&gt;
+      &lt;li&gt;[√] 冒泡排序
+        &lt;ul&gt;
+          &lt;li&gt;空间复杂度O(1)&lt;/li&gt;
+          &lt;li&gt;最好情况下时间复杂度O(n)
+最坏情况下时间复杂度O(n^2)
+平均情况下时间复杂度O(n^2)&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;快速排序
+        &lt;ul&gt;
+          &lt;li&gt;最好情况下栈深度为「log2(n+1) 
+最坏情况下栈深度度为n—1
+平均情况下空间复杂度O(log2n)&lt;/li&gt;
+          &lt;li&gt;最好情况下时间复杂度O(nlog2n)
+最坏情况下时间复杂度O(n^2)
+平均情况下时间复杂度O(nlog2n)&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;选择排序
+    &lt;ul class=&quot;task-list&quot;&gt;
+      &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;简单选择排序
+        &lt;ul&gt;
+          &lt;li&gt;空间复杂度O(1)&lt;/li&gt;
+          &lt;li&gt;时间复杂度O(n^2)&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;堆排序
+        &lt;ul&gt;
+          &lt;li&gt;空间复杂度O(1)&lt;/li&gt;
+          &lt;li&gt;建堆时间O(n)  n—1次调整  调整时间复杂度为O(h)
+平均情况下时间复杂度O(nlog2n)&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;[√] 归并排序
+    &lt;ul&gt;
+      &lt;li&gt;空间复杂度O(n)&lt;/li&gt;
+      &lt;li&gt;每一趟归并时间复杂度为O(n) 「log2n次归并
+时间复杂度O(nlog2n)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;[√] 基数排序
+    &lt;ul&gt;
+      &lt;li&gt;空间复杂度O(r) 辅助r个队列&lt;/li&gt;
+      &lt;li&gt;一趟分配O(n)  一趟收集O(r)  需要d躺分配和收集
+时间复杂度O(d(n+r))&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;外部排序&quot;&gt;外部排序&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;多路平衡归并
+    &lt;ul&gt;
+      &lt;li&gt;增加归并路数减少躺数&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;败者树
+    &lt;ul&gt;
+      &lt;li&gt;减少归并次数&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;置换——选择排序
+    &lt;ul&gt;
+      &lt;li&gt;生成初始归并段&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;最佳归并树
+    &lt;ul&gt;
+      &lt;li&gt;减少I/O次数  添加虚段&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 03 Jan 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/Sort.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Sort.html</guid>
+        
+        <category>DATA-STRUCTURE</category>
+        
+        <category>ALGRITHM</category>
         
         
         <category>coding</category>

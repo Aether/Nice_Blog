@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- CSS -->
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/coding/Sort.html">
+  <link rel="alternate" type="application/rss+xml" title="Aether's Blog" href="http://localhost:4000/feed.xml">
+
+<!-- Google font -->
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto Sans">
+
+<!-- font awesome -->
+
+<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
+
+</head>
+
+
+  
+
+  
+
+  </head>
+
+  <body>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Sort</title>
+  <meta name="description" content="排序">
+</head>
+
+
+  <div class="wrapper">
+          <header class="post-header">
+
+    <center><div class="post-title" itemprop="name headline">Sort</div>
+
+		<div class="post-meta"><i class="fa fa-calendar-o"></i> <time datetime="03 Jan 2019" itemprop="datePublished">Jan 3 2019</time>
+
+		&nbsp;&nbsp;•&nbsp;&nbsp;<i class="fa fa-user-secret"></i> <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Aether</span>
+        
+		<br>
+	</div>
+
+        
+        <div class="post-tags">
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">DATA-STRUCTURE</a>
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">ALGRITHM</a>
+        
+	</div>
+    </center>
+
+</header>
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<div class="post-content">
+    <center>
+	
+	<p></p>
+	
+    </center>
+</div>
+
+
+
+<div class="post-content" itemprop="articleBody">
+    <h2 id="排序">排序</h2>
+
+<h3 id="内部排序">内部排序</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />插入排序
+    <ul class="task-list">
+      <li>[√] 直接插入排序
+        <ul>
+          <li>空间复杂度O(1)</li>
+          <li>最好情况下时间复杂度O(n)
+最坏情况下时间复杂度O(n^2)
+平均情况下时间复杂度O(n^2)</li>
+          <li>平均比较和移动次数n^2/4  时间复杂度O(n^2)</li>
+        </ul>
+      </li>
+      <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />希尔排序
+        <ul>
+          <li>空间复杂度O(1)</li>
+          <li>最坏情况下时间复杂度O(n^2)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />交换排序
+    <ul class="task-list">
+      <li>[√] 冒泡排序
+        <ul>
+          <li>空间复杂度O(1)</li>
+          <li>最好情况下时间复杂度O(n)
+最坏情况下时间复杂度O(n^2)
+平均情况下时间复杂度O(n^2)</li>
+        </ul>
+      </li>
+      <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />快速排序
+        <ul>
+          <li>最好情况下栈深度为「log2(n+1) 
+最坏情况下栈深度度为n—1
+平均情况下空间复杂度O(log2n)</li>
+          <li>最好情况下时间复杂度O(nlog2n)
+最坏情况下时间复杂度O(n^2)
+平均情况下时间复杂度O(nlog2n)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />选择排序
+    <ul class="task-list">
+      <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />简单选择排序
+        <ul>
+          <li>空间复杂度O(1)</li>
+          <li>时间复杂度O(n^2)</li>
+        </ul>
+      </li>
+      <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />堆排序
+        <ul>
+          <li>空间复杂度O(1)</li>
+          <li>建堆时间O(n)  n—1次调整  调整时间复杂度为O(h)
+平均情况下时间复杂度O(nlog2n)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li class="task-list-item">[√] 归并排序
+    <ul>
+      <li>空间复杂度O(n)</li>
+      <li>每一趟归并时间复杂度为O(n) 「log2n次归并
+时间复杂度O(nlog2n)</li>
+    </ul>
+  </li>
+  <li class="task-list-item">[√] 基数排序
+    <ul>
+      <li>空间复杂度O(r) 辅助r个队列</li>
+      <li>一趟分配O(n)  一趟收集O(r)  需要d躺分配和收集
+时间复杂度O(d(n+r))</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="外部排序">外部排序</h3>
+<ul>
+  <li>多路平衡归并
+    <ul>
+      <li>增加归并路数减少躺数</li>
+    </ul>
+  </li>
+  <li>败者树
+    <ul>
+      <li>减少归并次数</li>
+    </ul>
+  </li>
+  <li>置换——选择排序
+    <ul>
+      <li>生成初始归并段</li>
+    </ul>
+  </li>
+  <li>最佳归并树
+    <ul>
+      <li>减少I/O次数  添加虚段</li>
+    </ul>
+  </li>
+</ul>
+
+</div>
+
+<div>
+	
+	<div class="eof"></div>
+	
+</div>
+
+<div class="share">
+    <p>Share this post with: </p>
+	<a href="https://twitter.com/intent/tweet?text=Sort@&amp;url=http://localhost:4000/coding/Sort.html" class="twitter-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/coding/Sort.html" class="facebook-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://plus.google.com/share?url=http://localhost:4000/coding/Sort.html" class="googleplus-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+</div>
+
+
+<div id="disqus_thread"></div>
+
+
+ 
+</div>
+
+
+</article>
+
+  </div>
+
+</body>
+
+<foot>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <center>
+
+		<p><a class="link" href="/archive/">Archive</a> /
+		<a class="link" href="/category/">Category</a> /
+		<a class="link" href="/tags/">Tags</a> /
+		<a class="link" href="/about/">About</a> /
+		<a class="link" href="/contact/">Contact</a>
+        </p>
+
+        <span><script>document.write(new Date().getFullYear());</script></span>
+        <span>&copy;</span>
+
+		<a class="link" href="https://aether.github.io">Aether</a>
+		<br>
+
+    </center>
+
+  </div>
+
+</footer>
+
+    <foot>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Derictory -->
+
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script src="http://yandex.st/highlightjs/6.2/highlight.min.js"></script>
+
+<!-- Hit analytics -->
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Directory -->
+
+<script src="/js/main.js"></script>
+
+</foot>
+
+
+</foot>
+
+</html>
