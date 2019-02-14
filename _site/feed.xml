@@ -4,10 +4,10 @@
     <title>Aether's Blog</title>
     <description>Keep calm and carry on # this means to ignore newlines until &quot;baseurl:&quot;
 </description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 14 Feb 2019 19:51:48 +0800</pubDate>
-    <lastBuildDate>Thu, 14 Feb 2019 19:51:48 +0800</lastBuildDate>
+    <link>/</link>
+    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Thu, 14 Feb 2019 20:09:26 +0800</pubDate>
+    <lastBuildDate>Thu, 14 Feb 2019 20:09:26 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -119,8 +119,8 @@ http://localhost:5000
 &lt;p&gt;Replace all the &lt;code class=&quot;highlighter-rouge&quot;&gt;import caffe_pb2&lt;/code&gt; with &lt;code class=&quot;highlighter-rouge&quot;&gt;import caffe.proto.caffe_pb2 as caffe_pb2&lt;/code&gt;.&lt;/p&gt;
 </description>
         <pubDate>Sun, 10 Feb 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/Caffe.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/Caffe.html</guid>
+        <link>/coding/Caffe.html</link>
+        <guid isPermaLink="true">/coding/Caffe.html</guid>
         
         <category>CAFFE</category>
         
@@ -284,8 +284,8 @@ except KeyboardInterrupt:
 
 </description>
         <pubDate>Wed, 23 Jan 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/Raspberry-Pi.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/Raspberry-Pi.html</guid>
+        <link>/coding/Raspberry-Pi.html</link>
+        <guid isPermaLink="true">/coding/Raspberry-Pi.html</guid>
         
         <category>RaspberryPi</category>
         
@@ -405,8 +405,8 @@ except KeyboardInterrupt:
 &lt;/blockquote&gt;
 </description>
         <pubDate>Thu, 03 Jan 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/Sort.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/Sort.html</guid>
+        <link>/coding/Sort.html</link>
+        <guid isPermaLink="true">/coding/Sort.html</guid>
         
         <category>DATA-STRUCTURE</category>
         
@@ -1105,8 +1105,8 @@ getchar等调用read系统函数，通过系统调用读取按键ascii码，直�
 &lt;/ul&gt;
 </description>
         <pubDate>Thu, 20 Dec 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/chengxurensheng.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/chengxurensheng.html</guid>
+        <link>/coding/chengxurensheng.html</link>
+        <guid isPermaLink="true">/coding/chengxurensheng.html</guid>
         
         <category>CSAPP</category>
         
@@ -1327,8 +1327,8 @@ fun main(args: Array&amp;lt;String&amp;gt;) {
 
 </description>
         <pubDate>Fri, 02 Feb 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/Kotlin.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/Kotlin.html</guid>
+        <link>/coding/Kotlin.html</link>
+        <guid isPermaLink="true">/coding/Kotlin.html</guid>
         
         <category>CODE</category>
         
@@ -1696,8 +1696,8 @@ match.span()&lt;/p&gt;
 &lt;p&gt;*?   +?  ??  {m,n}?  return min&lt;/p&gt;
 </description>
         <pubDate>Tue, 30 Jan 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/Crawler.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/Crawler.html</guid>
+        <link>/coding/Crawler.html</link>
+        <guid isPermaLink="true">/coding/Crawler.html</guid>
         
         <category>CODE</category>
         
@@ -2122,8 +2122,8 @@ btnStep.addActionListener(new ActionListener() {
 &lt;p&gt;C = Control&lt;/p&gt;
 </description>
         <pubDate>Wed, 24 Jan 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/Java.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/Java.html</guid>
+        <link>/coding/Java.html</link>
+        <guid isPermaLink="true">/coding/Java.html</guid>
         
         <category>CODE</category>
         
@@ -2170,8 +2170,8 @@ String lastName = name.getString(&quot;lastName&quot;);
 
 </description>
         <pubDate>Mon, 15 Jan 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/JSON-in-Android.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/JSON-in-Android.html</guid>
+        <link>/coding/JSON-in-Android.html</link>
+        <guid isPermaLink="true">/coding/JSON-in-Android.html</guid>
         
         <category>CODE</category>
         
@@ -2296,8 +2296,8 @@ String lastName = name.getString(&quot;lastName&quot;);
 
 </description>
         <pubDate>Mon, 15 Jan 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/Connect-to-the-Internet.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/Connect-to-the-Internet.html</guid>
+        <link>/coding/Connect-to-the-Internet.html</link>
+        <guid isPermaLink="true">/coding/Connect-to-the-Internet.html</guid>
         
         <category>CODE</category>
         
@@ -2371,8 +2371,8 @@ public boolean onOptionsItemSelected(MenuItem item) {
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
         <pubDate>Sun, 14 Jan 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/URL.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/URL.html</guid>
+        <link>/coding/URL.html</link>
+        <guid isPermaLink="true">/coding/URL.html</guid>
         
         <category>CODE</category>
         
