@@ -4,11 +4,320 @@
     <title>Aether's Blog</title>
     <description>Keep calm and carry on # this means to ignore newlines until &quot;baseurl:&quot;
 </description>
-    <link>/</link>
-    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 14 Feb 2019 20:09:26 +0800</pubDate>
-    <lastBuildDate>Thu, 14 Feb 2019 20:09:26 +0800</lastBuildDate>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sat, 16 Mar 2019 15:05:25 +0800</pubDate>
+    <lastBuildDate>Sat, 16 Mar 2019 15:05:25 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
+    
+      <item>
+        <title>Software Construction Summary 1</title>
+        <description>&lt;h2 id=&quot;multi-dimensional-software-views&quot;&gt;Multi-dimensional software views&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;By phases: build-time and run-time views&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;By dynamics: moment and period views&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;By levels: code and component views&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;logically / physically&lt;/li&gt;
+      &lt;li&gt;in-memory states / physical environment&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;build-time&quot;&gt;Build-time&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;idea—&amp;gt;requirement—&amp;gt;design—&amp;gt;code—&amp;gt;installable / executable package&lt;/li&gt;
+  &lt;li&gt;moment
+    &lt;ul&gt;
+      &lt;li&gt;code
+        &lt;ul&gt;
+          &lt;li&gt;Build-time, moment, and code-level view&lt;/li&gt;
+          &lt;li&gt;Lexical-oriented source code :e.g.,Lexical-based semi-structured source code&lt;/li&gt;
+          &lt;li&gt;Syntax-oriented program structure: e.g., Abstract Syntax Tree (AST)&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;Semantics-oriented program structure: e.g., Class Diagram(UML)&lt;/strong&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;component
+        &lt;ul&gt;
+          &lt;li&gt;Build-time, period, and code-level view&lt;/li&gt;
+          &lt;li&gt;file, package, library&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;period
+    &lt;ul&gt;
+      &lt;li&gt;code
+        &lt;ul&gt;
+          &lt;li&gt;code churn&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;component
+        &lt;ul&gt;
+          &lt;li&gt;SCI&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;run-time&quot;&gt;Run-time&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;High-level concepts
+    &lt;ul&gt;
+      &lt;li&gt;Executable programs&lt;/li&gt;
+      &lt;li&gt;Libraries&lt;/li&gt;
+      &lt;li&gt;Configuration and data files&lt;/li&gt;
+      &lt;li&gt;Distributed program&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;moment
+    &lt;ul&gt;
+      &lt;li&gt;code
+        &lt;ul&gt;
+          &lt;li&gt;Snapshot diagram&lt;/li&gt;
+          &lt;li&gt;Memory dump&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;component
+        &lt;ul&gt;
+          &lt;li&gt;Deployment diagram in URL&lt;/li&gt;
+          &lt;li&gt;Dynamic linking&lt;/li&gt;
+          &lt;li&gt;Framework/Net&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;period
+    &lt;ul&gt;
+      &lt;li&gt;code
+        &lt;ul&gt;
+          &lt;li&gt;&lt;strong&gt;Sequence diagram in UML&lt;/strong&gt;&lt;/li&gt;
+          &lt;li&gt;Stack Trace&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;component
+        &lt;ul&gt;
+          &lt;li&gt;Event log&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;types-of-transformations&quot;&gt;Types of Transformations&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;NULL —&amp;gt; Code
+    &lt;ul&gt;
+      &lt;li&gt;– Programming / Coding&lt;/li&gt;
+      &lt;li&gt;– Review, static analysis/checking&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Code —&amp;gt; Component
+    &lt;ul&gt;
+      &lt;li&gt;– Design (Chapter 3 ADT/OOP&lt;/li&gt;
+      &lt;li&gt;– Build: compile, static link, package, install, etc&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Build-time —&amp;gt; Run-time
+    &lt;ul&gt;
+      &lt;li&gt;– Install / deploy&lt;/li&gt;
+      &lt;li&gt;– Debug, unit/integration testing&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Moment —&amp;gt; Period
+    &lt;ul&gt;
+      &lt;li&gt;– Refactoring&lt;/li&gt;
+      &lt;li&gt;– Version control&lt;/li&gt;
+      &lt;li&gt;– Loading, dynamic linking, interpreting,execution&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;quality-objectives&quot;&gt;Quality Objectives&lt;/h2&gt;
+
+&lt;h3 id=&quot;external-quality-factors&quot;&gt;External quality factors&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Correctness&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Conditional&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Robustness&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Extendibility&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Reusability&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Compatibility&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Efficiency&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Portability&lt;/li&gt;
+  &lt;li&gt;Ease of use&lt;/li&gt;
+  &lt;li&gt;Functionality&lt;/li&gt;
+  &lt;li&gt;Timeliness&lt;/li&gt;
+  &lt;li&gt;Other qualities
+    &lt;ul&gt;
+      &lt;li&gt;Verifiability&lt;/li&gt;
+      &lt;li&gt;Integrity&lt;/li&gt;
+      &lt;li&gt;Repairability&lt;/li&gt;
+      &lt;li&gt;Economy&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;external-quality-factors-1&quot;&gt;External quality factors&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;LoC&lt;/li&gt;
+  &lt;li&gt;Complexity&lt;/li&gt;
+  &lt;li&gt;Easy to understand&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;software-lifecycle-and-configuration-management&quot;&gt;Software Lifecycle and Configuration Management&lt;/h2&gt;
+
+&lt;h3 id=&quot;scm&quot;&gt;SCM&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;SCI
+    &lt;ul&gt;
+      &lt;li&gt;Software Configuration Item (e.g., file)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;baseline
+    &lt;ul&gt;
+      &lt;li&gt;release&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;CMDB
+    &lt;ul&gt;
+      &lt;li&gt;.git&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;version-control-system-vcs&quot;&gt;Version Control System (VCS)&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Local VCS&lt;/li&gt;
+  &lt;li&gt;Centralized VCS&lt;/li&gt;
+  &lt;li&gt;Distributed VCS&lt;/li&gt;
+  &lt;li&gt;objectgraph
+    &lt;ul&gt;
+      &lt;li&gt;Commits: nodes in Object Graph&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;software-development-lifecyclesdlc&quot;&gt;Software Development Lifecycle(SDLC)&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Waterfall (Linear)&lt;/li&gt;
+  &lt;li&gt;Incremental (Linear)&lt;/li&gt;
+  &lt;li&gt;Prototyping (Iterative)&lt;/li&gt;
+  &lt;li&gt;V-Model (for verification and validation)&lt;/li&gt;
+  &lt;li&gt;Sprial (Iterative)&lt;/li&gt;
+  &lt;li&gt;Agile (Incremental+Iterative)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 14 Mar 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/Sofrware-Construction-Summary1.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Sofrware-Construction-Summary1.html</guid>
+        
+        <category>SOFTWARE-CONSTRUCTION</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>Lab1 Problem Solution</title>
+        <description>&lt;h2 id=&quot;junit测试private方法&quot;&gt;JUnit测试private方法&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;FriendshipGraph&lt;/code&gt;类中存在以下函数：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;private void addEdge(Person person1, Person person2);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;由于&lt;code class=&quot;highlighter-rouge&quot;&gt;addEdge(Person, Person)&lt;/code&gt;权限为&lt;code class=&quot;highlighter-rouge&quot;&gt;private&lt;/code&gt;，在测试类中试图调用会出现如下报错：&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;The method addEdge(Person, Person) from the type FriendshipGraph is not visible&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;使用Java语言中反射的语言特性：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Method addEdge = graph.getClass().getDeclaredMethod(&quot;addEdge&quot;, Person.class, Person.class);
+addEdge.setAccessible(true);
+Person p1 = new Person(&quot;Test1&quot;);
+addEdge.invoke(graph, p1, p1);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;遍历map的方法&quot;&gt;遍历Map的方法&lt;/h2&gt;
+&lt;h3 id=&quot;mapentry&quot;&gt;Map.Entry&lt;/h3&gt;
+&lt;p&gt;可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;Map.Entry&lt;/code&gt;是Map声明的一个内部接口，此接口为泛型，定义为Entry&amp;lt;K,V&amp;gt;。它表示Map中的一个实体（一个key-value对）。接口中有getKey(),getValue()方法。使用这种方法进行遍历效率高。&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;for (Map.Entry&amp;lt;String,Set&amp;lt;String&amp;gt;&amp;gt; entry:followsGraph.entrySet()) {
+	for (String string : entry.getValue()) {
+    // TODO:
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;lambda&quot;&gt;Lambda&lt;/h3&gt;
+&lt;p&gt;java8提供了Lambda表达式支持，语法看起来更简洁，可以同时拿到key和value，性能低于entrySet。&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public void testLambda() {
+  map.forEach((key, value) -&amp;gt; {
+    // TODO:
+  });
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;keysetvalues&quot;&gt;keySet/values&lt;/h3&gt;
+&lt;p&gt;如果只需要map的key或者value，用map的keySet或values方法是最方便的&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public void testKeySet() {
+    for (Integer key : map.keySet()) {
+      System.out.println(key);
+    }
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public void testValues() {
+  for (Integer value : map.values()) {
+    System.out.println(value);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;iterator&quot;&gt;Iterator&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public void testIterator() {
+  Iterator&amp;lt;Map.Entry&amp;lt;Integer, Integer&amp;gt;&amp;gt; iterator = map.entrySet().iterator();
+  while (iterator.hasNext()) {
+    Map.Entry&amp;lt;Integer, Integer&amp;gt; entry = iterator.next();
+    // TODO:
+    // iterator.remove();
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;在用&lt;code class=&quot;highlighter-rouge&quot;&gt;foreach&lt;/code&gt;遍历&lt;code class=&quot;highlighter-rouge&quot;&gt;map&lt;/code&gt;时，如果改变其大小会报错，但如果只是删除元素，可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;Iterator&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;remove&lt;/code&gt;方法删除元素.&lt;/p&gt;
+&lt;h2 id=&quot;javautilconcurrentmodificationexception&quot;&gt;java.util.ConcurrentModificationException&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Iterator&lt;/code&gt;是工作在一个独立的线程中，并且拥有一个&lt;code class=&quot;highlighter-rouge&quot;&gt;mutex&lt;/code&gt;锁，就是说&lt;code class=&quot;highlighter-rouge&quot;&gt;Iterator&lt;/code&gt;在工作的时候，是不允许被迭代的对象被改变的。&lt;code class=&quot;highlighter-rouge&quot;&gt;Iterator&lt;/code&gt;被创建的时候，建立了一个&lt;code class=&quot;highlighter-rouge&quot;&gt;内存索引表&lt;/code&gt;（单链表），这个索引表指向&lt;code class=&quot;highlighter-rouge&quot;&gt;原来的对象&lt;/code&gt;，当原来的对象数量改变的时候，这个索引表的内容没有同步改变，所以当索引指针往下移动的时候，便找不到要迭代的对象，于是产生错误。&lt;code class=&quot;highlighter-rouge&quot;&gt;List&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;Set&lt;/code&gt;等是动态的，可变对象数量的数据结构，但是&lt;code class=&quot;highlighter-rouge&quot;&gt;Iterator&lt;/code&gt;则是&lt;code class=&quot;highlighter-rouge&quot;&gt;单向不可变&lt;/code&gt;，只能&lt;code class=&quot;highlighter-rouge&quot;&gt;顺序读取&lt;/code&gt;，不能逆序操作的数据结构，当&lt;code class=&quot;highlighter-rouge&quot;&gt;Iterator&lt;/code&gt;指向的原始数据发生变化时，&lt;code class=&quot;highlighter-rouge&quot;&gt;Iterator&lt;/code&gt;自己就迷失了方向。&lt;/p&gt;
+&lt;h2 id=&quot;arraylist的排序&quot;&gt;ArrayList的排序&lt;/h2&gt;
+&lt;p&gt;对&lt;code class=&quot;highlighter-rouge&quot;&gt;list&lt;/code&gt;自定义排序可以使用到了&lt;code class=&quot;highlighter-rouge&quot;&gt;Collections.sort&lt;/code&gt;函数&lt;code class=&quot;highlighter-rouge&quot;&gt;Collections.sort(List, Comparator)&lt;/code&gt;
+在这里自定义&lt;code class=&quot;highlighter-rouge&quot;&gt;Comparator&lt;/code&gt;后对其&lt;code class=&quot;highlighter-rouge&quot;&gt;compare&lt;/code&gt;函数进行重写&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;List&amp;lt;Map.Entry&amp;lt;String,Integer&amp;gt;&amp;gt; list = new ArrayList&amp;lt;Map.Entry&amp;lt;String, Integer&amp;gt;&amp;gt;(followers.entrySet());
+Collections.sort(list,new Comparator&amp;lt;Map.Entry&amp;lt;String, Integer&amp;gt;&amp;gt;(){
+	@Override
+	public int compare(Entry&amp;lt;String, Integer&amp;gt; o1, Entry&amp;lt;String, Integer&amp;gt; o2) {
+		if (o1.getValue() &amp;gt; o2.getValue()) return -1;
+		else return 1;
+	}
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Thu, 07 Mar 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/Bug1.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Bug1.html</guid>
+        
+        <category>SOFTWARE-CONSTRUCTION</category>
+        
+        <category>JAVA</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
     
       <item>
         <title>Caffe</title>
@@ -119,8 +428,8 @@ http://localhost:5000
 &lt;p&gt;Replace all the &lt;code class=&quot;highlighter-rouge&quot;&gt;import caffe_pb2&lt;/code&gt; with &lt;code class=&quot;highlighter-rouge&quot;&gt;import caffe.proto.caffe_pb2 as caffe_pb2&lt;/code&gt;.&lt;/p&gt;
 </description>
         <pubDate>Sun, 10 Feb 2019 00:00:00 +0800</pubDate>
-        <link>/coding/Caffe.html</link>
-        <guid isPermaLink="true">/coding/Caffe.html</guid>
+        <link>http://localhost:4000/coding/Caffe.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Caffe.html</guid>
         
         <category>CAFFE</category>
         
@@ -284,8 +593,8 @@ except KeyboardInterrupt:
 
 </description>
         <pubDate>Wed, 23 Jan 2019 00:00:00 +0800</pubDate>
-        <link>/coding/Raspberry-Pi.html</link>
-        <guid isPermaLink="true">/coding/Raspberry-Pi.html</guid>
+        <link>http://localhost:4000/coding/Raspberry-Pi.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Raspberry-Pi.html</guid>
         
         <category>RaspberryPi</category>
         
@@ -405,8 +714,8 @@ except KeyboardInterrupt:
 &lt;/blockquote&gt;
 </description>
         <pubDate>Thu, 03 Jan 2019 00:00:00 +0800</pubDate>
-        <link>/coding/Sort.html</link>
-        <guid isPermaLink="true">/coding/Sort.html</guid>
+        <link>http://localhost:4000/coding/Sort.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Sort.html</guid>
         
         <category>DATA-STRUCTURE</category>
         
@@ -1105,8 +1414,8 @@ getchar等调用read系统函数，通过系统调用读取按键ascii码，直�
 &lt;/ul&gt;
 </description>
         <pubDate>Thu, 20 Dec 2018 00:00:00 +0800</pubDate>
-        <link>/coding/chengxurensheng.html</link>
-        <guid isPermaLink="true">/coding/chengxurensheng.html</guid>
+        <link>http://localhost:4000/coding/chengxurensheng.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/chengxurensheng.html</guid>
         
         <category>CSAPP</category>
         
@@ -1327,8 +1636,8 @@ fun main(args: Array&amp;lt;String&amp;gt;) {
 
 </description>
         <pubDate>Fri, 02 Feb 2018 00:00:00 +0800</pubDate>
-        <link>/coding/Kotlin.html</link>
-        <guid isPermaLink="true">/coding/Kotlin.html</guid>
+        <link>http://localhost:4000/coding/Kotlin.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Kotlin.html</guid>
         
         <category>CODE</category>
         
@@ -1696,8 +2005,8 @@ match.span()&lt;/p&gt;
 &lt;p&gt;*?   +?  ??  {m,n}?  return min&lt;/p&gt;
 </description>
         <pubDate>Tue, 30 Jan 2018 00:00:00 +0800</pubDate>
-        <link>/coding/Crawler.html</link>
-        <guid isPermaLink="true">/coding/Crawler.html</guid>
+        <link>http://localhost:4000/coding/Crawler.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Crawler.html</guid>
         
         <category>CODE</category>
         
@@ -2122,8 +2431,8 @@ btnStep.addActionListener(new ActionListener() {
 &lt;p&gt;C = Control&lt;/p&gt;
 </description>
         <pubDate>Wed, 24 Jan 2018 00:00:00 +0800</pubDate>
-        <link>/coding/Java.html</link>
-        <guid isPermaLink="true">/coding/Java.html</guid>
+        <link>http://localhost:4000/coding/Java.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Java.html</guid>
         
         <category>CODE</category>
         
@@ -2170,209 +2479,8 @@ String lastName = name.getString(&quot;lastName&quot;);
 
 </description>
         <pubDate>Mon, 15 Jan 2018 00:00:00 +0800</pubDate>
-        <link>/coding/JSON-in-Android.html</link>
-        <guid isPermaLink="true">/coding/JSON-in-Android.html</guid>
-        
-        <category>CODE</category>
-        
-        <category>ANDROID</category>
-        
-        <category>JAVA</category>
-        
-        
-        <category>coding</category>
-        
-      </item>
-    
-      <item>
-        <title>Connect to the Internet in Android</title>
-        <description>&lt;h3 id=&quot;ask-permissions&quot;&gt;Ask permissions&lt;/h3&gt;
-&lt;p&gt;Android manifest.xml&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;connect-to-the-internet&quot;&gt;Connect to the Internet&lt;/h3&gt;
-
-&lt;p&gt;In order to get an http connection,we just call an &lt;strong&gt;open connnection&lt;/strong&gt; on URL.Note that doesn’t actually talk to the network yet. It just creates the http URL connection object.&lt;/p&gt;
-
-&lt;p&gt;At this point,we could set the request method,or add header fields,of change properties of the connection.&lt;/p&gt;
-
-&lt;p&gt;We then get an input stream from the open connection.Next we have to read the contents of this input stream.There are many ways to do this in Java,but we’ve chosen to do using scanner,which is used to tokenize Streams,because it’s simple an relatively fast.&lt;/p&gt;
-
-&lt;p&gt;By setting the delimiter to \\A, beginning of the Stream.We force the scanner to read the entire contents of the stream into the next token stream.&lt;/p&gt;
-
-&lt;p&gt;It buffers the data. This means that it not only pulls the data from the network in small chunks,but because http isn’t required to give us a content size,our code needs to be ready to handle buffers of different sizes.This code automatically allocates and deallocates the buffer as needed. It also handles the character encoding for us.Specifically,it translates from UTF-8 which is the default encoding for json and JavaScript to UTF-16,the format used by android.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static String getResponseFromHttpUrl(URL url) throws IOException {
-    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-    try {
-        InputStream in = urlConnection.getInputStream();
-
-        Scanner scanner = new Scanner(in);
-        scanner.useDelimiter(&quot;\\A&quot;);
-
-        boolean hasInput = scanner.hasNext();
-        if (hasInput) {
-            return scanner.next();
-        } else {
-            return null;
-        }
-    } finally {
-        urlConnection.disconnect();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Then we just have to change the makeGitHubSearchQuery method to call network utils that get response from URL rather than simply displaying the URL.Store the response in a string called GithubSearchResults.What’s more,cache that io exception.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;private void makeGithubSeachQuery(){
-    String githubQuery = mSearchBoxEditText.getText().toString();
-    URL githubSearchUrl = NetworkUtils.buildUrl(githubQuery);
-    mUrlDisplayTextView.setText(githubSearchUrl.toString());
-    String githubSearchResults = null;
-    try {
-        githubSearchResults = NetworkUtils.getResponseFromHttpUrl(githubSearchUrl);
-        mSearchBoxEditText.setText(githubSearchResults);
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;async-task&quot;&gt;Async task&lt;/h3&gt;
-&lt;p&gt;Android throws an exception when you try to access the network on the main tread.We need to run the network task on a secondary execution thread.&lt;/p&gt;
-
-&lt;p&gt;AsyncTask allows you to run a task on a background thread while publishing results to the UI thread.The three types used by an AsyncTask are the following.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Params&lt;/li&gt;
-  &lt;li&gt;Progress&lt;/li&gt;
-  &lt;li&gt;Result&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;These three parameters correspond to three primary functions you can override in AsyncTask.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;doInBackground&lt;/li&gt;
-  &lt;li&gt;onProgressUpdate&lt;/li&gt;
-  &lt;li&gt;onPostExecute&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;onPreExecute&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public class GithubQueryTask extends AsyncTask&amp;lt;URL, Void, String&amp;gt; {
-  @Override
-  protected String doInBackground(URL... urls) {
-      URL searchUrl = urls[0];
-      String githubSearchResults = null;
-      try {
-          githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
-      } catch (IOException e) {
-          e.printStackTrace();
-      }
-      return githubSearchResults;
-  }
-
-  @Override
-  protected void onPostExecute(String s) {
-      if (s != null &amp;amp;&amp;amp; !s.equals(&quot;&quot;)) {
-          mSearchResultsTextView.setText(s);
-      }
-  }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Start our AsyncTask,&lt;code class=&quot;highlighter-rouge&quot;&gt;makeGitHubSearchQuery&lt;/code&gt; replace the networking code with instantiating and executing our GitHubQueryTask.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; private void makeGithubSeachQuery(){
-    String githubQuery = mSearchBoxEditText.getText().toString();
-    URL githubSearchUrl = NetworkUtils.buildUrl(githubQuery);
-    mUrlDisplayTextView.setText(githubSearchUrl.toString());
-    String githubSearchResults = null;
-    new GithubQueryTask().execute(githubSearchUrl);
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-        <pubDate>Mon, 15 Jan 2018 00:00:00 +0800</pubDate>
-        <link>/coding/Connect-to-the-Internet.html</link>
-        <guid isPermaLink="true">/coding/Connect-to-the-Internet.html</guid>
-        
-        <category>CODE</category>
-        
-        <category>ANDROID</category>
-        
-        <category>JAVA</category>
-        
-        
-        <category>coding</category>
-        
-      </item>
-    
-      <item>
-        <title>URL in Android</title>
-        <description>&lt;p&gt;Constants:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;final static String GITHUB_BASE_URL =
-        &quot;https://api.github.com/search/repositories&quot;;
-final static String PARAM_QUERY = &quot;q&quot;;
-final static String PARAM_SORT = &quot;sort&quot;;
-final static String sortBy = &quot;stars&quot;;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;To build our search URL,we can take advantage of the &lt;code class=&quot;highlighter-rouge&quot;&gt;Android URI.builder&lt;/code&gt; framework class. It allows us to create a well-formed URI,without having to worry about the particulars of URI components.&lt;/p&gt;
-
-&lt;p&gt;For example, adding&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;amp;&lt;/code&gt;between query parameters and encoding invalid characters with a percent followed by the character code.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;URL&lt;/code&gt; is a specific class of &lt;code class=&quot;highlighter-rouge&quot;&gt;Uri&lt;/code&gt;.Once we’ve created our base URI by parsing the &lt;code class=&quot;highlighter-rouge&quot;&gt;GITHUB_BASE_URL&lt;/code&gt; string we created a &lt;code class=&quot;highlighter-rouge&quot;&gt;Uri.builder&lt;/code&gt; using the buildUpon method.&lt;/p&gt;
-
-&lt;p&gt;Then we can call &lt;code class=&quot;highlighter-rouge&quot;&gt;appendQuery&lt;/code&gt; parameter for our search query and sort fields.Finally we call &lt;code class=&quot;highlighter-rouge&quot;&gt;build&lt;/code&gt; to produce the Uri we’ll use to query GITHUB.&lt;/p&gt;
-
-&lt;p&gt;However,this produces an &lt;strong&gt;Android Uri&lt;/strong&gt; while our method requires a &lt;strong&gt;Java URL&lt;/strong&gt;.We can convert our new built Uri to a Java URL by passing it as a string parameter to the Java URL constructor.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static URL buildUrl(String githubSearchQuery) {
-    Uri builtUri = Uri.parse(GITHUB_BASE_URL).buildUpon()
-            .appendQueryParameter(PARAM_QUERY,githubSearchQuery)
-            .appendQueryParameter(PARAM_SORT,sortBy)
-            .build();
-
-    URL url = null;
-    try {
-        url = new URL(builtUri.toString());
-    }catch (MalformedURLException e){
-        e.printStackTrace();
-    }
-    return url;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Then make a method called &lt;code class=&quot;highlighter-rouge&quot;&gt;makeGithubSearchQuery&lt;/code&gt;. It pulls the githubQuery from the edit text,calls the &lt;code class=&quot;highlighter-rouge&quot;&gt;buildUrl&lt;/code&gt; method we just wrote, and displays the resulting URL in the Url DisplayTextView.&lt;/p&gt;
-
-&lt;p&gt;Finally,we call to the &lt;code class=&quot;highlighter-rouge&quot;&gt;makeGithubSearchQuery&lt;/code&gt; method from &lt;code class=&quot;highlighter-rouge&quot;&gt;onOptionItemSelected&lt;/code&gt;.Now when we hit the search button in the action bar,we’ll display the URL that we’re going to query.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;private void makeGithubSeachQuery(){
-    String githubQuery = mSearchBoxEditText.getText().toString();
-    URL githubSearchUrl = NetworkUtils.buildUrl(githubQuery);
-    mUrlDisplayTextView.setText(githubSearchUrl.toString());
-}
-
-@Override
-public boolean onOptionsItemSelected(MenuItem item) {
-    int itemThatWasClickedId = item.getItemId();
-    if (itemThatWasClickedId == R.id.action_search) {
-        makeGithubSeachQuery();
-        return true;
-    }
-    return super.onOptionsItemSelected(item);
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Sun, 14 Jan 2018 00:00:00 +0800</pubDate>
-        <link>/coding/URL.html</link>
-        <guid isPermaLink="true">/coding/URL.html</guid>
+        <link>http://localhost:4000/coding/JSON-in-Android.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/JSON-in-Android.html</guid>
         
         <category>CODE</category>
         

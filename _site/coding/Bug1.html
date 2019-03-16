@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- CSS -->
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/coding/Bug1.html">
+  <link rel="alternate" type="application/rss+xml" title="Aether's Blog" href="http://localhost:4000/feed.xml">
+
+<!-- Google font -->
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto Sans">
+
+<!-- font awesome -->
+
+<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
+
+</head>
+
+
+  
+
+  
+
+  </head>
+
+  <body>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Lab1 Problem Solution</title>
+  <meta name="description" content="JUnit测试private方法">
+</head>
+
+
+  <div class="wrapper">
+          <header class="post-header">
+
+    <center><div class="post-title" itemprop="name headline">Lab1 Problem Solution</div>
+
+		<div class="post-meta"><i class="fa fa-calendar-o"></i> <time datetime="07 Mar 2019" itemprop="datePublished">Mar 7 2019</time>
+
+		&nbsp;&nbsp;•&nbsp;&nbsp;<i class="fa fa-user-secret"></i> <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Aether</span>
+        
+		<br>
+	</div>
+
+        
+        <div class="post-tags">
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">SOFTWARE-CONSTRUCTION</a>
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">JAVA</a>
+        
+	</div>
+    </center>
+
+</header>
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<div class="post-content">
+    <center>
+	
+	<p></p>
+	
+    </center>
+</div>
+
+
+
+<div class="post-content" itemprop="articleBody">
+    <h2 id="junit测试private方法">JUnit测试private方法</h2>
+
+<p><code class="highlighter-rouge">FriendshipGraph</code>类中存在以下函数：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>private void addEdge(Person person1, Person person2);
+</code></pre></div></div>
+
+<p>由于<code class="highlighter-rouge">addEdge(Person, Person)</code>权限为<code class="highlighter-rouge">private</code>，在测试类中试图调用会出现如下报错：</p>
+<blockquote>
+  <p>The method addEdge(Person, Person) from the type FriendshipGraph is not visible</p>
+</blockquote>
+
+<p>使用Java语言中反射的语言特性：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Method addEdge = graph.getClass().getDeclaredMethod("addEdge", Person.class, Person.class);
+addEdge.setAccessible(true);
+Person p1 = new Person("Test1");
+addEdge.invoke(graph, p1, p1);
+</code></pre></div></div>
+
+<h2 id="遍历map的方法">遍历Map的方法</h2>
+<h3 id="mapentry">Map.Entry</h3>
+<p>可以使用<code class="highlighter-rouge">Map.Entry</code>是Map声明的一个内部接口，此接口为泛型，定义为Entry&lt;K,V&gt;。它表示Map中的一个实体（一个key-value对）。接口中有getKey(),getValue()方法。使用这种方法进行遍历效率高。</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for (Map.Entry&lt;String,Set&lt;String&gt;&gt; entry:followsGraph.entrySet()) {
+	for (String string : entry.getValue()) {
+    // TODO:
+	}
+}
+</code></pre></div></div>
+<h3 id="lambda">Lambda</h3>
+<p>java8提供了Lambda表达式支持，语法看起来更简洁，可以同时拿到key和value，性能低于entrySet。</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public void testLambda() {
+  map.forEach((key, value) -&gt; {
+    // TODO:
+  });
+}
+</code></pre></div></div>
+<h3 id="keysetvalues">keySet/values</h3>
+<p>如果只需要map的key或者value，用map的keySet或values方法是最方便的</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public void testKeySet() {
+    for (Integer key : map.keySet()) {
+      System.out.println(key);
+    }
+  }
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public void testValues() {
+  for (Integer value : map.values()) {
+    System.out.println(value);
+  }
+}
+</code></pre></div></div>
+<h3 id="iterator">Iterator</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public void testIterator() {
+  Iterator&lt;Map.Entry&lt;Integer, Integer&gt;&gt; iterator = map.entrySet().iterator();
+  while (iterator.hasNext()) {
+    Map.Entry&lt;Integer, Integer&gt; entry = iterator.next();
+    // TODO:
+    // iterator.remove();
+  }
+}
+</code></pre></div></div>
+<p>在用<code class="highlighter-rouge">foreach</code>遍历<code class="highlighter-rouge">map</code>时，如果改变其大小会报错，但如果只是删除元素，可以使用<code class="highlighter-rouge">Iterator</code>的<code class="highlighter-rouge">remove</code>方法删除元素.</p>
+<h2 id="javautilconcurrentmodificationexception">java.util.ConcurrentModificationException</h2>
+<p><code class="highlighter-rouge">Iterator</code>是工作在一个独立的线程中，并且拥有一个<code class="highlighter-rouge">mutex</code>锁，就是说<code class="highlighter-rouge">Iterator</code>在工作的时候，是不允许被迭代的对象被改变的。<code class="highlighter-rouge">Iterator</code>被创建的时候，建立了一个<code class="highlighter-rouge">内存索引表</code>（单链表），这个索引表指向<code class="highlighter-rouge">原来的对象</code>，当原来的对象数量改变的时候，这个索引表的内容没有同步改变，所以当索引指针往下移动的时候，便找不到要迭代的对象，于是产生错误。<code class="highlighter-rouge">List</code>、<code class="highlighter-rouge">Set</code>等是动态的，可变对象数量的数据结构，但是<code class="highlighter-rouge">Iterator</code>则是<code class="highlighter-rouge">单向不可变</code>，只能<code class="highlighter-rouge">顺序读取</code>，不能逆序操作的数据结构，当<code class="highlighter-rouge">Iterator</code>指向的原始数据发生变化时，<code class="highlighter-rouge">Iterator</code>自己就迷失了方向。</p>
+<h2 id="arraylist的排序">ArrayList的排序</h2>
+<p>对<code class="highlighter-rouge">list</code>自定义排序可以使用到了<code class="highlighter-rouge">Collections.sort</code>函数<code class="highlighter-rouge">Collections.sort(List, Comparator)</code>
+在这里自定义<code class="highlighter-rouge">Comparator</code>后对其<code class="highlighter-rouge">compare</code>函数进行重写</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>List&lt;Map.Entry&lt;String,Integer&gt;&gt; list = new ArrayList&lt;Map.Entry&lt;String, Integer&gt;&gt;(followers.entrySet());
+Collections.sort(list,new Comparator&lt;Map.Entry&lt;String, Integer&gt;&gt;(){
+	@Override
+	public int compare(Entry&lt;String, Integer&gt; o1, Entry&lt;String, Integer&gt; o2) {
+		if (o1.getValue() &gt; o2.getValue()) return -1;
+		else return 1;
+	}
+});
+</code></pre></div></div>
+
+</div>
+
+<div>
+	
+	<div class="eof"></div>
+	
+</div>
+
+<div class="share">
+    <p>Share this post with: </p>
+	<a href="https://twitter.com/intent/tweet?text=Lab1 Problem Solution@&amp;url=http://localhost:4000/coding/Bug1.html" class="twitter-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/coding/Bug1.html" class="facebook-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://plus.google.com/share?url=http://localhost:4000/coding/Bug1.html" class="googleplus-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+</div>
+
+
+<div id="disqus_thread"></div>
+
+
+ 
+</div>
+
+
+</article>
+
+  </div>
+
+</body>
+
+<foot>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <center>
+
+		<p><a class="link" href="/archive/">Archive</a> /
+		<a class="link" href="/category/">Category</a> /
+		<a class="link" href="/tags/">Tags</a> /
+		<a class="link" href="/about/">About</a> /
+		<a class="link" href="/contact/">Contact</a>
+        </p>
+
+        <span><script>document.write(new Date().getFullYear());</script></span>
+        <span>&copy;</span>
+
+		<a class="link" href="https://aether.github.io">Aether</a>
+		<br>
+
+    </center>
+
+  </div>
+
+</footer>
+
+    <foot>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Derictory -->
+
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script src="http://yandex.st/highlightjs/6.2/highlight.min.js"></script>
+
+<!-- Hit analytics -->
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Directory -->
+
+<script src="/js/main.js"></script>
+
+</foot>
+
+
+</foot>
+
+</html>
