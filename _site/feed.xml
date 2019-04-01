@@ -6,9 +6,188 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 16 Mar 2019 15:05:25 +0800</pubDate>
-    <lastBuildDate>Sat, 16 Mar 2019 15:05:25 +0800</lastBuildDate>
+    <pubDate>Tue, 02 Apr 2019 00:40:12 +0800</pubDate>
+    <lastBuildDate>Tue, 02 Apr 2019 00:40:12 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
+    
+      <item>
+        <title>Software Construction Summary 3</title>
+        <description>&lt;h2 id=&quot;equality-in-adt-and-oop&quot;&gt;Equality in ADT and OOP&lt;/h2&gt;
+
+&lt;h3 id=&quot;equals&quot;&gt;equals&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;equality: 自反、传递、对称&lt;/li&gt;
+  &lt;li&gt;引用等价性 referential equality —— &lt;code class=&quot;highlighter-rouge&quot;&gt;==&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;判断是否指向同一块内存地址&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;对称等价性 object equality —— &lt;code class=&quot;highlighter-rouge&quot;&gt;equals()&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;instanceof&lt;/code&gt; is dynamic type checking, not the static type checking. It should be disallowed anywhere except for implementing equals. (&lt;code class=&quot;highlighter-rouge&quot;&gt;getClass()&lt;/code&gt; is also disallowed.)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;a.equals(b)&lt;/code&gt; —&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;a.hashcode() == b.hashcode()&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;a.hashcode() == b.hashcode()&lt;/code&gt; –\–&amp;gt;  &lt;code class=&quot;highlighter-rouge&quot;&gt;a.equals(b)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;x.equals(null)&lt;/code&gt; must return false&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;int&lt;/code&gt; 放入&lt;code class=&quot;highlighter-rouge&quot;&gt;Map&amp;lt;String, Integer&amp;gt;&lt;/code&gt;后自动变为&lt;code class=&quot;highlighter-rouge&quot;&gt;Integer&lt;/code&gt;类型，取出后应该用&lt;code class=&quot;highlighter-rouge&quot;&gt;equals()&lt;/code&gt;方法比较&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;clone&quot;&gt;clone&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;clone()&lt;/code&gt;返回的对象是一个独立的副本，两个对象地址不同，属性相同。&lt;/li&gt;
+  &lt;li&gt;若类型&lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;中有mutable成员变量&lt;code class=&quot;highlighter-rouge&quot;&gt;B&lt;/code&gt;，那么对&lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;的clone对象进行修改时将修改原有的&lt;code class=&quot;highlighter-rouge&quot;&gt;B&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;如果实现完整的深拷贝，需要被复制对象的继承链、引用链上的每一个对象都实现克隆机制。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;immutable-type&quot;&gt;Immutable type&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;AF(a) = AF(b)&lt;/li&gt;
+  &lt;li&gt;必须同时重写&lt;code class=&quot;highlighter-rouge&quot;&gt;equals()&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;hashcode()&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;对于immutable类型的对象来说，因为没有mutable方法，所以观察等价性与行为等价性一致。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;mutable-type&quot;&gt;Mutable type&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;观察等价性 observational equality&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;在不改变状态的情况下观察两个mutable对象是否看起来一致&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;行为等价性 behavioral equality
+    &lt;ul&gt;
+      &lt;li&gt;调用对象的任何方法都展示出一致的结果&lt;/li&gt;
+      &lt;li&gt;mutable内容改变后&lt;code class=&quot;highlighter-rouge&quot;&gt;hashcode&lt;/code&gt;随之改变
+        &lt;ul&gt;
+          &lt;li&gt;如果某个mutable的对象包含在集合类中，当其发生改变后，集合类的行为不确定😢&lt;/li&gt;
+          &lt;li&gt;只影响&lt;code class=&quot;highlighter-rouge&quot;&gt;HashSet&lt;/code&gt;，不影响&lt;code class=&quot;highlighter-rouge&quot;&gt;TreeSet&lt;/code&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Collections&lt;/code&gt; 使用&lt;strong&gt;观察等价性&lt;/strong&gt; —— &lt;code class=&quot;highlighter-rouge&quot;&gt;List&lt;/code&gt; 的&lt;code class=&quot;highlighter-rouge&quot;&gt;equals()&lt;/code&gt;方法被重写
+    &lt;ul&gt;
+      &lt;li&gt;List 首先判断Null 然后判断size 最后依次比较每个内容的&lt;code class=&quot;highlighter-rouge&quot;&gt;equals()&lt;/code&gt;方法比较&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;其他可变类型 (如&lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt;) 使用&lt;strong&gt;行为等价性&lt;/strong&gt; —— &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt; 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;equals()&lt;/code&gt;方法继承自&lt;code class=&quot;highlighter-rouge&quot;&gt;Object&lt;/code&gt;类&lt;/li&gt;
+  &lt;li&gt;大多情况下无需重写 直接继承&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Mon, 01 Apr 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/Software-Construction-Summary-3.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Software-Construction-Summary-3.html</guid>
+        
+        <category>CODE</category>
+        
+        <category>SOFTWARE-CONSTRUCTION</category>
+        
+        <category>JAVA</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>Software Construction Summary 2</title>
+        <description>&lt;h2 id=&quot;test-first-programming&quot;&gt;Test-First Programming&lt;/h2&gt;
+&lt;h3 id=&quot;testing-levels&quot;&gt;Testing levels&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Unit testing 单元测试
+    &lt;ul&gt;
+      &lt;li&gt;等价类划分 partitioning
+ • 全覆盖 Full cartestian produck
+ • 覆盖每个取值 Cover each part&lt;/li&gt;
+      &lt;li&gt;边界值分析 BVA (binary value analysis)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Integration testing 集成测试&lt;/li&gt;
+  &lt;li&gt;System testing 系统测试&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;设计spec —&amp;gt;设计test cases —&amp;gt; code&lt;/p&gt;
+&lt;h3 id=&quot;code-coverage&quot;&gt;Code coverage&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Fuction coverage&lt;/li&gt;
+  &lt;li&gt;Statement coverage&lt;/li&gt;
+  &lt;li&gt;Branch coverage&lt;/li&gt;
+  &lt;li&gt;Condition coverage&lt;/li&gt;
+  &lt;li&gt;Path coverage&lt;/li&gt;
+  &lt;li&gt;path &amp;gt; branch &amp;gt; statement&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;adt&quot;&gt;ADT&lt;/h2&gt;
+&lt;h3 id=&quot;primitive-typesreference-types&quot;&gt;Primitive Types/Reference Types&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;primitive types
+    &lt;ul&gt;
+      &lt;li&gt;stack, exist only when in use&lt;/li&gt;
+      &lt;li&gt;immutable&lt;/li&gt;
+      &lt;li&gt;no ID, only value&lt;/li&gt;
+      &lt;li&gt;dirt cheap&lt;/li&gt;
+      &lt;li&gt;int, long, byte, short, char, float, double, boolean&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Object Reference Types
+    &lt;ul&gt;
+      &lt;li&gt;heap, garbage collected&lt;/li&gt;
+      &lt;li&gt;some mutable, some not&lt;/li&gt;
+      &lt;li&gt;ID + value&lt;/li&gt;
+      &lt;li&gt;more costly&lt;/li&gt;
+      &lt;li&gt;Classes, interfaces, arrays, enums, annotations&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;static-typesdynamic-types&quot;&gt;Static Types/Dynamic Types&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;static types
+    &lt;ul&gt;
+      &lt;li&gt;在编译阶段进行类型检查 – type&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;dynamic data types
+    &lt;ul&gt;
+      &lt;li&gt;在运行阶段进行类型检查 – value&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;immutablemutable&quot;&gt;Immutable/Mutable&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;immutability - final
+    &lt;ul&gt;
+      &lt;li&gt;references / value cannot be changed&lt;/li&gt;
+      &lt;li&gt;final class cannot be inherited&lt;/li&gt;
+      &lt;li&gt;final method cannot be overridden by subclasses&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;String —— immutable&lt;/li&gt;
+  &lt;li&gt;StringBuilder —— mutable (never use Date)
+    &lt;ul&gt;
+      &lt;li&gt;防御式拷贝 defensive copy
+        &lt;ul&gt;
+          &lt;li&gt;避免指向同一内存地址 避免被修改的潜在风险&lt;/li&gt;
+          &lt;li&gt;可能造成内存浪费&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 16 Mar 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/SoftwareConstructionSummary2.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/SoftwareConstructionSummary2.html</guid>
+        
+        <category>CODE</category>
+        
+        <category>ANDROID</category>
+        
+        <category>JAVA</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
     
       <item>
         <title>Software Construction Summary 1</title>
@@ -2011,482 +2190,6 @@ match.span()&lt;/p&gt;
         <category>CODE</category>
         
         <category>PYTHON</category>
-        
-        
-        <category>coding</category>
-        
-      </item>
-    
-      <item>
-        <title>Advance Grammer in Java</title>
-        <description>&lt;h3 id=&quot;hashmap&quot;&gt;HashMap&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class Coin {
-    private HashMap&amp;lt;Integer, String&amp;gt; coinnames = new HashMap&amp;lt;Integer, String&amp;gt;();
-    
-    public Coin() {
-    coinnames.put(1, &quot;penny&quot;);
-    coinnames.put(10, &quot;dime&quot;);
-    coinnames.put(25, &quot;quarter&quot;);
-    coinnames.put(50, &quot;half-dollar&quot;);
-    coinnames.put(50, &quot;0.5&quot;);
-    }
-    
-    public String getName(int amount) {
-        return coinnames.get(amount);
-    }
-    
-    public static void main(String[] args){
-        Scanner in = new Scanner(System.in);
-        int amount = in.nextInt();
-        Coin coin = new Coin();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h3 id=&quot;hashset&quot;&gt;HashSet&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static void main(String[] args) {
-    HashSet&amp;lt;String&amp;gt; s = new HashSet&amp;lt;String&amp;gt;();
-    s.add(&quot;first&quot;);
-    s.add(&quot;second&quot;);
-    s.add(&quot;first&quot;);//{first,second}
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;use-stringbuffer-instead-of-add-string&quot;&gt;Use StringBuffer instead of add string&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public String getExitDesc() {
-    StringBuffer sb = new StringBuffer();
-    if (northExit != null) {
-        sb.append(&quot;north &quot;);
-    }
-    if (southExit != null) {
-        sb.append(&quot;south &quot;);
-    }
-    if (eastExit != null) {
-        sb.append(&quot;east &quot;);
-    }
-    if (westExit != null) {
-        sb.append(&quot;west &quot;);
-    }
-    return sb.toString();
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;handler&quot;&gt;Handler&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class Game {
-    private HashMap&amp;lt;String, Handler&amp;gt; handlers = new HashMap&amp;lt;String, Handler&amp;gt;;
-    public Game() {
-        handlers.put(&quot;bye&quot;, new HandlerBye());
-    }
-}
-
-public class Handler {
-    public void doCmd(String word) {
-        public boolean isBye() {
-            return flase;
-        }
-    }
-}
-
-public class HandlerBye extends Handler {
-    @Override
-    public boolean isBye() {
-        return true;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;abstract&quot;&gt;Abstract&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public abstract class Shape {
-    
-    public abstract void draw(Graphics g);
-    
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Abstract class can’t generate object,but it can define variable.&lt;/p&gt;
-
-&lt;p&gt;A subclass of an abstractclass must override abstract function in the super class.&lt;/p&gt;
-
-&lt;h3 id=&quot;interface&quot;&gt;Interface&lt;/h3&gt;
-
-&lt;p&gt;Interface is abstract class.All member functions and member variables are &lt;strong&gt;public static final&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class Fox extends Animal implements Cell {
-    //......
-}
-
-public interface Cell {
-    //......
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Interface can inherit interface, but it can’t inherit class.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Class can implement many interfaces,but interface can’t implement interface.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;exception&quot;&gt;Exception&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;int[] a = new int[10];
-int idx;
-Scanner in = new Scanner(System.in);
-idx = in.nextInt();
-try {
-    a[idx] = 10;
-    System.out.println(&quot;hello&quot;);
-} catch (ArrayIndexOutOfBoundsException e) {
-    System.out.println(&quot;Caught&quot;);
-}
-
-try {
-    // possible exception
-} catch (Type1 id1){
-    // deal with it
-} catch (Type2 id2){
-    // deal with it
-} catch (Type3 id3){
-    // deal with it
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;When it catches an exception in a function,it won’t lead to the termination, instead, it will go back the code where the function was called,skip over the function and continue running.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;try {
-    
-} catch (Exception e) {
-    System.out.println(&quot;caught&quot;);
-    System.out.println(e.getMessage);
-    System.out.println(e);
-    e.printStackTrace();
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;String getMessage();&lt;/li&gt;
-  &lt;li&gt;void printStackTrace();&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;try{
-
-} catch (Exception e) {
-    System.err.println(&quot;An exception was thrown&quot;);
-    throw e;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;If you can’t deal with the exception, you can throw it again.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class OpenException extends Throwable {
-    
-}
-
-public class ArrayIndex{
-
-    public static void readFile() throws OpenException {
-        throw new OpenException();
-    }
-    
-    public static void main(String[] args) {
-        try {
-            readFile();
-        } catch (OpenException e) {
-            
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;throw new Exception();&lt;/li&gt;
-  &lt;li&gt;throw new Exception(“ERROR~”);&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;When you override a function,subclass can’t declare more exception than superclass.&lt;/p&gt;
-
-&lt;p&gt;All the possible exceptions must be declared in the constructor of subclass.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;stream&quot;&gt;Stream&lt;/h3&gt;
-&lt;h4 id=&quot;inputstream&quot;&gt;InputStream&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;int available();&lt;/li&gt;
-  &lt;li&gt;void close;&lt;/li&gt;
-  &lt;li&gt;void mark(int readlimit);&lt;/li&gt;
-  &lt;li&gt;boolean markSupported();&lt;/li&gt;
-  &lt;li&gt;abstract int read();&lt;/li&gt;
-  &lt;li&gt;int read(byte[] b);&lt;/li&gt;
-  &lt;li&gt;int read(byte[] b, int off, int len);&lt;/li&gt;
-  &lt;li&gt;void reset();&lt;/li&gt;
-  &lt;li&gt;long skip(long n);&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;outputstream&quot;&gt;OutputStream&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;void close();&lt;/li&gt;
-  &lt;li&gt;void flush();&lt;/li&gt;
-  &lt;li&gt;void write(byte[] b);&lt;/li&gt;
-  &lt;li&gt;void write(byte[] b, int off, int len);&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;abstract void write(int b);&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public class Main{
-    public class void main(String[] args) {
-        System.out.println(&quot;hello world&quot;);
-        byte[] buffer = new byte[1024];
-        try {
-            int len = System.in.read(buffer);//len-&amp;gt;GB code
-                String s = new String(buffer, 0, len);//s.length-&amp;gt;Unicode
-        } catch (IOException e)
-        e.printStackTrace();
-    }
-  }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;fileinputstreamfileoutputstream&quot;&gt;FileInputStream/FileOutputStream&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class Main{
-   public class void main(String[] args) {
-    System.out.println(&quot;hello world&quot;);
-    byte[] buffer = new byte[10];
-    for (int i = 0; i&amp;lt;buffer.length; i++) {
-        buffer[i] = (byte)i;
-    }
-    try {
-        FileOutputStream out = new FileOutputStream(&quot;a.dat&quot;);
-        out.write(buffer);
-        out.close
-    } catch (FileNotFoundException e)
-        e.printStackTrace();
-    } catch (IOException e)
-        e.printStackTrace();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;stream-filter&quot;&gt;Stream Filter&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;try {
-    DataOutputStream out = new DataOutputStream(
-                                new BufferedOutputStream(
-                                    new FileOutputStream(&quot;a.dat&quot;)));
-    binary input and output
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;readerwriter&quot;&gt;Reader/Writer&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PrintWriter out = new PrintWriter(
-    new BufferWriter(
-        new OutputStreamWriter(
-            new FileOutputStream(&quot;a.txt&quot;))));
-            
-int i = 123456;
-out.println(i); //Unicode -&amp;gt; ASCII or GB code
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;BufferedReader in = new BufferedReader(
-                        new InputStreamReader(
-                            new FileInputStream(&quot;src/hello/Main.java&quot;)));
-
-String line;
-while ((line = in.readLine()) != null) {
-    System.out.println(line);
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;BufferedReader readLine();&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;LineNumberReader getLineNumber();&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt; BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(&quot;utf8.txt&quot;), &quot;utf8&quot;));&lt;/code&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;streamreaderscanner&quot;&gt;Stream/Reader/Scanner&lt;/h4&gt;
-&lt;p&gt;binary -&amp;gt; InputStream&lt;/p&gt;
-
-&lt;p&gt;text -&amp;gt; Reader&lt;/p&gt;
-
-&lt;p&gt;data -&amp;gt; Scanner&lt;/p&gt;
-
-&lt;h4 id=&quot;socket&quot;&gt;Socket&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class Main {
-    public static void main(String[] args) {
-        try {
-            Socket socket = new Socket(InetAddress.getByName(&quot;localhost&quot;),12345);
-            PrintWriter out = new PrintWriter(
-                new BufferedWriter(
-                    new OutputStreamWriter(socket.getOutputStream)));
-            out.println(&quot;Hello&quot;);
-            out.flush();
-            BufferedReader in = new BufferedReader(
-                new InputStreamReader(
-                    socket.getInputStream()));
-            String line;
-            line = in.readLine();
-            System.out.println(line);
-            out.close;
-            socket.close();
-        } catch(IOException e){
-            e.printStackTrace;
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;terminal&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nc -l 12345
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;the read()/nextInt()/readLine() function is blocked,you can use thread of use nio channel&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;for socket,we can set SO time&lt;/p&gt;
-
-    &lt;p&gt;setSoTimeout(int timeOut)&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;object-serialization&quot;&gt;Object Serialization&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;ObjectInputStream class&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;readObject();&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Student implements Serializable {
-        private String name;
-        private int age;
-        private int grade;
-    
-    public Student(String name, int age, int grade) {
-        this.name = name;
-        this.age = age;
-        this.grade = grade;
-    }
-
-     public String toString() {
-         return name+&quot; &quot;+age+&quot; &quot;+grade;
-     }
- }
-
-public class Main {
-    public static void main(String[] args) {
-        try {
-            Student s1 = new Student(&quot;John&quot;,18,5);
-            System.out.println(s1);
-            ObjectOutputStream out = new ObjectOutputStream(
-                    new FileOutputStream(&quot;obj.dat&quot;))
-            out.writeObject(s1);
-            out.close();
-            ObjectInputStream in = new ObjectInputStream(
-                new FileInputStream(&quot;obj.dat&quot;));
-            Student s2 = (Student)in.readObject();
-            System.out.println(s2);//s1!=s2
-            in.close;
-        } catch (IOException e){
-            e.printStackTrace();
-        } catch (ClassNotFoundException e){
-            e.printStackTrace();
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;inversion-of-control&quot;&gt;Inversion of Control&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;JButton btnStep = new JButton(&quot;Button&quot;);
-frame.add(btnStep, BorderLayout.NORTH);
-btnStep.addActionListener(new ActionListener() { 
-    @Override
-    public void actionPerformed(Action e) {
-        //.....
-    }
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;inner-class&quot;&gt;Inner class&lt;/h4&gt;
-&lt;p&gt;Inner class is defined in class or function, it can access all the resources outside, including any private member.(If it is defined in a function,it can only access the final variable)&lt;/p&gt;
-
-&lt;h4 id=&quot;anonymous-class&quot;&gt;Anonymous Class&lt;/h4&gt;
-&lt;p&gt;Anonymous Class can inherit class and implement interface.&lt;/p&gt;
-
-&lt;h3 id=&quot;mvc&quot;&gt;MVC&lt;/h3&gt;
-&lt;p&gt;M = Model&lt;/p&gt;
-
-&lt;p&gt;V = View&lt;/p&gt;
-
-&lt;p&gt;C = Control&lt;/p&gt;
-</description>
-        <pubDate>Wed, 24 Jan 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/Java.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/Java.html</guid>
-        
-        <category>CODE</category>
-        
-        <category>JAVA</category>
-        
-        
-        <category>coding</category>
-        
-      </item>
-    
-      <item>
-        <title>JSON in Android</title>
-        <description>&lt;h3 id=&quot;json&quot;&gt;JSON:&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
-    &quot;name&quot;:{
-        &quot;firstName&quot;:&quot;John&quot;,
-        &quot;lastName&quot;:&quot;Doe&quot;,
-    }
-    &quot;title&quot;:&quot;Missing Person&quot;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;initialize-json-object-from-json-string&quot;&gt;Initialize JSON Object from JSON string&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;JSONObject contact = new JSONObject(contactJSONString);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;name-into-a-json-object&quot;&gt;Name into a JSON Object&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;JSONObject name = contact.getJSONObject(&quot;name&quot;);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;first-and-last-names&quot;&gt;First and last names&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;String firstName = name.getString(&quot;firstName&quot;);
-String lastName = name.getString(&quot;lastName&quot;);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;title&quot;&gt;Title&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;String title = contact.getString(&quot;title&quot;);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-        <pubDate>Mon, 15 Jan 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/JSON-in-Android.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/JSON-in-Android.html</guid>
-        
-        <category>CODE</category>
-        
-        <category>ANDROID</category>
-        
-        <category>JAVA</category>
         
         
         <category>coding</category>

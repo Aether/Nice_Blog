@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- CSS -->
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/coding/SoftwareConstructionSummary2.html">
+  <link rel="alternate" type="application/rss+xml" title="Aether's Blog" href="http://localhost:4000/feed.xml">
+
+<!-- Google font -->
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto Sans">
+
+<!-- font awesome -->
+
+<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
+
+</head>
+
+
+  
+
+  
+
+  </head>
+
+  <body>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Software Construction Summary 2</title>
+  <meta name="description" content="Test-First ProgrammingTesting levels  Unit testing 单元测试          等价类划分 partitioning • 全覆盖 Full cartestian produck • 覆盖每个取值 Cover each part      边界值分析 BVA (bi...">
+</head>
+
+
+  <div class="wrapper">
+          <header class="post-header">
+
+    <center><div class="post-title" itemprop="name headline">Software Construction Summary 2</div>
+
+		<div class="post-meta"><i class="fa fa-calendar-o"></i> <time datetime="16 Mar 2019" itemprop="datePublished">Mar 16 2019</time>
+
+		&nbsp;&nbsp;•&nbsp;&nbsp;<i class="fa fa-user-secret"></i> <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Aether</span>
+        
+		<br>
+	</div>
+
+        
+        <div class="post-tags">
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">CODE</a>
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">ANDROID</a>
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">JAVA</a>
+        
+	</div>
+    </center>
+
+</header>
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<div class="post-content">
+    <center>
+	
+	<p></p>
+	
+    </center>
+</div>
+
+
+
+<div class="post-content" itemprop="articleBody">
+    <h2 id="test-first-programming">Test-First Programming</h2>
+<h3 id="testing-levels">Testing levels</h3>
+<ul>
+  <li>Unit testing 单元测试
+    <ul>
+      <li>等价类划分 partitioning
+ • 全覆盖 Full cartestian produck
+ • 覆盖每个取值 Cover each part</li>
+      <li>边界值分析 BVA (binary value analysis)</li>
+    </ul>
+  </li>
+  <li>Integration testing 集成测试</li>
+  <li>System testing 系统测试</li>
+</ul>
+
+<p>设计spec —&gt;设计test cases —&gt; code</p>
+<h3 id="code-coverage">Code coverage</h3>
+<ul>
+  <li>Fuction coverage</li>
+  <li>Statement coverage</li>
+  <li>Branch coverage</li>
+  <li>Condition coverage</li>
+  <li>Path coverage</li>
+  <li>path &gt; branch &gt; statement</li>
+</ul>
+
+<h2 id="adt">ADT</h2>
+<h3 id="primitive-typesreference-types">Primitive Types/Reference Types</h3>
+<ul>
+  <li>primitive types
+    <ul>
+      <li>stack, exist only when in use</li>
+      <li>immutable</li>
+      <li>no ID, only value</li>
+      <li>dirt cheap</li>
+      <li>int, long, byte, short, char, float, double, boolean</li>
+    </ul>
+  </li>
+  <li>Object Reference Types
+    <ul>
+      <li>heap, garbage collected</li>
+      <li>some mutable, some not</li>
+      <li>ID + value</li>
+      <li>more costly</li>
+      <li>Classes, interfaces, arrays, enums, annotations</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="static-typesdynamic-types">Static Types/Dynamic Types</h3>
+<ul>
+  <li>static types
+    <ul>
+      <li>在编译阶段进行类型检查 – type</li>
+    </ul>
+  </li>
+  <li>dynamic data types
+    <ul>
+      <li>在运行阶段进行类型检查 – value</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="immutablemutable">Immutable/Mutable</h3>
+<ul>
+  <li>immutability - final
+    <ul>
+      <li>references / value cannot be changed</li>
+      <li>final class cannot be inherited</li>
+      <li>final method cannot be overridden by subclasses</li>
+    </ul>
+  </li>
+  <li>String —— immutable</li>
+  <li>StringBuilder —— mutable (never use Date)
+    <ul>
+      <li>防御式拷贝 defensive copy
+        <ul>
+          <li>避免指向同一内存地址 避免被修改的潜在风险</li>
+          <li>可能造成内存浪费</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+</div>
+
+<div>
+	
+	<div class="eof"></div>
+	
+</div>
+
+<div class="share">
+    <p>Share this post with: </p>
+	<a href="https://twitter.com/intent/tweet?text=Software Construction Summary 2@&amp;url=http://localhost:4000/coding/SoftwareConstructionSummary2.html" class="twitter-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/coding/SoftwareConstructionSummary2.html" class="facebook-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://plus.google.com/share?url=http://localhost:4000/coding/SoftwareConstructionSummary2.html" class="googleplus-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+</div>
+
+
+<div id="disqus_thread"></div>
+
+
+ 
+</div>
+
+
+</article>
+
+  </div>
+
+</body>
+
+<foot>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <center>
+
+		<p><a class="link" href="/archive/">Archive</a> /
+		<a class="link" href="/category/">Category</a> /
+		<a class="link" href="/tags/">Tags</a> /
+		<a class="link" href="/about/">About</a> /
+		<a class="link" href="/contact/">Contact</a>
+        </p>
+
+        <span><script>document.write(new Date().getFullYear());</script></span>
+        <span>&copy;</span>
+
+		<a class="link" href="https://aether.github.io">Aether</a>
+		<br>
+
+    </center>
+
+  </div>
+
+</footer>
+
+    <foot>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Derictory -->
+
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script src="http://yandex.st/highlightjs/6.2/highlight.min.js"></script>
+
+<!-- Hit analytics -->
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Directory -->
+
+<script src="/js/main.js"></script>
+
+</foot>
+
+
+</foot>
+
+</html>
