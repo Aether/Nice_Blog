@@ -11,11 +11,11 @@ finished: true
 
 ## Multi-dimensional software views
 
-- By phases: build-time and run-time views
+- By phases: **build-time** and **run-time** views
 
-- By dynamics: moment and period views
+- By dynamics: **moment** and **period** views
 
-- By levels: code and component views
+- By levels: **code** and **component** views
 	- logically / physically
 	- in-memory states / physical environment
 

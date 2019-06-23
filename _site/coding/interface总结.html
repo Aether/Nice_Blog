@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- CSS -->
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/coding/interface%E6%80%BB%E7%BB%93.html">
+  <link rel="alternate" type="application/rss+xml" title="Aether's Blog" href="http://localhost:4000/feed.xml">
+
+<!-- Google font -->
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto Sans">
+
+<!-- font awesome -->
+
+<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
+
+</head>
+
+
+  
+
+  
+
+  </head>
+
+  <body>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Java中-able总结</title>
+  <meta name="description" content="Java中-able总结">
+</head>
+
+
+  <div class="wrapper">
+          <header class="post-header">
+
+    <center><div class="post-title" itemprop="name headline">Java中-able总结</div>
+
+		<div class="post-meta"><i class="fa fa-calendar-o"></i> <time datetime="20 Jun 2019" itemprop="datePublished">Jun 20 2019</time>
+
+		&nbsp;&nbsp;•&nbsp;&nbsp;<i class="fa fa-user-secret"></i> <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Aether</span>
+        
+		<br>
+	</div>
+
+        
+        <div class="post-tags">
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">CODE</a>
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">SOFTWARECONSTRUCTION</a>
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">JAVA</a>
+        
+	</div>
+    </center>
+
+</header>
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<div class="post-content">
+    <center>
+	
+	<p></p>
+	
+    </center>
+</div>
+
+
+
+<div class="post-content" itemprop="articleBody">
+    <h2 id="java中-able总结">Java中-able总结</h2>
+
+<ul>
+  <li>Comparable &amp; Comparator</li>
+  <li>Iterable &amp; Iterator</li>
+  <li>Observable &amp; Observer</li>
+  <li>Throwable</li>
+  <li>Cloneable</li>
+  <li>Runnable</li>
+</ul>
+
+<h3 id="comparable--comparator">Comparable &amp; Comparator</h3>
+
+<h4 id="comparable">Comparable</h4>
+<p>需override<code class="highlighter-rouge">compareTo()</code>方法</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Person implements Comparable&lt;Person&gt; {
+   @Override
+   public int compareTo(Person o) {
+     if (...) return -1;
+     else if (...) return 1;
+     else return 0;
+   }
+}
+</code></pre></div></div>
+
+<h4 id="comparator">Comparator</h4>
+<p><code class="highlighter-rouge">Comparator</code>是策略模式<code class="highlighter-rouge">strategy design pattern</code>，可使用不同的Comparator对象实现不同策略的排序。
+需override<code class="highlighter-rouge">compare()</code>方法</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Cmp implements Comparator {
+  @Override
+  public int compare(Object arg0, Object arg1) {
+    Person a = (Person) arg0;
+    Person b = (Person) arg1;
+    if (...) return -1;
+    else if (...) return 1;
+    else return 0;
+  }
+}
+</code></pre></div></div>
+<p>调用方法：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Person[] p = new Person[4];
+Arrays.sort(p);//默认排序
+Arrays.sort(p, new Cmp());//自定义排序
+</code></pre></div></div>
+
+<h4 id="summary">Summary</h4>
+<ul>
+  <li>顾名思义，某个class实现<code class="highlighter-rouge">Comparable</code>可以使该class的对象可比较：<code class="highlighter-rouge">a.compareTo(b)</code></li>
+  <li><code class="highlighter-rouge">Comparator</code>为比较器和一种比较策略，内部需override<code class="highlighter-rouge">compare()</code>方法</li>
+</ul>
+
+<h3 id="iterable--iterator">Iterable &amp; Iterator</h3>
+
+<h4 id="iterator">Iterator</h4>
+<p>Iterator的定义：包含<code class="highlighter-rouge">hasNext()</code>，<code class="highlighter-rouge">next()</code>和<code class="highlighter-rouge">remove()</code>方法。</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public interface Iterator {  
+　　boolean hasNext();  
+　　Object next();  
+　　void remove();  
+}
+</code></pre></div></div>
+<p>Iterator的使用：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Iterator iter = l.iterator();
+while(iter.hasNext()){
+    String str = (String) iter.next();
+    System.out.println(str);
+}
+</code></pre></div></div>
+
+<h4 id="iterable">Iterable</h4>
+
+<p>Iterabler的定义：包含<code class="highlighter-rouge">iterator()</code>方法。</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public interface Iterable&lt;T&gt; {
+  Iterator&lt;T&gt; iterator();
+}
+</code></pre></div></div>
+<p>Iterable的使用：override<code class="highlighter-rouge">iterator()</code>方法</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class ArrayMap&lt;K, V&gt; implements Iterable&lt;K&gt; {
+  @Override
+  public Iterator&lt;K&gt; iterator() {
+      return new KeyIterator();
+  }
+}
+
+public class KeyIterator implements Iterator&lt;K&gt; {
+  @Override
+  public boolean hasNext() {
+      ...
+  }
+  @Override
+  public K next() {
+      ...
+  }
+}
+</code></pre></div></div>
+
+<h3 id="observable--observer">Observable &amp; Observer</h3>
+
+<h4 id="observer">Observer</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public interface Observer {
+  void update(Observable o, Object arg);
+}
+</code></pre></div></div>
+<h4 id="observerable">Observerable</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class NumObservable extends Observable {
+  private int data = 0;
+  public int getData() {
+     return data;
+  }
+  public void setData(int i) {
+     data = i;
+     setChanged();
+     notifyObservers();
+  }
+}
+</code></pre></div></div>
+<p>被观察者<code class="highlighter-rouge">NumObserable</code>执行了<code class="highlighter-rouge">notifyObservers()</code>后，观察者执行<code class="highlighter-rouge">update()</code>方法。</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class NumObserver implements Observer {
+
+  @Override
+  public void update(Observable o, Object arg) {
+    NumsObservable myObserable = (NumsObservable) o;
+    System.out.println("Data has changed to " + myObserable.getData());
+  }
+
+}
+</code></pre></div></div>
+
+<h3 id="throwable">Throwable</h3>
+<p>This is a <strong>class</strong>, not interface.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class MyException_another extends Throwable {
+   private static final long serialVersionUID = 1L;
+   public MyException_another() {
+     super();
+   }
+   public MyException_another(String msg) {
+     super(msg);
+   }
+   public MyException_another(String msg, Throwable cause) {
+     super(msg, cause);
+   }
+   public MyException_another(Throwable cause) {
+     super(cause);
+   }
+}
+</code></pre></div></div>
+
+<h3 id="cloneable">Cloneable</h3>
+<p>需重写<code class="highlighter-rouge">clone()</code>方法</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class Test implements Cloneable {
+  @Override
+  protected Object clone() throws CloneNotSupportedException {
+      ...
+  }
+}
+</code></pre></div></div>
+
+<h3 id="runnable">Runnable</h3>
+
+<p>需重写<code class="highlighter-rouge">run()</code>方法</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class MyThread1 implements Runnable {
+  @Override
+  public synchronized void  run() {
+    ...
+  }
+}
+</code></pre></div></div>
+
+</div>
+
+<div>
+	
+	<div class="eof"></div>
+	
+</div>
+
+<div class="share">
+    <p>Share this post with: </p>
+	<a href="https://twitter.com/intent/tweet?text=Java中-able总结@&amp;url=http://localhost:4000/coding/interface%E6%80%BB%E7%BB%93.html" class="twitter-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/coding/interface%E6%80%BB%E7%BB%93.html" class="facebook-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://plus.google.com/share?url=http://localhost:4000/coding/interface%E6%80%BB%E7%BB%93.html" class="googleplus-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+</div>
+
+
+<div id="disqus_thread"></div>
+
+
+ 
+</div>
+
+
+</article>
+
+  </div>
+
+</body>
+
+<foot>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <center>
+
+		<p><a class="link" href="/archive/">Archive</a> /
+		<a class="link" href="/category/">Category</a> /
+		<a class="link" href="/tags/">Tags</a> /
+		<a class="link" href="/about/">About</a> /
+		<a class="link" href="/contact/">Contact</a>
+        </p>
+
+        <span><script>document.write(new Date().getFullYear());</script></span>
+        <span>&copy;</span>
+
+		<a class="link" href="https://aether.github.io">Aether</a>
+		<br>
+
+    </center>
+
+  </div>
+
+</footer>
+
+    <foot>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Derictory -->
+
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script src="http://yandex.st/highlightjs/6.2/highlight.min.js"></script>
+
+<!-- Hit analytics -->
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Directory -->
+
+<script src="/js/main.js"></script>
+
+</foot>
+
+
+</foot>
+
+</html>

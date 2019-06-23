@@ -6,9 +6,1173 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 02 Apr 2019 00:40:12 +0800</pubDate>
-    <lastBuildDate>Tue, 02 Apr 2019 00:40:12 +0800</lastBuildDate>
+    <pubDate>Sun, 23 Jun 2019 22:52:53 +0800</pubDate>
+    <lastBuildDate>Sun, 23 Jun 2019 22:52:53 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
+    
+      <item>
+        <title>Java一些有趣的小问题总结</title>
+        <description>&lt;h2 id=&quot;java内部类访问局部变量必须声明为final&quot;&gt;Java内部类访问局部变量必须声明为final？&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static void main(String[] args) {
+  String str = &quot;haha&quot;;
+  // str = &quot;test&quot;;
+  new Thread() {
+    @Override
+    public void run() {
+      System.out.println(str);
+    }
+  }.start();
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;以上代码能够通过编译正常运行，取消注释后编译不通过，报错如下：&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Local variable str defined in an enclosing scope must be final or effectively
+final&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;即Java内部类访问局部变量必须声明为final &lt;br /&gt; Java一开始没有报错是默认认为变量为final，若变量被修改过，则默认的假设不成立，Java报错。&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;内部类的生命周期比局部变量的长，故定义str时JVM做了程序员看不到的操作：将str拷贝了一份给局部内部类，也就是说JVM在局部内部类中定义了一个&lt;code class=&quot;highlighter-rouge&quot;&gt;final String str = &quot;haha&quot;;&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;判断奇偶数&quot;&gt;判断奇偶数&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public boolean isOdd(int i) {
+return i % 2 == 1;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;x % 2 == 1&lt;/code&gt;的方式判断奇偶性对负数无效 &lt;br /&gt; Spotbugs指出：
+If this code is intending to check for oddness, consider using &lt;code class=&quot;highlighter-rouge&quot;&gt;x &amp;amp; 1 == 1&lt;/code&gt;, or &lt;code class=&quot;highlighter-rouge&quot;&gt;x % 2 != 0&lt;/code&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public boolean isOdd(int i) {
+return (i &amp;amp; 1) == 1;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;字符串去哪儿了&quot;&gt;字符串去哪儿了？&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;String a = &quot;a&quot;;
+String b = &quot;a&quot;;
+System.out.println(&quot;a and b: &quot; + a == b);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Output:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;false
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;ol&gt;
+    &lt;li&gt;’+’ 的运算优先级’==’ 高     ‘&amp;amp;&amp;amp;’ 优先级比 ‘||’ 高 &lt;br /&gt;&lt;/li&gt;
+    &lt;li&gt;equals() 和 ==&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;integer为什么不相等&quot;&gt;Integer为什么不相等？&lt;/h2&gt;
+&lt;h3 id=&quot;plan-a--使用constructor生成integer&quot;&gt;Plan A — 使用constructor生成Integer&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Integer a = new Integer(200);
+Integer b = new Integer(200);
+System.out.println(a == b);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Output:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;false
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;’==’ 判断是否指向同一对象&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;plan-b--使用valueof生成integer&quot;&gt;Plan B — 使用valueOf生成Integer&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Integer a = Integer.valueOf(200);
+Integer b = Integer.valueOf(200);
+System.out.println(a == b);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Output:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;false
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;plan-c--直接生成integer&quot;&gt;Plan C — 直接生成Integer&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Integer a = 200, b = 200;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Output:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;false
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Integer a = 200&lt;/code&gt;的时候，会自动调用&lt;code class=&quot;highlighter-rouge&quot;&gt;Integer&lt;/code&gt;中的&lt;code class=&quot;highlighter-rouge&quot;&gt;valueOf()&lt;/code&gt;方法，故&lt;code class=&quot;highlighter-rouge&quot;&gt;Integer a = 200;&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;Integer a = Integer.valueOf(200);&lt;/code&gt;等同&lt;/p&gt;
+
+&lt;h3 id=&quot;从200变为2结果却不一样&quot;&gt;从200变为2，结果却不一样？&lt;/h3&gt;
+&lt;h4 id=&quot;plan-b&quot;&gt;Plan B:&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Integer a = Integer.valueOf(2);
+Integer b = Integer.valueOf(2);
+System.out.println(a == b);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Output:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;plan-c&quot;&gt;Plan C:&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Integer a=2, b=2;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Output:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;查看&lt;code class=&quot;highlighter-rouge&quot;&gt;valueOf()&lt;/code&gt;的源码如下：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static Integer valueOf(int i) {
+  if (i &amp;gt;= IntegerCache.low &amp;amp;&amp;amp; i &amp;lt;= IntegerCache.high)
+    return IntegerCache.cache[i + (-IntegerCache.low)];
+  return new Integer(i);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;valueOf()&lt;/code&gt;在返回之前，会进行判断，判断当前i的值是否在 &lt;code class=&quot;highlighter-rouge&quot;&gt;-128~127&lt;/code&gt;之间。如果存在，则直接返回一个缓存的引用，不再重新开辟内存空间。
+如果不存在，就创建一个新的对象&lt;code class=&quot;highlighter-rouge&quot;&gt;new Integer()&lt;/code&gt;。
+&lt;br /&gt;
+ &lt;code class=&quot;highlighter-rouge&quot;&gt;Integer&lt;/code&gt;存在缓存类&lt;code class=&quot;highlighter-rouge&quot;&gt;IntegerCache&lt;/code&gt;，而缓存类会在第一次加载时初始化一个&lt;code class=&quot;highlighter-rouge&quot;&gt;Integer缓存数组&lt;/code&gt;，这个数组大小不是固定的，但是一定大于或等于256，覆盖范围为[-128,127]。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;integercache大小修改&quot;&gt;IntegerCache大小修改&lt;/h3&gt;
+
+&lt;p&gt;cache的大小可以通过jvm指令修改：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-XX:AutoBoxCacheMax==&amp;lt;size&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;除&lt;code class=&quot;highlighter-rouge&quot;&gt;float&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;double&lt;/code&gt;以外的&lt;code class=&quot;highlighter-rouge&quot;&gt;所有基础数据类型对应的封装类型&lt;/code&gt;都实现了缓存。他们缓存都是通过&lt;code class=&quot;highlighter-rouge&quot;&gt;valueOf()&lt;/code&gt;静态工厂完成的。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;的位置影响结果&quot;&gt;++的位置影响结果&lt;/h3&gt;
+&lt;p&gt;Test&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Integer a = new Integer(2);
+Integer b = new Integer(2);
+System.out.println(a++ == b++);
+System.out.println(++a == ++b);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Output:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;false
+true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;++a和++b是&lt;code class=&quot;highlighter-rouge&quot;&gt;autoboxing&lt;/code&gt;之后的结果 用到了cache&lt;br /&gt;
+a++和b++是原来Integer的结果&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;被哪里捕捉了&quot;&gt;被哪里捕捉了?&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;try {
+  try{
+    FileInputStream p = new FileInputStream(&quot;a.txt&quot;);
+  }catch(FileNotFoundException e) {
+    System.out.println(&quot;a&quot;);
+  }
+}catch(Exception e) {
+  System.out.println(&quot;b&quot;);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Output:
+a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;try catch嵌套时若内层catch能捕获，则外层catch不执行。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;finally-vs-return&quot;&gt;finally vs return&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;boolean func() {
+  try {
+    return true;
+  } finally {
+    return false;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Result:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;false
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;类型参数命名惯例&quot;&gt;类型参数命名惯例&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;By convention, type parameter names are single, uppercase letters. This stands in sharp contrast to the variable naming conventions that you already know about, and with good reason: Without this convention, it would be difficult to tell the difference between a type variable and an ordinary class or interface name.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;最常用的类型参数命名如下:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;E - Element (used extensively by the Java Collections Framework)&lt;/li&gt;
+  &lt;li&gt;K - Key&lt;/li&gt;
+  &lt;li&gt;N - Number&lt;/li&gt;
+  &lt;li&gt;T - Type&lt;/li&gt;
+  &lt;li&gt;V - Value&lt;/li&gt;
+  &lt;li&gt;S,U,V etc. - 2nd, 3rd, 4th types&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;调用了哪个方法&quot;&gt;调用了哪个方法？&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class A {
+  void foo() {
+    this.bar();
+  }
+  void bar() {
+    print(&quot;A.bar&quot;);
+  }
+}
+
+class B extends A {
+  void foo() {
+    super.foo();
+  }
+  void bar() {
+    print(&quot;B.bar&quot;);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Output:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;B.bar
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;B中的&lt;code class=&quot;highlighter-rouge&quot;&gt;foo()&lt;/code&gt;override了A中的&lt;code class=&quot;highlighter-rouge&quot;&gt;foo()&lt;/code&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Overridden的实例方法被调用的是子类型中的。&lt;br /&gt;区分于hidden的情况（hide适用于field和静态方法）
+hidden的静态方法被调用的是哪一个取决于它被调用的位置（子类型还是父类型）&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class Test {
+  public static void main(String[] args) {
+    new B().foo();
+  }
+}
+
+class A {
+  void foo() {
+    barStatic();
+  }
+  static void barStatic() {
+    System.out.println(&quot;A.barStatic&quot;);
+  }
+}
+
+class B extends A {
+  void foo() {
+    super.foo();
+  }
+  static void barStatic() {
+    System.out.println(&quot;B.barStatic&quot;);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Output:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A.barStatic
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;返回值协变&quot;&gt;返回值协变&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface A {
+  public C build(...);
+}
+class B implements A {
+  public D build(...) {
+    ...
+  }
+}
+其中D是C的子类型
+
+客户端：
+C c = new B().create();
+此时c的运行时类型其实是D
+
+接口和类之间的override同样可以covariance。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;catch-exception-的顺序问题&quot;&gt;catch Exception 的顺序问题&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;try {
+  FileInputStream p = new FileInputStream(&quot;a.txt&quot;);
+}catch(Exception e) {
+  System.out.println(&quot;exception&quot;);
+}catch(FileNotFoundException e) {
+  System.out.println(&quot;file not found exception&quot;);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Unreachable catch block for FileNotFoundException. It is already handled by the catch block for Exception&lt;/p&gt;
+&lt;/blockquote&gt;
+
+</description>
+        <pubDate>Sun, 23 Jun 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/Java%E7%BB%86%E8%8A%82%E6%80%BB%E7%BB%93.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Java%E7%BB%86%E8%8A%82%E6%80%BB%E7%BB%93.html</guid>
+        
+        <category>SOFTWARE-CONSTRUCTION</category>
+        
+        <category>JAVA</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>Java中-able总结</title>
+        <description>&lt;h2 id=&quot;java中-able总结&quot;&gt;Java中-able总结&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Comparable &amp;amp; Comparator&lt;/li&gt;
+  &lt;li&gt;Iterable &amp;amp; Iterator&lt;/li&gt;
+  &lt;li&gt;Observable &amp;amp; Observer&lt;/li&gt;
+  &lt;li&gt;Throwable&lt;/li&gt;
+  &lt;li&gt;Cloneable&lt;/li&gt;
+  &lt;li&gt;Runnable&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;comparable--comparator&quot;&gt;Comparable &amp;amp; Comparator&lt;/h3&gt;
+
+&lt;h4 id=&quot;comparable&quot;&gt;Comparable&lt;/h4&gt;
+&lt;p&gt;需override&lt;code class=&quot;highlighter-rouge&quot;&gt;compareTo()&lt;/code&gt;方法&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Person implements Comparable&amp;lt;Person&amp;gt; {
+   @Override
+   public int compareTo(Person o) {
+     if (...) return -1;
+     else if (...) return 1;
+     else return 0;
+   }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;comparator&quot;&gt;Comparator&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Comparator&lt;/code&gt;是策略模式&lt;code class=&quot;highlighter-rouge&quot;&gt;strategy design pattern&lt;/code&gt;，可使用不同的Comparator对象实现不同策略的排序。
+需override&lt;code class=&quot;highlighter-rouge&quot;&gt;compare()&lt;/code&gt;方法&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Cmp implements Comparator {
+  @Override
+  public int compare(Object arg0, Object arg1) {
+    Person a = (Person) arg0;
+    Person b = (Person) arg1;
+    if (...) return -1;
+    else if (...) return 1;
+    else return 0;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;调用方法：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Person[] p = new Person[4];
+Arrays.sort(p);//默认排序
+Arrays.sort(p, new Cmp());//自定义排序
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;summary&quot;&gt;Summary&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;顾名思义，某个class实现&lt;code class=&quot;highlighter-rouge&quot;&gt;Comparable&lt;/code&gt;可以使该class的对象可比较：&lt;code class=&quot;highlighter-rouge&quot;&gt;a.compareTo(b)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Comparator&lt;/code&gt;为比较器和一种比较策略，内部需override&lt;code class=&quot;highlighter-rouge&quot;&gt;compare()&lt;/code&gt;方法&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;iterable--iterator&quot;&gt;Iterable &amp;amp; Iterator&lt;/h3&gt;
+
+&lt;h4 id=&quot;iterator&quot;&gt;Iterator&lt;/h4&gt;
+&lt;p&gt;Iterator的定义：包含&lt;code class=&quot;highlighter-rouge&quot;&gt;hasNext()&lt;/code&gt;，&lt;code class=&quot;highlighter-rouge&quot;&gt;next()&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;remove()&lt;/code&gt;方法。&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public interface Iterator {  
+　　boolean hasNext();  
+　　Object next();  
+　　void remove();  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Iterator的使用：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Iterator iter = l.iterator();
+while(iter.hasNext()){
+    String str = (String) iter.next();
+    System.out.println(str);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;iterable&quot;&gt;Iterable&lt;/h4&gt;
+
+&lt;p&gt;Iterabler的定义：包含&lt;code class=&quot;highlighter-rouge&quot;&gt;iterator()&lt;/code&gt;方法。&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public interface Iterable&amp;lt;T&amp;gt; {
+  Iterator&amp;lt;T&amp;gt; iterator();
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Iterable的使用：override&lt;code class=&quot;highlighter-rouge&quot;&gt;iterator()&lt;/code&gt;方法&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class ArrayMap&amp;lt;K, V&amp;gt; implements Iterable&amp;lt;K&amp;gt; {
+  @Override
+  public Iterator&amp;lt;K&amp;gt; iterator() {
+      return new KeyIterator();
+  }
+}
+
+public class KeyIterator implements Iterator&amp;lt;K&amp;gt; {
+  @Override
+  public boolean hasNext() {
+      ...
+  }
+  @Override
+  public K next() {
+      ...
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;observable--observer&quot;&gt;Observable &amp;amp; Observer&lt;/h3&gt;
+
+&lt;h4 id=&quot;observer&quot;&gt;Observer&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public interface Observer {
+  void update(Observable o, Object arg);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;observerable&quot;&gt;Observerable&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class NumObservable extends Observable {
+  private int data = 0;
+  public int getData() {
+     return data;
+  }
+  public void setData(int i) {
+     data = i;
+     setChanged();
+     notifyObservers();
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;被观察者&lt;code class=&quot;highlighter-rouge&quot;&gt;NumObserable&lt;/code&gt;执行了&lt;code class=&quot;highlighter-rouge&quot;&gt;notifyObservers()&lt;/code&gt;后，观察者执行&lt;code class=&quot;highlighter-rouge&quot;&gt;update()&lt;/code&gt;方法。&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class NumObserver implements Observer {
+
+  @Override
+  public void update(Observable o, Object arg) {
+    NumsObservable myObserable = (NumsObservable) o;
+    System.out.println(&quot;Data has changed to &quot; + myObserable.getData());
+  }
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;throwable&quot;&gt;Throwable&lt;/h3&gt;
+&lt;p&gt;This is a &lt;strong&gt;class&lt;/strong&gt;, not interface.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class MyException_another extends Throwable {
+   private static final long serialVersionUID = 1L;
+   public MyException_another() {
+     super();
+   }
+   public MyException_another(String msg) {
+     super(msg);
+   }
+   public MyException_another(String msg, Throwable cause) {
+     super(msg, cause);
+   }
+   public MyException_another(Throwable cause) {
+     super(cause);
+   }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;cloneable&quot;&gt;Cloneable&lt;/h3&gt;
+&lt;p&gt;需重写&lt;code class=&quot;highlighter-rouge&quot;&gt;clone()&lt;/code&gt;方法&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class Test implements Cloneable {
+  @Override
+  protected Object clone() throws CloneNotSupportedException {
+      ...
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;runnable&quot;&gt;Runnable&lt;/h3&gt;
+
+&lt;p&gt;需重写&lt;code class=&quot;highlighter-rouge&quot;&gt;run()&lt;/code&gt;方法&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class MyThread1 implements Runnable {
+  @Override
+  public synchronized void  run() {
+    ...
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Thu, 20 Jun 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/interface%E6%80%BB%E7%BB%93.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/interface%E6%80%BB%E7%BB%93.html</guid>
+        
+        <category>CODE</category>
+        
+        <category>SOFTWARECONSTRUCTION</category>
+        
+        <category>JAVA</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>面向性能的构造技术</title>
+        <description>&lt;h2 id=&quot;metrics&quot;&gt;Metrics&lt;/h2&gt;
+&lt;h3 id=&quot;time-performance&quot;&gt;Time performance&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;get execution time&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; System.currentTimeMillis()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Basic statements&lt;/li&gt;
+  &lt;li&gt;Algorithms&lt;/li&gt;
+  &lt;li&gt;Data structure&lt;/li&gt;
+  &lt;li&gt;I/O (file, database, network communication, etc)&lt;/li&gt;
+  &lt;li&gt;Concurrency / multi-thread / lock
+    &lt;h3 id=&quot;space-performance&quot;&gt;Space performance&lt;/h3&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Get memory consumption
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Get the Java runtime
+Runtime runtime = Runtime.getRuntime();
+// Run the garbage collector
+runtime.gc();
+// Calculate the used memory
+long memory = runtime.totalMemory() - runtime.freeMemory();
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Algorithms&lt;/li&gt;
+  &lt;li&gt;Data structure&lt;/li&gt;
+  &lt;li&gt;Memory allocation&lt;/li&gt;
+  &lt;li&gt;Garbage collection&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;memory-performance-and-garbage-collection&quot;&gt;Memory Performance and Garbage Collection&lt;/h2&gt;
+&lt;h3 id=&quot;memory-management-in-os-and-application-level&quot;&gt;Memory Management in OS and Application Level&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;memory allocation 内存分配&lt;/li&gt;
+  &lt;li&gt;garbage collection 垃圾回收&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;object-model-内存对象模型&quot;&gt;Object Model 内存对象模型&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Create a new object x&lt;/li&gt;
+  &lt;li&gt;Attach it to the reference x;&lt;/li&gt;
+  &lt;li&gt;Initialize its fields.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;three-modes-of-object-management&quot;&gt;Three modes of object management&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Static mode ——在编译阶段就已经确定好了内存分配&lt;/li&gt;
+  &lt;li&gt;Dynamic allocation
+    &lt;ul&gt;
+      &lt;li&gt;Stack-based mode
+        &lt;ul&gt;
+          &lt;li&gt;存储方法调和局部变量&lt;/li&gt;
+          &lt;li&gt;多线程之间传递数据，是通过复制而非引用局部的基本数据类型&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Heap-based mode  (free mode)
+        &lt;ul&gt;
+          &lt;li&gt;在一块内存里分为多个小块，每块包含 一个对象，或者未被占用&lt;/li&gt;
+          &lt;li&gt;所有对象&lt;/li&gt;
+          &lt;li&gt;即使是局部变量的object，也是在堆上创建&lt;/li&gt;
+          &lt;li&gt;堆上创建的对象可被所有线程共享引用&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;java-memory-model&quot;&gt;Java Memory Model&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Thread Stack — All local variables of primitive types&lt;/li&gt;
+  &lt;li&gt;Heap — All objects&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;memory-structure-of-jvm&quot;&gt;Memory Structure of JVM&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Stacks
+    &lt;ul&gt;
+      &lt;li&gt;Reference/Local variable&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Heap
+    &lt;ul&gt;
+      &lt;li&gt;Object/Value&lt;/li&gt;
+      &lt;li&gt;An object’s primitive member variables&lt;/li&gt;
+      &lt;li&gt;a member variable is a reference to an objectf&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Native Stacks 本地方法栈
+    &lt;ul&gt;
+      &lt;li&gt;manage native methods (coded in C) used by JVM&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Program Counter Register (PC)
+    &lt;ul&gt;
+      &lt;li&gt;代码行号指示器，用于指示， 跳转下一条需要执行的命令&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Method Area
+    &lt;ul&gt;
+      &lt;li&gt;用于存储被VM加载的类信息、常量、静态变量等 class Static variable&lt;/li&gt;
+      &lt;li&gt;HotSpot JVM中用Permanent Area (Perm)实现该区域，并作为heap的一部分&lt;/li&gt;
+      &lt;li&gt;Java 8之后改名为Metaspace (使用native memory)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;garbage-collection&quot;&gt;Garbage Collection&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;static modes
+无需进行内存回收:所有都是已确定的&lt;/li&gt;
+  &lt;li&gt;stack-based modes
+在栈上进行内存空间回收:按block(某个方法)整体进行&lt;/li&gt;
+  &lt;li&gt;heap-based (free) modes
+    &lt;ul&gt;
+      &lt;li&gt;Reachable Objects vs. Unreachable Objects — Live vs. Dead &lt;br /&gt;&lt;/li&gt;
+      &lt;li&gt;从root对象开始进行有向图的搜索，将图分为root可达部分和root不可达部分 &lt;br /&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;roots&lt;/strong&gt; 包括：&lt;br /&gt;
+1) Words in the static area 静态区域的数据&lt;br /&gt;
+2) Registers 寄存器&lt;br /&gt;
+3) Words on the execution stack that point into the heap. 目前的执行栈中的数据所指向的内存对象&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;help-the-gc-that-you-are-finished-with-an-object&quot;&gt;Help the GC that you are finished with an object&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;r = new FileReader(filename)
+// use the reader
+...
+reader.close();
+reader = null;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;without-automatic-gc&quot;&gt;Without Automatic GC&lt;/h4&gt;
+&lt;p&gt;内存泄露，很多dead objects仍占据着内存空间 &lt;br /&gt;
+原本live的对象却被回收了 (Dangling Pointers 悬空指针)，导致程序执行失效。&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h2 id=&quot;basic-algorithms-of-garbage-collection&quot;&gt;Basic Algorithms of Garbage Collection&lt;/h2&gt;
+&lt;h3 id=&quot;reference-counting-引用计数&quot;&gt;Reference counting 引用计数&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;为每个object存储一个计数RC，当有其他 reference指向它时，RC++;当其他reference与其断开时，RC–;如 果RC==0，则回收它 (及其所有指向的object)。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Advantages&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;简单&lt;/li&gt;
+  &lt;li&gt;计算代价分散&lt;/li&gt;
+  &lt;li&gt;“幽灵时间”短-&amp;gt;0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Disadvantages&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;不全面(容易漏掉循环引用的对象cyclic)&lt;/li&gt;
+  &lt;li&gt;并发支持较弱&lt;/li&gt;
+  &lt;li&gt;占用额外内存空间等&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;mark-sweep-标记-清除&quot;&gt;Mark-Sweep 标记-清除&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;标记-清除:为每个object设定状态位(live/dead)并记录，即mark阶段;将标记为dead的对象进行清理，即sweep阶段。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Disadvantages&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;需要停止程序执行来Mark和Sweep，导致幽灵时间过长，也影响程序本身的性能&lt;/li&gt;
+  &lt;li&gt;碎片化&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;mark-compact-标记-整理&quot;&gt;Mark-Compact 标记-整理&lt;/h3&gt;
+&lt;p&gt;Advantages&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;避免碎片化&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Disadvantages&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;时间消耗太长，影响程序本身&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;fragmentation-and-copying-复制&quot;&gt;Fragmentation and Copying 复制&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;该GC策略与mark-compact的区别在于:不是在同一个区域内进行整理，而是将live对象全部复制到另一个区域。&lt;br /&gt; 将堆分为两部分 Fromspace and Tospace&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;garbage-collection-in-jvm&quot;&gt;Garbage Collection in JVM&lt;/h2&gt;
+&lt;p&gt;Java GC将堆分为不同的区域，各区域采用不同的GC策略，以提高GC的效率&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-verbose:gc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;three-major-space-in-hotspot-vm-sun-jvm&quot;&gt;Three major space in HotSpot VM (Sun JVM)&lt;/h3&gt;
+&lt;h4 id=&quot;young-generation&quot;&gt;young generation&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;Eden&lt;/li&gt;
+  &lt;li&gt;From survivor space&lt;/li&gt;
+  &lt;li&gt;To survivor space&lt;/li&gt;
+  &lt;li&gt;只有一小部分对象可较长时间存活，故采用&lt;strong&gt;copy&lt;/strong&gt;算法减少GC代价&lt;/li&gt;
+  &lt;li&gt;使用&lt;strong&gt;minor GC&lt;/strong&gt;进行垃圾收集&lt;/li&gt;
+  &lt;li&gt;Minor GC所需时间较短&lt;/li&gt;
+  &lt;li&gt;如果历经多次minor GC仍存活下来，将其copy到old generation&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;old-generation-space-tenured&quot;&gt;old generation space (tenured)&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;这里的对象有很高的幸存度，使用&lt;strong&gt;Mark-Sweep&lt;/strong&gt;或&lt;strong&gt;Mark-Compact&lt;/strong&gt;算法&lt;/li&gt;
+  &lt;li&gt;启动&lt;strong&gt;full GC&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Old generation满，意味着无法进行下一次minor GC&lt;/li&gt;
+  &lt;li&gt;Minor GC和full GC独立进行，减小代价&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;permanent-generation-space-perm&quot;&gt;Permanent generation space (perm)&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;当perm generation满了之后，无法存储更多的元数据，也启动full GC&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;只有当某个区域不能再为对象分配内存时(满)才启动GC
+&lt;code class=&quot;highlighter-rouge&quot;&gt;java.lang.OutOfMemoryError&lt;/code&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;garbage-collection-tuning-in-jvm&quot;&gt;Garbage Collection Tuning in JVM&lt;/h2&gt;
+&lt;h3 id=&quot;specifying-vm-heap-size-确定堆的大小&quot;&gt;Specifying VM heap size 确定堆的大小&lt;/h3&gt;
+&lt;h4 id=&quot;控制young-generation的大小&quot;&gt;控制Young generation的大小&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;-XX: NewSize=&lt;n&gt;[g|m|k]&lt;/n&gt;&lt;/li&gt;
+  &lt;li&gt;-XX: MaxNewSize=&lt;n&gt;[g|m|k]&lt;/n&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;-Xmn&lt;n&gt;[g|m|k]
+-三个参数依次为最小值、最大值和固定值。&lt;/n&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;-Xms and -Xmx 初始和最大的heap尺寸
+heap尺寸变化时需 要full GC&lt;/li&gt;
+  &lt;li&gt;-XX:MetaspaceSize -XX:MaxMetaspaceSize for Java 8 and later&lt;/li&gt;
+  &lt;li&gt;-XX:SurvivorRatio=&lt;n&gt;&lt;/n&gt;&lt;/li&gt;
+  &lt;li&gt;-XX:NewRatio=&lt;n&gt; --- young and old generation is 1:n&lt;/n&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;old generation的尺寸不需要设置，根据其他各参数的取值可计算得到&lt;/p&gt;
+
+&lt;h3 id=&quot;choosing-a-garbage-collection-scheme-选择gc模式&quot;&gt;Choosing a garbage collection scheme 选择GC模式&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;-XX:+UseSerialGC：使用单线程GC。&lt;/li&gt;
+  &lt;li&gt;-XX:+UseParallelGC：对MinorGC使用多线程进行回收，但对MajorGC仍采用单线程。&lt;/li&gt;
+  &lt;li&gt;-XX:+UseConcMarkSweepGC：与程序的运行同步地进行垃圾回收，回收时会短暂地暂停程序。&lt;/li&gt;
+  &lt;li&gt;-XX:+UseTrainGC：每次MinorGC回收一部分老年代对象，以尝试最小化MajorGC的长时暂停。
+    &lt;h4 id=&quot;garbage-first-collector&quot;&gt;Garbage-First collector&lt;/h4&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;designed for heap sizes greater than 4GB. It divides the heap size into regions. After the marking phase is complete, G1 collects the region with lesser live data, which usually yields a large amount of free space. So G1 collects these regions first.
+&lt;br /&gt;Default in Java 9.&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Automatically logging low memory conditions 自动记录内存将要不足的情况&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;-Xloggc:../../logs/gc-console.log&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Manually requesting garbage collection 手工请求GC&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;System.gc()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;io-and-algorithm-performance&quot;&gt;I/O and Algorithm Performance&lt;/h2&gt;
+&lt;h3 id=&quot;buffer对数据进行缓冲&quot;&gt;Buffer：对数据进行缓冲&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;BufferedReader&lt;/li&gt;
+  &lt;li&gt;BufferedWriter&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;stream将数据视作流&quot;&gt;Stream：将数据视作流&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;FileInputStream&lt;/li&gt;
+  &lt;li&gt;FileOutputStream&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;nionew-io&quot;&gt;NIO：New I/O&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Buffers（包括CharBuffer、ByteBuffer、IntBuffer、DoubleBuffer等）&lt;/li&gt;
+  &lt;li&gt;Channels（包括FileChannel、SockerChannel等，可向Buffer提供数据）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;lamda&quot;&gt;Lamda&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Files.lines(Paths.get(args[0])).forEach(System.out::println);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;dynamic-program-analysis-methods-and-tools&quot;&gt;Dynamic Program Analysis Methods and Tools&lt;/h2&gt;
+&lt;h3 id=&quot;80-20-rule&quot;&gt;80-20 rule&lt;/h3&gt;
+&lt;p&gt;20% of program responsible for 80% of execution time&lt;/p&gt;
+&lt;h3 id=&quot;dynamic-program-analysis&quot;&gt;Dynamic Program Analysis&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Program Hot Spots — 每个程序实体 (语句、分支、路径、方法等)的执行概率/频度是多少&lt;/li&gt;
+  &lt;li&gt;Path profiling&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;profiling-approaches&quot;&gt;Profiling Approaches&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Insertion/Instrumentation 代码注入/代码插入&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在原始程序中加入某些语句来收集运行时数据，这些语句不改变原程序的语义，但对原程序的性能有了轻微变化&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Sampling: observation of behavior 采样&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;以特定的频率观察程序执行的特定时刻所展现出的行为与状态&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Instrumented virtual machine 借助于虚拟机获取程序性能数据&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;program-profiling-tools-in-java&quot;&gt;Program Profiling Tools in Java&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Command-line profiling tools
+    &lt;ul&gt;
+      &lt;li&gt;jhat — 在Web浏览器中查看heap dump文件的内容&lt;/li&gt;
+      &lt;li&gt;jmap — jmap -dump 生成 java heap dump&lt;/li&gt;
+      &lt;li&gt;jstat&lt;/li&gt;
+      &lt;li&gt;jstack — 打印 stack traces&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;JConsole&lt;/li&gt;
+  &lt;li&gt;Visual VM&lt;/li&gt;
+  &lt;li&gt;Memory Analyzer (MAT) — 显示堆转储的内容分析&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;code-tuning-for-performance-optimization&quot;&gt;Code Tuning for Performance Optimization&lt;/h2&gt;
+&lt;h3 id=&quot;java代码调优的设计模式&quot;&gt;Java代码调优的设计模式&lt;/h3&gt;
+&lt;h4 id=&quot;singleton-pattern&quot;&gt;Singleton Pattern&lt;/h4&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;逻辑上仅能存在唯一一个实例，为了防止多个该对象实例被创建，将构造方法设为私有，并提供获取该类唯一实例的方法（ &lt;code class=&quot;highlighter-rouge&quot;&gt;getInstance()&lt;/code&gt; ）&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;static final instance
+    &lt;blockquote&gt;
+      &lt;p&gt;设置静态变量来存储单一实例对象&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;private constructor
+    &lt;blockquote&gt;
+      &lt;p&gt;将构造器设置为private，从而client无法new &lt;br /&gt;  在构造器中new新实例&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;static getInstance()
+    &lt;blockquote&gt;
+      &lt;p&gt;提供静态方法来获取单一实例对象 &lt;br /&gt;  进一步提升性能:在需要的时候再new，而非提前构造&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;flyweight-pattern&quot;&gt;Flyweight Pattern&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;当某对象由大量对象组成，而部分Flyweight对象可被共享以减少资源消耗时，可创建一个工厂类以方便外界获得可被共享的对象，对于目前不存在的ConcreteFlyweight对象，工厂类会创建之，而对于已存在的ConcreteFlyweight对象，工厂类会直接返回之。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;固定 — 内部rep&lt;/li&gt;
+  &lt;li&gt;可变 — 外部特征&lt;/li&gt;
+  &lt;li&gt;Immutable&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;prototype-pattern-cloneable&quot;&gt;Prototype Pattern /cloneable&lt;/h4&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;当需要客户端指定要创建的对象的类型，且之后需创建的对象与先前指定的完全相同时，可通过给出第一个对象（称为原型对象）以指明之后所有对象的类型，之后所有对象通过复制第一个对象来创建。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;implement &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloneable&lt;/code&gt;, override &lt;code class=&quot;highlighter-rouge&quot;&gt;clone()&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;reference copy — shallow copy&lt;/li&gt;
+  &lt;li&gt;object copy — deep copy&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;object-pool-pattern&quot;&gt;Object Pool Pattern&lt;/h4&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;当某类对象（图中为Object类对象）的创建代价极大，而该类对象可以以较小的代价被重复利用时，可以预先建立一个对象池用于保存该类对象。对象池中可预先创建几个对象等待使用，使用完的对象会回到对象池中被重新初始化并被再利用，减少对象的创建操作。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;代价:原本可被GC的对象，现在要留在pool中，导致内存浪费 —— 用空间换时间&lt;/p&gt;
+&lt;h4 id=&quot;canonicalizing-objects&quot;&gt;Canonicalizing Objects&lt;/h4&gt;
+
+&lt;h3 id=&quot;string-constant-pool&quot;&gt;String Constant Pool&lt;/h3&gt;
+&lt;p&gt;堆中包含字符串对象引用的特殊内存区域&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;String s = “java”;
+String s = new String(“java”);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Thu, 20 Jun 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/Performance.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Performance.html</guid>
+        
+        <category>CODE</category>
+        
+        <category>SOFTWARECONSTRUCTION</category>
+        
+        <category>JAVA</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>软件构造课程总结——并行与分布式程序</title>
+        <description>&lt;h2 id=&quot;concurrency&quot;&gt;Concurrency&lt;/h2&gt;
+&lt;h3 id=&quot;two-models-for-concurrent-programming&quot;&gt;Two Models for Concurrent Programming&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Shared memory — 并发模块通过在内存中读写共享对象进行交互。&lt;/li&gt;
+  &lt;li&gt;Message passing — sending messages to each other through a communication channel. Modules send off messages, and incoming messages to each module are queued up for handling.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;应用&quot;&gt;应用&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;网络上的两台计算机通过网络连接通讯&lt;/li&gt;
+  &lt;li&gt;浏览器和Web服务器，A请求页面，B发送页面数据给A&lt;/li&gt;
+  &lt;li&gt;即时通讯软件的客户端和服务器&lt;/li&gt;
+  &lt;li&gt;同一台计算机上的两个程序通过管道连接进行通讯&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;process--thread&quot;&gt;Process &amp;amp; Thread&lt;/h2&gt;
+&lt;h3 id=&quot;process&quot;&gt;Process&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;在同一机器上独立于其它进程的一个运行中程序的实例。它拥有自己独立的内存空间。可视为一台虚拟机。&lt;/li&gt;
+  &lt;li&gt;拥有整台计算机的资源&lt;/li&gt;
+  &lt;li&gt;私有空间 彼此隔离 不共享内存&lt;/li&gt;
+  &lt;li&gt;通过消息传递进行协作&lt;/li&gt;
+  &lt;li&gt;JVM通常运行单一进程，但也可以创建新的进程&lt;/li&gt;
+  &lt;li&gt;共享可变对象时需要同步&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;thread&quot;&gt;Thread&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;一个运行中程序的控制轨迹，每个线程在程序中某个位置执行，拥有自己独立的运行时栈。可视为一个虚拟处理器。&lt;/li&gt;
+  &lt;li&gt;共享内存 消息队列&lt;/li&gt;
+  &lt;li&gt;轻量级&lt;/li&gt;
+  &lt;li&gt;共享可变对象时需要同步&lt;/li&gt;
+  &lt;li&gt;unsafe to kill&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;new-thread&quot;&gt;new Thread&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;(Seldom used) Subclassing Thread.
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class MyThread extends Thread {
+@Override
+public void run() {
+  ...
+}
+}
+(new MyThread()).start();
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(new MyThread()).run();可运行，未启动线程
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;(More generally used) 从Runnable接口构造Thread对象
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;new Thread(new Runnable() {
+ public void run() {
+     System.out.println(&quot;Hello&quot;);
+ }
+}).start();
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class MyThread implements Runnable {
+@Override
+public void run() {
+  ...
+}
+(new Thread(new MyThread())).start();
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;heisenbugs&quot;&gt;Heisenbugs&lt;/h3&gt;
+&lt;p&gt;Nondeterministic and hard to reproduce &lt;br /&gt;
+A heisenbug may even disappear when you try to look at it with println or debugger&lt;/p&gt;
+&lt;h3 id=&quot;bohrbugs&quot;&gt;Bohrbugs&lt;/h3&gt;
+&lt;p&gt;Showing up repeatedly whenever you look at it.&lt;/p&gt;
+&lt;h2 id=&quot;interleaving-and-race-condition&quot;&gt;Interleaving and Race Condition&lt;/h2&gt;
+&lt;h3 id=&quot;time-slicing&quot;&gt;Time slicing&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;在单核计算机中，每一时刻仅有一个线程在实际运行。单个核心的运行时间通过操作系统的特性被各个进程和线程共享，这种行为称为时间分片。&lt;/li&gt;
+  &lt;li&gt;在多核计算机中，当线程数大于核心数时，也通过时间分片来模拟线程并行运行。&lt;/li&gt;
+  &lt;li&gt;时间切片不可预测、不确定，这意味着线程可以随时暂停或恢复&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;shared-memory-among-threads&quot;&gt;Shared Memory among Threads&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Interleaving 交叉存取 — 当两线程并行运行时，底层指令可能交错运行&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;race-condition&quot;&gt;Race Condition&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;The correctness of the program (the satisfaction of postconditions and invariants) depends on the relative timing of events in concurrent computations A and B. When this happens, we say “A is in a race with B.”&lt;/li&gt;
+  &lt;li&gt;单行、单条语句都未必是原子的。是否原子由JVM确定&lt;/li&gt;
+  &lt;li&gt;also called “Thread Interference”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;some-operations-for-interfering-automatic-interleaving-of-threads&quot;&gt;Some operations for interfering automatic interleaving of threads&lt;/h2&gt;
+&lt;h3 id=&quot;threadsleep&quot;&gt;Thread.sleep()&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;不会失去对现有monitor锁的所有权&lt;/li&gt;
+  &lt;li&gt;在sleep()的时候检测是否收到别人的中断信号, catch(IntterruptedException e)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;threadinterrupt&quot;&gt;Thread.interrupt()&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;t.interrupt()&lt;/li&gt;
+  &lt;li&gt;t.isInterrupted()
+-正常运行期间，即使受到中断信号也不理会&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;threadyield-避免使用&quot;&gt;Thread.yield() (避免使用)&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;线程会告诉调度器可以放弃CPU的占用权, 从而可能引起调度器唤醒其他线程&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;threadjoin&quot;&gt;Thread.join()&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;让当前线程保持执行，直到其执行结束&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;objectwait&quot;&gt;object.wait()&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;使用前提为线程已获得被调用对象的对象锁。当前线程放弃对象锁并进入等待状态，直到其它获得该对象锁的线程对该对象调用notify()或notifyAll()方法。当前线程被通知或被中断时，尝试重新获得锁并继续运行。若被中断，InterruptedException将在获得对象锁之后抛出。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;thread-safety&quot;&gt;Thread Safety&lt;/h2&gt;
+&lt;h3 id=&quot;confinement&quot;&gt;Confinement&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Don’t share: isolate mutable state in individual threads&lt;/li&gt;
+  &lt;li&gt;将可变数据限制在单一线程内部，避免竞争&lt;/li&gt;
+  &lt;li&gt;不允许任何线程直接读写该数据&lt;/li&gt;
+  &lt;li&gt;避免全局变量 如Singleton设计模式 两个线程同时调用getInstance()违背设计&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;immutability&quot;&gt;Immutability&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Don’t mutate: share only immutable state&lt;/li&gt;
+  &lt;li&gt;共享不可变的引用和数据类型&lt;/li&gt;
+  &lt;li&gt;如果使用了beneficent mutation还是要加锁&lt;/li&gt;
+  &lt;li&gt;不含mutator方法&lt;/li&gt;
+  &lt;li&gt;所有字段必须被private final修饰&lt;/li&gt;
+  &lt;li&gt;子类不可重写方法&lt;/li&gt;
+  &lt;li&gt;没有表示泄露&lt;/li&gt;
+  &lt;li&gt;表示中的可变对象不得变化&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;using-threadsafe-data-types&quot;&gt;Using Threadsafe Data Types&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Threadsafe Collections&lt;/li&gt;
+  &lt;li&gt;private static Map&amp;lt;Integer,Boolean&amp;gt; cache = Collections.synchronizedMap(new HashMap&amp;lt;&amp;gt;());&lt;/li&gt;
+  &lt;li&gt;多个操作间不保证安全 如(!list.isEmpty()) list.get(0)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;locks-and-synchronization&quot;&gt;Locks and Synchronization&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;在使用synchronizedMap(hashMap)之后，不要再把参数hashMap共享给其他线程，不要保留别名，一定要彻底销毁&lt;/li&gt;
+  &lt;li&gt;即使在线程安全的集合类上，使用iterator也是不安全的（除非使用lock机制）&lt;/li&gt;
+  &lt;li&gt;即使是线程安全的collection类，仍可能产生竞争&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;volatile&quot;&gt;Volatile&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;volatile也可保证基本类型变量变化对于所有线程的可见性（同步缓存），但不一定保证操作的原子性。&lt;/li&gt;
+  &lt;li&gt;当且仅当对volatile修饰的变量进行的修改与任何变量（包括自身）的值无关时，其才是线程安全的。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;线程安全策略撰写&quot;&gt;线程安全策略撰写&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;采取了四种方法中的哪一种&lt;/li&gt;
+  &lt;li&gt;如果是后两种，还需考虑对数据的访问 都是原子的，不存在interleaving&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;confinement-1&quot;&gt;Confinement&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;局限访问策略通常不适用于仅仅讨论一个数据类型的情况，因为你需要知道系统中存在哪些线程，每个线程可访问哪些对象。&lt;/li&gt;
+  &lt;li&gt;若访问该数据类型的线程均由自身创建，则可讨论这些线程间如何保持访问的局限性&lt;/li&gt;
+  &lt;li&gt;若线程来自于外部，则无法讨论&lt;/li&gt;
+  &lt;li&gt;通常在将系统作为一个整体，讨论一些模块或数据类型不需要线程安全的原因时，会从设计的角度论证线程间不会共享数据。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;immutability-1&quot;&gt;Immutability&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;说明对象中数据为何能够保持不可变性即可&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;using-threadsafe-data-types-1&quot;&gt;Using Threadsafe Data Types&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;表明该数据类型的所有原子操作都被恰当地设计，使得该数据类型依赖的不变式不受原子操作的交错执行影响。&lt;/li&gt;
+  &lt;li&gt;nodes和edges举例&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;private final Set&amp;lt;Node&amp;gt; nodes = Collections.synchronizedSet(new HashSet&amp;lt;&amp;gt;());
+private final Map&amp;lt;Node,Set&amp;lt;Node&amp;gt;&amp;gt; edges = Collections.synchronizedMap(new HashMap&amp;lt;&amp;gt;());
+// 表示不变式：
+// 对于所有满足y是edges.get(x)的成员的二元组x和y，x,y都是nodes的成员。
+该类是线程安全的，因为：nodes和edges都声明为final，因此它们都是不可变的且是线程安全的。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;nodes和edges都指向线程安全的Set和Map数据类型。
+该论证仅防止了某些竞争条件，但不是全部。由于该类的表示不变式中要求了nodes与edges成员间的关系，因此还应论证两者成员的改变应当是同时的、原子的。若该点无法证明，则可以构造竞争条件。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;locks-and-synchronization-1&quot;&gt;Locks and Synchronization&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;表明该数据类型的所有原子操作都被恰当地设计，使得该数据类型依赖的不变式不受原子操作的交错执行影响。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;locks-and-synchronization-2&quot;&gt;Locks and Synchronization&lt;/h2&gt;
+&lt;h3 id=&quot;monitor模式adt所有方法都是互斥访问&quot;&gt;Monitor模式:ADT所有方法都是互斥访问&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;reads must be guarded as well as writes&lt;/li&gt;
+  &lt;li&gt;public synchronized void fun(){…} == synchronized(this)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;fine-grained-synchronization&quot;&gt;fine-grained synchronization.&lt;/h3&gt;
+&lt;p&gt;synchronized(object)&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public synchronized Constructor(){
+  ...
+} // wrong
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;用ADT自己做lock&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;lock&quot;&gt;Lock&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Object lock = new Object();
+synchronized (lock) {
+  ...
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;liveness&quot;&gt;Liveness&lt;/h2&gt;
+&lt;h3 id=&quot;deadlock&quot;&gt;Deadlock&lt;/h3&gt;
+&lt;p&gt;多个线程竞争lock，相互等待对方释放lock&lt;/p&gt;
+
+&lt;h4 id=&quot;解决方案&quot;&gt;解决方案：&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;两线程均按顺序征用锁-两个线程均先获得A锁再获得B锁
+    &lt;ul&gt;
+      &lt;li&gt;缺点1:不是模块化的——代码必须知道系统中的所有锁，或者至少知道子系统中的所有锁&lt;/li&gt;
+      &lt;li&gt;缺点2:代码可能很难或不可能在获取第一个锁之前准确地知道它需要哪些锁 &lt;br /&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;粗粒度的lock
+    &lt;ul&gt;
+      &lt;li&gt;缺点：性能下降&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;starvation&quot;&gt;Starvation&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;因为其他线程lock时间太长，一个线程长时间无法获取其所需的资源访问权(lock)，导致无法往下进行&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;livelock&quot;&gt;Livelock&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;两线程的行为互相由对方的行为决定（通常是为了避免死锁），线程没有锁死，仍在正常运行，但无法正常工作。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 18 Jun 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/Concurrent-and-Distributed-Programming.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/Concurrent-and-Distributed-Programming.html</guid>
+        
+        <category>SOFTWARE-CONSTRUCTION</category>
+        
+        <category>JAVA</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
     
       <item>
         <title>Software Construction Summary 3</title>
@@ -195,13 +1359,13 @@
 
 &lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;By phases: build-time and run-time views&lt;/p&gt;
+    &lt;p&gt;By phases: &lt;strong&gt;build-time&lt;/strong&gt; and &lt;strong&gt;run-time&lt;/strong&gt; views&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;By dynamics: moment and period views&lt;/p&gt;
+    &lt;p&gt;By dynamics: &lt;strong&gt;moment&lt;/strong&gt; and &lt;strong&gt;period&lt;/strong&gt; views&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;By levels: code and component views&lt;/p&gt;
+    &lt;p&gt;By levels: &lt;strong&gt;code&lt;/strong&gt; and &lt;strong&gt;component&lt;/strong&gt; views&lt;/p&gt;
     &lt;ul&gt;
       &lt;li&gt;logically / physically&lt;/li&gt;
       &lt;li&gt;in-memory states / physical environment&lt;/li&gt;
@@ -778,1418 +1942,6 @@ except KeyboardInterrupt:
         <category>RaspberryPi</category>
         
         <category>INSTALL</category>
-        
-        
-        <category>coding</category>
-        
-      </item>
-    
-      <item>
-        <title>Sort</title>
-        <description>&lt;h2 id=&quot;排序&quot;&gt;排序&lt;/h2&gt;
-
-&lt;h3 id=&quot;内部排序&quot;&gt;内部排序&lt;/h3&gt;
-&lt;ul class=&quot;task-list&quot;&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;插入排序
-    &lt;ul class=&quot;task-list&quot;&gt;
-      &lt;li&gt;[√] 直接插入排序
-        &lt;ul&gt;
-          &lt;li&gt;空间复杂度O(1)&lt;/li&gt;
-          &lt;li&gt;最好情况下时间复杂度O(n)
-最坏情况下时间复杂度O(n^2)
-平均情况下时间复杂度O(n^2)&lt;/li&gt;
-          &lt;li&gt;平均比较和移动次数n^2/4  时间复杂度O(n^2)&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;希尔排序
-        &lt;ul&gt;
-          &lt;li&gt;空间复杂度O(1)&lt;/li&gt;
-          &lt;li&gt;最坏情况下时间复杂度O(n^2)&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;交换排序
-    &lt;ul class=&quot;task-list&quot;&gt;
-      &lt;li&gt;[√] 冒泡排序
-        &lt;ul&gt;
-          &lt;li&gt;空间复杂度O(1)&lt;/li&gt;
-          &lt;li&gt;最好情况下时间复杂度O(n)
-最坏情况下时间复杂度O(n^2)
-平均情况下时间复杂度O(n^2)&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;快速排序
-        &lt;ul&gt;
-          &lt;li&gt;最好情况下栈深度为「log2(n+1) 
-最坏情况下栈深度度为n—1
-平均情况下空间复杂度O(log2n)&lt;/li&gt;
-          &lt;li&gt;最好情况下时间复杂度O(nlog2n)
-最坏情况下时间复杂度O(n^2)
-平均情况下时间复杂度O(nlog2n)&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;选择排序
-    &lt;ul class=&quot;task-list&quot;&gt;
-      &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;简单选择排序
-        &lt;ul&gt;
-          &lt;li&gt;空间复杂度O(1)&lt;/li&gt;
-          &lt;li&gt;时间复杂度O(n^2)&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;堆排序
-        &lt;ul&gt;
-          &lt;li&gt;空间复杂度O(1)&lt;/li&gt;
-          &lt;li&gt;建堆时间O(n)  n—1次调整  调整时间复杂度为O(h)
-平均情况下时间复杂度O(nlog2n)&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;[√] 归并排序
-    &lt;ul&gt;
-      &lt;li&gt;空间复杂度O(n)&lt;/li&gt;
-      &lt;li&gt;每一趟归并时间复杂度为O(n) 「log2n次归并
-时间复杂度O(nlog2n)&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;[√] 基数排序
-    &lt;ul&gt;
-      &lt;li&gt;空间复杂度O(r) 辅助r个队列&lt;/li&gt;
-      &lt;li&gt;一趟分配O(n)  一趟收集O(r)  需要d躺分配和收集
-时间复杂度O(d(n+r))&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;外部排序&quot;&gt;外部排序&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;多路平衡归并
-    &lt;ul&gt;
-      &lt;li&gt;增加归并路数减少躺数&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;败者树
-    &lt;ul&gt;
-      &lt;li&gt;减少归并次数&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;置换——选择排序
-    &lt;ul&gt;
-      &lt;li&gt;生成初始归并段&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;最佳归并树
-    &lt;ul&gt;
-      &lt;li&gt;减少I/O次数  添加虚段&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;[√] 即排序具有稳定性&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
-        <pubDate>Thu, 03 Jan 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/Sort.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/Sort.html</guid>
-        
-        <category>DATA-STRUCTURE</category>
-        
-        <category>ALGRITHM</category>
-        
-        
-        <category>coding</category>
-        
-      </item>
-    
-      <item>
-        <title>程序人生 ——Hello’s P2P</title>
-        <description>&lt;h1 id=&quot;程序人生-hellos-p2p&quot;&gt;程序人生-Hello’s P2P&lt;/h1&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;我是Hello，我是每一个程序猿¤的初恋（羞羞……）
-却在短短几分钟后惨遭每个菜鸟的无情抛弃（呜呜……），他们很快喜欢上sum、sort、matrix、PR、AI、IOT、BD、MIS……，从不回头。
-只有我自己知道，我的出身有多么高贵，我的一生多么坎坷！
-多年后，那些真懂我的大佬（也是曾经的菜鸟一枚），才恍然感悟我的伟大！
-想当年：俺才是第一个玩 P2P的: From Program to Process
-懵懵懂懂的你笨笨磕磕的将我一字一键敲进电脑存成hello.c（Program），无意识中将我预处理、编译、汇编、链接，历经艰辛，我-Hello一个完美的生命诞生了。
-你知道吗？在壳(Bash)里，伟大的OS（进程管理）为我fork（Process）,为我execve,为我mmap，分我时间片，让我得以在Hardware(CPU/RAM/IO)上驰骋（取指译码执行/流水线等）；
-你知道吗？OS（存储管理）与MMU为VA到PA操碎了心；TLB、4级页表、3级Cache，Pagefile等等各显神通为我加速；IO管理与信号处理使尽了浑身解数，软硬结合，才使我能在键盘、主板、显卡、屏幕间游刃有余, 虽然我在台上的表演只是一瞬间、演技看起来还很Low、效果很惨白。
-感谢 OS！感谢 Bash！在我完美谢幕后回收了我。  我赤条条来去无牵挂！
-我朝 CS（计算机系统-Editor+Cpp+Compiler+AS+LD + OS + CPU/RAM/IO等）挥一挥手，不带走一片云彩！ 俺也是 O2O: From Zero-0 to Zero-0。
-历史长河中一个个菜鸟与我擦肩而过，只有CS知道我的生、我的死，我的坎坷，“只有 CS 知道……我曾经……来…………过……”————未来一首关于Hello的歌曲绕梁千日不绝 !!&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;本文从每个程序猿的初恋——hello.c出发，探究hello from Program to Process的生命周期。从代码hello.c如何一步步转变为可执行程序hello，再到shell中如何创建、加载、运行hello进程，运行过程中CPU、RAM、IO发生了什么，MMU、TLB、PageFile、四级页表、三级Cache访问在幕后贡献了多少力量，hello又是如何被回收……通过了解hello短暂而精彩的一生去理解计算机系统的具体实现。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/**
-* 大作业的 hello.c 程序
-* gcc -m64 -no-pie -fno-PIC hello.c -o hello
-* 程序运行过程中可以按键盘，如不停乱按，包括回车，Ctrl-Z，Ctrl-C等。
-* 可以 运行 ps  jobs  pstree fg 等命令
-**/
-
-#include &amp;lt;stdio.h&amp;gt;
-#include &amp;lt;unistd.h&amp;gt;
-#include &amp;lt;stdlib.h&amp;gt;
-
-int sleepsecs=2.5;
-
-int main(int argc,char *argv[])
-{
-	int i;
-
-	if(argc!=3)
-	{
-		printf(&quot;Usage: Hello 学号 姓名！\n&quot;);
-		exit(1);
-	}
-	for(i=0;i&amp;lt;10;i++)
-	{
-		printf(&quot;Hello %s %s\n&quot;,argv[1],argv[2]);
-		sleep(sleepsecs);
-	}
-	getchar();
-	return 0;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;预处理&quot;&gt;预处理&lt;/h1&gt;
-
-&lt;h3 id=&quot;预处理的概念与作用&quot;&gt;预处理的概念与作用&lt;/h3&gt;
-&lt;p&gt;预处理指在程序进行编译前对源代码进行处理的过程，生成.i文本文件。
-预处理器cpp对程序源代码文本进行处理：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;扩展源代码，插入所有用#include命令指定的文件&lt;/li&gt;
-  &lt;li&gt;扩展所有用#define声明指定的宏&lt;/li&gt;
-  &lt;li&gt;处理所有的预编译指令&lt;/li&gt;
-  &lt;li&gt;添加行号信息文件名信息，便于调试&lt;/li&gt;
-  &lt;li&gt;删除所有的注释&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;在ubuntu下预处理的命令&quot;&gt;在Ubuntu下预处理的命令&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;使用预处理器cpp：cpp hello.c &amp;gt; hello.i
-使用GNU编译器套件gcc：gcc hello.c –E –o hello.o
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;hello的预处理结果解析&quot;&gt;Hello的预处理结果解析&lt;/h3&gt;
-
-&lt;p&gt;在hello.i文件的最开始的部分生成了如图2-3-1的文本，包含了文件名等文件信息，便于调试。&lt;/p&gt;
-
-&lt;p&gt;在hello.c中使用#include引入了&lt;stdio.h&gt;。在预处理过程中cpp扩展hello.c的源代码，插入所有用#include命令指定的文件。&lt;/stdio.h&gt;&lt;/p&gt;
-
-&lt;p&gt;由于插入头文件，在hello.i中发现了头文件中的数据定义和头文件中的函数作为外部函数。&lt;/p&gt;
-
-&lt;p&gt;hello.c代码中有四行注释，在hello.i中发现已被删去。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;编译&quot;&gt;编译&lt;/h1&gt;
-&lt;h3 id=&quot;编译的概念与作用&quot;&gt;编译的概念与作用&lt;/h3&gt;
-
-&lt;p&gt;编译过程产生源代码的汇编代码。编译器ccl将文本文件hello.i翻译成文本文件hello.s，hello.s中包含一个汇编语言程序。&lt;/p&gt;
-
-&lt;h3 id=&quot;在ubuntu下编译的命令&quot;&gt;在Ubuntu下编译的命令&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;使用hello.c编译：gcc hello.c –S –o hello.s
-使用hello.i编译：gcc hello.i –S –o hello.s
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;hello的编译结果解析&quot;&gt;Hello的编译结果解析&lt;/h3&gt;
-&lt;h4 id=&quot;数据&quot;&gt;数据&lt;/h4&gt;
-&lt;p&gt;&lt;strong&gt;常量&lt;/strong&gt;：在AT&amp;amp;T中用$加在数字前表示常量
-&lt;strong&gt;变量&lt;/strong&gt;：局部变量储存在寄存器或栈中，全局变量、静态变量储存在.bss或.data中&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;类型&lt;/strong&gt;：在x86-64中根据数据占用字节数将其分为1字节的b（字节）、2字节的w（字）、4字节的d（双字）、8字节的q（四字）&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;宏&lt;/strong&gt;：在预处理时被扩展&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;C声明&lt;/th&gt;
-      &lt;th&gt;Intel数据类型&lt;/th&gt;
-      &lt;th&gt;汇编代码后缀&lt;/th&gt;
-      &lt;th&gt;大小（字节）&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;char&lt;/td&gt;
-      &lt;td&gt;字节&lt;/td&gt;
-      &lt;td&gt;b&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;short&lt;/td&gt;
-      &lt;td&gt;字&lt;/td&gt;
-      &lt;td&gt;w&lt;/td&gt;
-      &lt;td&gt;2&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;int&lt;/td&gt;
-      &lt;td&gt;双字&lt;/td&gt;
-      &lt;td&gt;l&lt;/td&gt;
-      &lt;td&gt;4&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;long&lt;/td&gt;
-      &lt;td&gt;四字&lt;/td&gt;
-      &lt;td&gt;q&lt;/td&gt;
-      &lt;td&gt;8&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;char*&lt;/td&gt;
-      &lt;td&gt;四字&lt;/td&gt;
-      &lt;td&gt;q&lt;/td&gt;
-      &lt;td&gt;8&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;float&lt;/td&gt;
-      &lt;td&gt;单精度&lt;/td&gt;
-      &lt;td&gt;s&lt;/td&gt;
-      &lt;td&gt;4&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;double&lt;/td&gt;
-      &lt;td&gt;双精度&lt;/td&gt;
-      &lt;td&gt;l&lt;/td&gt;
-      &lt;td&gt;8&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h4 id=&quot;赋值&quot;&gt;赋值&lt;/h4&gt;
-&lt;p&gt;&lt;strong&gt;直接赋值&lt;/strong&gt;：将内存中或寄存器中或常数值移到寄存器／内存中。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;传送指令 movx src，dst 	
-x可以为b,w,l,q后缀，分别对应1/2/4/8字节操作数
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;合法的操作数组合：立即数—寄存器	立即数—内存	 
- 寄存器—寄存器	寄存器—内存	 
- 内存—寄存器&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;逗号运算符&lt;/strong&gt;:
-C语言运算符中优先级最低的一种运算符。当顺序点用，结合顺序是从左至右，用来顺序求值，完毕之后整个表达式的值是最后一个表达式的值。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;条件运算符（？：）&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;条件传送指令 cmovcc src，dst 		
-cc表示条件，src只能为寄存器，dst可为内存和寄存器，其利用EFLAGS中的CF、OF、PF、SF、ZF实现条件判断。 条件：无符号数：用a、b、e、n、c分别表示大于、小于、等于、否、进位c。CPU用CF、ZF、PF实现判别。有符号数：用g、l、e、n、o分别表示大于、小于、等于、否、溢出，CPU用SF、ZF、OF实现判别。
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;初值&lt;/strong&gt;：赋初值的全局变量为强符号，储存在.data节，未赋初值的全局变量为弱符号，储存在.bss节。&lt;/p&gt;
-
-&lt;h3 id=&quot;类型转换&quot;&gt;类型转换&lt;/h3&gt;
-&lt;p&gt;扩展传送指令：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;符号扩展的传送 movsbl S, D
-零扩展的传送 movzbl S, D
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;算数操作&quot;&gt;算数操作&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;加+ADD/ADC	减-SUB/SBB 乘*MUL/IMUL  除/DIV/IDIV&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;逻辑左«/右移» SHL/SHR  算数左«/右移» SAL/SAR&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;通常使用&lt;strong&gt;leaq&lt;/strong&gt;指令计算形如a+bx的数据：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;D(Rb, Ri, S) — Mem[Reg[Rb]+S*Reg[Ri]+D]&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;D为常数偏移量，Rb为基址寄存器，Ri为变址寄存器，S为比例因子。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;逻辑位操作&quot;&gt;逻辑／位操作&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;逻辑运算： 与&amp;amp;&amp;amp; 	或|		非！&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;位运算：	与&amp;amp;	或|		非～	异或^&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;逻辑左移« SHL  逻辑右移» SHR  算数左移« SAL 算数右移» SAR&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;关系操作&quot;&gt;关系操作&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;关系包括： ==相等  !=不相等  &amp;gt;大于  &lt;小于&gt;=大于等于  &amp;lt;=小于等于&lt;/小于&gt;&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  比较指令cmpq Src1, Src2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;计算Src2-Src1但不改变目的操作数，将比较结果设置为条件码。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;CF为进位标志位	SF为符号标志位	ZF为零标志位	OF为溢出标志位&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;数组指针结构操作&quot;&gt;数组／指针／结构操作&lt;/h4&gt;
-&lt;p&gt;&lt;strong&gt;指针&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;寄存器间接寻址  (R) — Mem[Reg[R]]  即指针的解引用&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;如mov (%rcx), %rax  对应
-long y = *xp;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;数组&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;数组T A[L]即内存中连续分配的L*sizeof(T)字节。由于是连续的，所以可以通过偏移量访问数组。
-相对寻址 D(R) — Mem[Reg[R]+D]，D为常数偏移量。
-多维数组的储存为行优先&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/FfnQLd.jpg&quot; alt=&quot;&quot; height=&quot;60%&quot; width=&quot;70%&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;多层次数组： 每个元素是一个指针类型，为数组首地址。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/Ffn4m9.jpg&quot; alt=&quot;Ffn4m9.jpg&quot; height=&quot;60%&quot; width=&quot;70%&quot; /&gt;
-&lt;strong&gt;结构体&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;完整内存寻址 D(Rb, Ri, S) — Mem[Reg[Rb]+S*Reg[Ri]+D]
-D为常数偏移量，Rb为基址寄存器，Ri为变址寄存器，S为比例因子。&lt;/p&gt;
-
-&lt;p&gt;结构组成员的偏移量是在编译阶段确定的，结构体内部应满足每个元素的对齐要求，结构体的整体也应整齐存放，访问结构体数组中的元素根据汇编器给出的偏移量进行访问。&lt;/p&gt;
-
-&lt;h4 id=&quot;控制转移&quot;&gt;控制转移&lt;/h4&gt;
-&lt;p&gt;根据特定标志跳转：JZ/JNZ  JC/JNC JS/JNS  JO/JNO  JP/JNP JE/JNE  JCXZ  JECXZ&lt;/p&gt;
-
-&lt;p&gt;无符号数比较：JA/JNA  JAE/JNAE  JB/JNB  JBE/JNBE&lt;br /&gt;
-有符号数比较：JG/JNG  JGE/JNGE  JL/JNL  JLE/JNLE
-直接跳转：jmp&lt;/p&gt;
-&lt;h4 id=&quot;函数操作&quot;&gt;函数操作&lt;/h4&gt;
-&lt;p&gt;&lt;strong&gt;参数传递&lt;/strong&gt;：在64位系统中，函数的前六个参数通过寄存器传递，从第七个参数开始使用栈传递。在32位系统中，函数参数使用栈传递。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;函数调用&lt;/strong&gt;：构建参数（移动到寄存器或压入栈中），将返回地址（call指令的下一条指令）压入栈中，然后调用call跳转到相应的函数。保存栈帧指针和被保存寄存器。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;函数返回&lt;/strong&gt;：恢复被保存的寄存器和栈帧指针，弹出返回地址并返回。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/FfnMsH.jpg&quot; alt=&quot;FfnMsH.jpg&quot; height=&quot;30%&quot; width=&quot;30%&quot; /&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/Ffn3dI.jpg&quot; alt=&quot;Ffn3dI.jpg&quot; height=&quot;30%&quot; width=&quot;30%&quot; /&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;汇编&quot;&gt;汇编&lt;/h1&gt;
-&lt;h3 id=&quot;汇编的概念与作用&quot;&gt;汇编的概念与作用&lt;/h3&gt;
-&lt;p&gt;汇编器as将hello.s翻译成机器语言指令，把这些指令打包成可重定位目标程序的格式，结果保存在二进制文件hello.o中。&lt;/p&gt;
-&lt;h3 id=&quot;在ubuntu下汇编的命令&quot;&gt;在Ubuntu下汇编的命令&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;使用hello.c备注提供的命令：gcc -m64 -no-pie -fno-PIC hello.c -o hello
-直接生成hello.o：gcc –o hello.o hello.c
-使用汇编器as：as hello.s –o hello.o
-使用hello.s文件汇编：gcc –c hello.s –o hello.o
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;可重定位目标elf格式&quot;&gt;可重定位目标elf格式&lt;/h3&gt;
-&lt;p&gt;ELF可重定位目标文件如图所示，由ELF头、节头表和它们之间的节组成。
-ELF可重定位目标文件包括以下内容：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/FfneJK.jpg&quot; alt=&quot;FfneJK.jpg&quot; height=&quot;40%&quot; width=&quot;40%&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;ELF头&lt;/strong&gt;：
-Magic：16字节的序列，描述了生成该文件的系统的字的大小和字节顺序
-剩下部分包含帮助链接器语法分析和解释目标文件的信息。包括：ELF头大小、目标文件的类型、机器类型、节头表的文件偏移。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;.text&lt;/strong&gt;：已编译程序的机器代码
-使用readelf查看内容，与objdump反汇编生成的机器码对比一致。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;.rodata&lt;/strong&gt;（只读代码段）：只读数据，如printf语句中的格式串和开关语句的跳转表&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;.data&lt;/strong&gt;：已初始化的全局和静态C变量
-&lt;strong&gt;.bss&lt;/strong&gt;：未初始化的全局和静态C变量，以及所有被初始化为0的全局或静态变量。使用readelf查看hello.o的节头表中的.bss节的信息如下。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[ 4] .bss            	NOBITS           0000000000000000  000000c4
- 0000000000000000	0000000000000000  WA       0     0     1
- （.bss的size为0）
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;.bss在目标文件中不占据实际的空间，仅仅是一个占位符。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;.symtab&lt;/strong&gt;：符号表，存放在程序中定义和引用的函数和全局变量的信息。在hello中调用的printf、sleep、exit、getchar都显示在此处。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;.rel.text&lt;/strong&gt;：.text节中位置的列表。当链接器把这个目标文件和其他文件组合时，需要修改这些位置。一般而言，任何调用外部函数或者引用全局变量的指令都需要修改。另一方面，调用本地函数的指令则不需要修改。在可执行文件中重定位信息通常被省略。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;.rel.data&lt;/strong&gt;：被模块引用或定义的所有全局变量的重定位信息。一般而言，任何已初始化的全局变量，如果它的初始值是一个全局变量的地址或者外部定义函数的地址，都需要被修改。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;.debug&lt;/strong&gt;：调试符号表，其条目是程序中定义的局部变量和类型定义，程序中定义和引用的全局变量，以及原始的C源文件。以-g选项调用编译器才能得到这张表。
-&lt;strong&gt;.line&lt;/strong&gt;：原始C程序中的行号和.text节中的机器指令之间的映射，以-g选项调用编译器才能得到这张表。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;.strtab&lt;/strong&gt;：字符串表，包括.symtab和.debug节中的符号表，以及节头部中的节名字。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Section header table节头表&lt;/strong&gt;：描述不同节的位置和大小。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;链接&quot;&gt;链接&lt;/h1&gt;
-&lt;h3 id=&quot;链接的概念与作用&quot;&gt;链接的概念与作用&lt;/h3&gt;
-&lt;p&gt;链接是将各种代码和数据片段收集并组合为一个单一文件的过程，这个文件可被加载到内存执行。链接可以执行于编译时、加载时、或运行时。在现代系统中，链接由链接器之行。&lt;/p&gt;
-
-&lt;p&gt;链接使分离编译成为可能。不用将大型的应用程序组织为一个巨大的源文件，而是可以把它分解成更小更好管理的模块，可以独立地修改和编译这些模块。当改变模块中的一个时只需重新编译它并链接即可。&lt;/p&gt;
-&lt;h3 id=&quot;在ubuntu下链接的命令&quot;&gt;在Ubuntu下链接的命令&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ld -dynamic-linker /lib64/ld-linux-x86-64.so.2  /usr/lib/x86_64-linux-gnu/crt1.o /usr/lib/x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o hello.o -lc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/x86_64-linux-gnu/crtn.o -z relro -o hello ### 可执行目标文件hello的格式
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;可执行目标文件与可重定位目标文件类似。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;ELF头&lt;/strong&gt;：描述文件的总体格式，包括程序的入口点。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;.text、.rodata、.data节&lt;/strong&gt;与可重定位目标文件相似，但它们已被重定位到他们最终的运行时的内存地址。&lt;/p&gt;
-
-&lt;p&gt;因为可执行文件已被重定位，所以不再需要&lt;strong&gt;rel节&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;.init节&lt;/strong&gt;定义了一个函数_init，程序的初始代码会调用它。&lt;/p&gt;
-
-&lt;h3 id=&quot;链接的重定位过程分析&quot;&gt;链接的重定位过程分析&lt;/h3&gt;
-&lt;p&gt;hello.o	中只有.text段，其中仅包括main函数.而hello中有.init、.plt.got、.text、.fini 四段。&lt;/p&gt;
-
-&lt;p&gt;.init 中包括_init、puts@plt、printf@plt、__libc_start_main@plt、getchar@plt、exit@plt、sleep@plt函数。&lt;/p&gt;
-
-&lt;p&gt;.plt.got中包括.plt.got函数。&lt;/p&gt;
-
-&lt;p&gt;.text中包括_start、deregister_tm_clones、register_tm_clones、__do_global_dtors_aux、frame_dummy、main、__libc_csu_init、__libc_csu_fini函数。&lt;/p&gt;
-
-&lt;p&gt;.fini包括了_fini函数。&lt;/p&gt;
-
-&lt;p&gt;由此可见在重定位过程中&lt;strong&gt;相同类型的节发生合并&lt;/strong&gt;，所以.text等节的内容发生了变化，增加了许多函数。除此之外重定义过程中还发生了重定位节中的符号引用，使每个符号指向正确的内存地址。内容如下：&lt;/p&gt;
-
-&lt;p&gt;在hello.o反汇编文本中，可以看到je的跳转仍使用的是地址偏移量的形式，意思是跳转到与main偏移量为29的位置。callq的地址全是占位0，表明其未被重定位。
-hello.o反汇编：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0000000000000000 &amp;lt;main&amp;gt;:
-……
-  13:	74 14                	je     29 &amp;lt;main+0x29&amp;gt;
-……
-			16: R_X86_64_32	.rodata
-  1a:	e8 00 00 00 00       	callq  1f &amp;lt;main+0x1f&amp;gt;
-……
-  29:	c7 45 fc 00 00 00 00  	movl   $0x0,-0x4(%rbp)
-……
-  55:	e8 00 00 00 00       	callq  5a &amp;lt;main+0x5a&amp;gt;
-			56: R_X86_64_PC32  printf-0x4
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;hello.o反汇编文本中出现了两种重定位类型：&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;R_X86_64_PC32&lt;/strong&gt;：重定位一个32位PC相对地址的引用&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;R_X86_64_32&lt;/strong&gt;：重定位一个32位PC绝对地址的引用&lt;/p&gt;
-
-&lt;p&gt;56: R_X86_64_PC32 printf-0x4 
-    告诉编译器修改开始于偏移量为0x56处的字符引用，使其在运行时指向printf函数。&lt;/p&gt;
-
-&lt;p&gt;16: R_X86_64_32 .rodata 告诉编译器修改开始于偏移量为0x16处的字符引用，使其在运行时指向.rodata的第一个字节。&lt;/p&gt;
-
-&lt;p&gt;在hello反汇编文本中，可以看到je的跳转有了确定的地址，与hello.o中对应跳转的条目一致。callq的地址也从0变为了偏移量fffffe50（补码），表示跳转到与call指令下一条指令偏移量为fffffe50的位置。&lt;/p&gt;
-
-&lt;p&gt;hello反汇编：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0000000000400646 &amp;lt;main&amp;gt;:
-……
-  400659:	74 14                	je     40066f &amp;lt;main+0x29&amp;gt;
-……
-400660:	e8 7b fe ff ff      	 	callq  4004e0 &amp;lt;puts@plt&amp;gt;
-……
-  40066f:	c7 45 fc 00 00 00 00  	movl   $0x0,-0x4(%rbp)
-……
-  40069b:	e8 50 fe ff ff        	callq  4004f0 &amp;lt;printf@plt&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;hello的执行流程&quot;&gt;hello的执行流程&lt;/h3&gt;
-&lt;p&gt;shell为hello调用fork()生成子进程，以argv envp 为参数调用execve在子进程的上下文中加载新进程，execve调用加载器进行加载。通过虚拟地址空间中的页映射为可执行文件的片初始化代码段和数据段。最后加载器跳转到_start的地址。由_start开始依次进行函数调用：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;_start -&amp;gt; __libc_start_main -&amp;gt; __libc_csu_init -&amp;gt; _init -&amp;gt; main -&amp;gt; _fini.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;_start定义在系统目标文件ctrl.o中。_start调用系统启动函数__libc_start_main，__libc_start_main被定义在libc.so中，初始化执行环境。&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;h1 id=&quot;进程管理&quot;&gt;进程管理&lt;/h1&gt;
-&lt;h3 id=&quot;进程的概念与作用&quot;&gt;进程的概念与作用&lt;/h3&gt;
-&lt;p&gt;进程，是操作系统对一个正在运行的程序的一种抽象，是执行中程序的一个具体的实例。系统中每个程序都运行在&lt;strong&gt;上下文&lt;/strong&gt;中。
-进程提供给应用程序两个关键的抽象：&lt;strong&gt;一个独立的逻辑控制流&lt;/strong&gt;和&lt;strong&gt;一个私有的地址空间&lt;/strong&gt;。&lt;/p&gt;
-&lt;h3 id=&quot;shell-bash的作用与处理流程&quot;&gt;Shell-bash的作用与处理流程&lt;/h3&gt;
-&lt;p&gt;Shell是一个用C语言编写的程序，它是用户使用Linux的桥梁。Shell既是一种命令语言，又是一种程序设计语言。它是一个交互性的应用级程序，它代表用户运行其他程序。&lt;/p&gt;
-
-&lt;h4 id=&quot;作用&quot;&gt;作用&lt;/h4&gt;
-&lt;p&gt;shell执行一系列的读/求值步骤，读步骤读取用户的命令行，求值步骤 解析命令，代表用户执行。&lt;/p&gt;
-
-&lt;h4 id=&quot;处理流程&quot;&gt;处理流程&lt;/h4&gt;
-&lt;ol&gt;
-  &lt;li&gt;先调用&lt;code class=&quot;highlighter-rouge&quot;&gt;parseline&lt;/code&gt;函数，这个函数解析了以空格分隔的命令行参数，并构造最终会传递给&lt;code class=&quot;highlighter-rouge&quot;&gt;execve&lt;/code&gt;的 &lt;code class=&quot;highlighter-rouge&quot;&gt;argv&lt;/code&gt;向量。&lt;/li&gt;
-  &lt;li&gt;第一个参数被假设为内置shell命令名或可执行文件，这时会解释这个命令或在一个新的子程序的上下文中加载并运行这个文件。&lt;/li&gt;
-  &lt;li&gt;如果最后一个参数是‘&amp;amp;’字符，那么 &lt;code class=&quot;highlighter-rouge&quot;&gt;parseline&lt;/code&gt; 函数返回 1，表示应该在后台执行 程序，否则返回 0，表示应该在前台执行程序。&lt;/li&gt;
-  &lt;li&gt;解析命令行之后，&lt;code class=&quot;highlighter-rouge&quot;&gt;eval&lt;/code&gt;函数调用&lt;code class=&quot;highlighter-rouge&quot;&gt;builtin_command&lt;/code&gt;函数，该函数检查第一个命令行参数是否为内置的shell命令。如果是，则立即解释，返回1，否则返回0。&lt;/li&gt;
-  &lt;li&gt;如果&lt;code class=&quot;highlighter-rouge&quot;&gt;builtin_command&lt;/code&gt;函数返回0，那么shell创建一个子进程，在子进程中执 行所请求的程序。如果用户要求在后台运行程序，那么 shell 返回到循环的顶部，等待下一个命令的执行。否则shell使用&lt;code class=&quot;highlighter-rouge&quot;&gt;waitpid&lt;/code&gt;函数等待作业终止。当job终止时，shell开始下一轮迭代。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;hello的fork进程创建过程&quot;&gt;Hello的fork进程创建过程&lt;/h3&gt;
-&lt;p&gt;Hello进程通过调用fork函数创建其子进程。内核为Hello的子进程程创建各种数据结构，并分配给它一个唯一的PID。父进程和新创建的子进程之间最大的区别在于&lt;strong&gt;PID不同&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;为了给这个新进程创建虚拟内存，内核创建当前进程的mm_struct、区域结构和页表的原样副本。子进程与父进程用户级虚拟地址空间，如代码和数据段、堆、共享库和用户栈&lt;strong&gt;相同但相互独立&lt;/strong&gt;。子进程还获得与父进程任何打开文件描述符相同的副本，这意味着当父进程调用fork时，子进程可以读写父进程中打开的任何文件。&lt;/p&gt;
-
-&lt;p&gt;fork函数&lt;strong&gt;调用一次，返回两次&lt;/strong&gt;。在父进程中fork返回子进程PID，在子进程中fork返回0。&lt;/p&gt;
-&lt;h3 id=&quot;hello的execve过程&quot;&gt;Hello的execve过程&lt;/h3&gt;
-&lt;p&gt;execve函数在当前进程的上下文中加载并运行一个新的程序，覆盖当前进程的地址空间。新进程与调用进程拥有&lt;strong&gt;相同的PID&lt;/strong&gt;。只有找不到可执行文件时execve才返回到调用程序。与fork不同，execve&lt;strong&gt;调用一次从不返回&lt;/strong&gt;。
-当我们的hello进程调用execve函数加载运行其他程序时会发生以下变化：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;删除已存在的用户区域&lt;/li&gt;
-  &lt;li&gt;映射私有区域&lt;/li&gt;
-  &lt;li&gt;映射共享区域&lt;/li&gt;
-  &lt;li&gt;设置程序计数器（PC），使之指向代码区域入口点&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;hello的进程执行&quot;&gt;Hello的进程执行&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;系统中的每个程序都运行在某个程序的上下文中。上下文就是程序正确运行需要的状态，包括内存中的程序的代码和数据、用户栈、内核栈、内核数据结构、通用目的寄存器的内容、程序计数器、环境变量以及打开文件描述符的集合。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;调度由内核中的调度器代码处理，即内核选择执行哪个进程的决策。在内核调度了一个新的进程运行后，它抢占当前进程，并使用上下文切换转移控制到新的进程。上下文切换保存当前进程的上下文，恢复先前被抢占的进程被保存的上下文，将控制传递给这个新恢复的进程。当内核代表用户执行系统调用时，可能会发生上下文切换。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/FfnDwn.jpg&quot; alt=&quot;FfnDwn.jpg&quot; height=&quot;70%&quot; width=&quot;80%&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;如因为等待某个时间发生阻塞时，内核可以选择让当前进程休眠，切换到另一个进程。sleep系统调用显式地请求让调用进程休眠。中断也可能引发上下文切换，如所有系统都有某种产生周期性定时器中断的机制。每次定时器中断时都切换到另一个进程。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;当用户输入命令行运行程序hello时，shell创建hello进程，然后在这个新进程的上下文中运行可执行目标文件hello。&lt;/li&gt;
-  &lt;li&gt;运行hello程序代码的进程初始在用户模式中，当hello进程遇到中断、故障或陷阱（系统调用）异常时控制将传递到异常处理程序，CPU将模式从用户模式切换为内核模式。异常处理程序在内核模式中运行，当它返回到应用程序代码时，CPU将模式从内核模式切换为用户模式。&lt;/li&gt;
-  &lt;li&gt;如调用printf输出一条语句是由write通过产生陷阱使系统调用sys_call，把输出的任务移交给操作系统内核完成。hello中调用的sleep函数执行系统调用，显式地请求让调用进程休眠，切换到另一个进程。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;hello的异常与信号处理&quot;&gt;hello的异常与信号处理&lt;/h3&gt;
-&lt;p&gt;在hello的执行过程中可能会遇到以下异常：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;缺页故障&lt;/strong&gt;：调用缺页异常处理程序后可继续运行&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;I/O设备导致的中断&lt;/strong&gt;，如定时器芯片、ctrl+c等&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;陷阱&lt;/strong&gt;（即系统调用）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;hello中的printf调用write函数，write函数通过产生陷阱使系统调用sys_call，把输出的任务移交给操作系统内核完成。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;异常处理&lt;/strong&gt;：当hello进程遇到异常时控制将传递到异常处理程序，CPU将模式从用户模式切换为内核模式。异常处理程序在内核模式中运行，当它返回到应用程序代码时，CPU将模式从内核模式切换为用户模式。&lt;/p&gt;
-
-&lt;p&gt;在hello的执行过程中可能会遇到以下信号：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;/bin/kill 程序&lt;/strong&gt;可以向另外的进程发送任意的信号&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;键盘发送信号&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;ctrl+c使内核发送SIGINT信号到前台进程组的每个进程&lt;/li&gt;
-      &lt;li&gt;ctrl+z发送一个SIGSTP到前台进程组的每个进程&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;信号处理&lt;/strong&gt;：当进程hello从内核模式切换到用户模式时，内核会检查进程hello是否存在未被阻塞的待处理信号，如果不存在待处理信号则继续执行下一条指令，否则选择待处理信号中id最小（意味着最重要）的信号强制hello接受， SIGINT使进程终止，SIGTSTP使进程挂起直到被重启。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;hello的存储管理&quot;&gt;hello的存储管理&lt;/h1&gt;
-&lt;h3 id=&quot;hello的存储器地址空间&quot;&gt;hello的存储器地址空间&lt;/h3&gt;
-&lt;p&gt;主存被组织成一个连续的字节大小的单元组成的数组，每个字节都有一个唯一的&lt;strong&gt;物理地址&lt;/strong&gt;。与之对应，&lt;strong&gt;虚拟内存&lt;/strong&gt;被组织成一个存放在磁盘上连续的字节大小的单元组成的数组，每个字节都有一个唯一的虚拟地址。而我们之前看到的机器语言指令中出现的内存地址，都是&lt;strong&gt;逻辑地址&lt;/strong&gt;。&lt;strong&gt;线性地址&lt;/strong&gt;是逻辑地址到物理地址变换之间的中间层，逻辑地址需要转换成线性地址，再经过MMU转换成物理地址才能够被访问到。
-&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/FfnnzD.jpg&quot; alt=&quot;FfnnzD.jpg&quot; height=&quot;70%&quot; width=&quot;90%&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;intel逻辑地址到线性地址的变换-段式管理&quot;&gt;Intel逻辑地址到线性地址的变换-段式管理&lt;/h3&gt;
-
-&lt;p&gt;先简单介绍一下Linux虚拟内存系统。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/FfnKQe.jpg&quot; alt=&quot;FfnKQe.jpg&quot; height=&quot;30%&quot; width=&quot;35%&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Linux将虚拟内存组织成一些段的集合去管理，图展示了一个Linux进程的虚拟内存，由内核代码段、内核数据段、用户代码段、用户数据段等组成。&lt;/p&gt;
-
-&lt;p&gt;逻辑地址相当于数据段内的偏移，故逻辑地址加上隐含的数据段的基地址，才能构成线性地址。数据段即图展示的内核代码段、内核数据段、用户代码段、用户数据段等。因为Linux所有的段（用户代码段、用户数据段、内核代码段、内核数据段）的线性地址都是从 0x00000000 开始，长度4G，所以逻辑地址等于线性地址。
-&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/Ffnroq.jpg&quot; alt=&quot;Ffnroq.jpg&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;hello的线性地址到物理地址的变换-页式管理&quot;&gt;Hello的线性地址到物理地址的变换-页式管理&lt;/h3&gt;
-
-&lt;p&gt;物理内存被分割为一个个&lt;strong&gt;物理页&lt;/strong&gt;进行管理。线性地址通过&lt;strong&gt;页表&lt;/strong&gt;查找来对应物理地址。&lt;strong&gt;页表将虚拟页地址映射到物理页地址&lt;/strong&gt;，标记着某个虚拟页是否存放，存在的话在DRAM中的哪个地方，否则在物理内存中选择一个牺牲页，将虚拟页复制到DRAM中，替换这个牺牲页。CPU将线性地址传入MMU将其转换为物理地址的过程称为&lt;strong&gt;地址翻译&lt;/strong&gt;。地址翻译总体来说具有以下几个步骤：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/FfnmRO.jpg&quot; alt=&quot;FfnmRO.jpg&quot; height=&quot;50%&quot; width=&quot;60%&quot; /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;CPU生成VA将其传给MMU&lt;/li&gt;
-  &lt;li&gt;MMU使用页表生成PTE地址，从cache／main memory中请求PTE&lt;/li&gt;
-  &lt;li&gt;cache／main memory向MMU返回PTE&lt;/li&gt;
-  &lt;li&gt;MMU构造PA并传送到cache／main memory
-    &lt;ul&gt;
-      &lt;li&gt;MMU以VPN作为选择PTE的索引，因为物理页与虚拟页都是P字节的，所以他们的偏移量PPO与VPO一致，将PPN与VPO串联起来就得到了相应的PA。如果有效位为0，触发缺页异常处理程序。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;cache／main memory返回所请求的字段给CPU
-其中第三步返回的PTE可能有效值为0，触发缺页异常处理程序，将虚拟页面缓存在物理内存中后重新进行地址翻译。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;tlb与四级页表支持下的va到pa的变换&quot;&gt;TLB与四级页表支持下的VA到PA的变换&lt;/h3&gt;
-
-&lt;p&gt;为了减少MMU查询PTE的开销，TLB应运而生。TLB就是MMU中PTE的缓存。它将VA中的VPN分为两部分，一部分作为TLB的标记，另一部分作为TLB的索引。当TLB不命中时，MMU从L1缓存中取出相应的PTE放在TLB中。这样一来命中的话地址翻译都在MMU上执行，效率非常高。TLB命中与不命中的地址翻译情况如图&lt;/p&gt;
-
-&lt;p&gt;由于页表是需要常驻内存的，为了减少内存被占用的程序可以使用多级页表。Intel Core i7使用四级页表减少主存压力。上一级页表映射下一级虚拟地址空间的一片（有点类似数据结构中建立层索引）。所以VPN被分为四份，VPN i储存着一个到第i级页表的索引，只有最后一级页表中存放PPN。
-&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/FfnBes.jpg&quot; alt=&quot;FfnBes.jpg&quot; height=&quot;40%&quot; width=&quot;80%&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;三级cache支持下的物理内存访问&quot;&gt;三级Cache支持下的物理内存访问&lt;/h3&gt;
-
-&lt;p&gt;局部性原理启示着高速缓存的思想：用更小更快的设备作为更大更慢设备的缓存区。由于寄存器和主存之间效率非常悬殊，直接访问效率非常低，现代的CPU设计中会在寄存器和CPU间建立多层缓存，数据以块为单元在层与层间复制，这样既可以降低成本又可以保证效率。图为Intel Core i7的高速缓存层次结构。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/Ffn8ot.jpg&quot; alt=&quot;Ffn8ot.jpg&quot; height=&quot;80%&quot; width=&quot;60%&quot; /&gt;
-当CPU需要向主存请求一块数据时，优先向cache中L1发送请求，若请求的块正好在L1中，则命中，否则向下一层L2继续请求块，直到请求成功。&lt;/p&gt;
-&lt;h3 id=&quot;hello进程fork时的内存映射&quot;&gt;hello进程fork时的内存映射&lt;/h3&gt;
-&lt;p&gt;当hello进程调用fork时，内核为hello的子进程程创建各种数据结构，并分配给它一个唯一的PID。为了给这个新进程创建虚拟内存，内核创建当前进程的mm_struct、区域结构和页表的原样副本。它将两个进程中的每个页面都标记为只读，并将两个进程中的每个区域结构都标记为私有的写时复制。
-当fork在hello的子进程中返回时，新进程现在的虚拟内存刚好和调用fork时存在的虚拟内存相同。当这两个进程中的任一个进行写操作时，写时复制机制就会创建新页面。因此虚拟内存为hello的父进程和子进程保持私有地址空间的抽象概念。&lt;/p&gt;
-&lt;h3 id=&quot;hello进程execve时的内存映射&quot;&gt;hello进程execve时的内存映射&lt;/h3&gt;
-&lt;p&gt;当我们的hello进程调用execve函数加载运行其他程序时会发生以下变化：&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;删除已存在的用户区域&lt;/li&gt;
-  &lt;li&gt;映射私有区域&lt;/li&gt;
-  &lt;li&gt;映射共享区域&lt;/li&gt;
-  &lt;li&gt;设置程序计数器（PC），使之指向代码区域入口点&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;缺页故障与缺页中断处理&quot;&gt;缺页故障与缺页中断处理&lt;/h3&gt;
-&lt;p&gt;我们以图7-3-1中的页表为例说明缺页中断处理操作。MME向cache／main memory请求得到的PTE 3有效位为0，此刻发生Page Fault故障，触发缺页异常处理程序，将虚拟页面缓存在物理内存中后重新进行地址翻译。&lt;/p&gt;
-
-&lt;p&gt;内核中的缺页异常处理程序首先检查虚拟地址是否合法、若不合法则触发段错误。然后检查试图进行的内存访问是否合法，若不合法则触发保护异常，通过后则在物理内存中选取一个牺牲页PP3，若VP4已被修改，则内核将其复制回磁盘（写回）。然后修改页表中VP4的页表条目，表明VP4已不再缓存在内存中。在此之后内核从磁盘复制VP3到内存中的PP3，更新PTE3后返回。当缺页异常处理程序返回时它重新启动导致缺页故障的指令，由于此时缺页故障已被修复，所以地址翻译可以继续正常处理了。&lt;/p&gt;
-&lt;h3 id=&quot;动态存储分配管理&quot;&gt;动态存储分配管理&lt;/h3&gt;
-&lt;p&gt;由于在某些情况下只有在程序运行之后才知道某些数据结构的大小，所以程序往往使用动态内存分配动态分配数组。&lt;/p&gt;
-
-&lt;h3 id=&quot;动态内存管理的基本方法&quot;&gt;动态内存管理的基本方法&lt;/h3&gt;
-&lt;p&gt;C语言使用动态内存分配器维护堆。分配器将堆视为一组不同大小的块的集合来维护。每个块是一个连续的chunk，分为已分配和未分配两种状态。已分配的块显式地保留给应用程序使用，保持已分配状态，直到被应用程序显式地释放或被内存分配器自身隐式释放。未被分配的块保持空闲直到它显式地被应用所分配。&lt;/p&gt;
-&lt;h3 id=&quot;动态内存管理的策略&quot;&gt;动态内存管理的策略&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;在执行malloc或free操作前先初始化堆。&lt;/li&gt;
-  &lt;li&gt;当进程动态申请内存时先调整块的大小进行对齐，分配器再优先检查是否有大小合适的空闲块，如果有则放置请求块，并且根据需要将空闲块选择性做分割处理，否则在堆上扩展内存或回收垃圾。&lt;/li&gt;
-  &lt;li&gt;当进程请求释放内存时检查释放块的周围是否有空闲块，如果有则将其合并&lt;/li&gt;
-  &lt;li&gt;使用分配器应解决以下问题：
-    &lt;ul&gt;
-      &lt;li&gt;空闲块组织&lt;/li&gt;
-      &lt;li&gt;放置策略&lt;/li&gt;
-      &lt;li&gt;分割空闲块&lt;/li&gt;
-      &lt;li&gt;合并空闲块&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;空闲块组织方式&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;隐式空闲链表&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;根据这种方式可以使分配器像链表一样遍历所有的块从而间接遍历整个空闲块的集合。通过在最后设置已分配而大小为0的块来标志结束。
-&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/Ffn1eA.jpg&quot; alt=&quot;Ffn1eA.jpg&quot; /&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;显式空闲链表&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;将堆组织成一个双向空闲链表，如果未被分配的话有效载荷的位置包含一个指向前驱的指针和一个指向后继的指针。可以使用地址顺序或LIFO的方法维护链表中空闲块的顺序。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/12/29/Ffeou9.jpg&quot; alt=&quot;image&quot; height=&quot;80%&quot; width=&quot;85%&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;分离的空闲链表
-    &lt;ul&gt;
-      &lt;li&gt;按照大小分类，构造不同大小的空闲列表&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;块按地址大小排序
-    &lt;ul&gt;
-      &lt;li&gt;在每个空闲块中使用一个带指针的平衡树，使用块大小作为权值&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;放置策略&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;首次适配：从头开始扫描寻找第一个合适的空闲块&lt;/li&gt;
-  &lt;li&gt;下一次适配：从上次查询的结束的地方开始&lt;/li&gt;
-  &lt;li&gt;最佳适配：检查每个空闲块，根据需求选择大小最小的空闲块。如果空闲块大于需求，则分割空闲块。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;分割空闲块&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;如果空闲块大于需求，则将空闲块分为已利用和未利用两部分。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;合并空闲块&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;立即合并&lt;/li&gt;
-  &lt;li&gt;推迟合并(常见)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;hello的io管理&quot;&gt;hello的IO管理&lt;/h1&gt;
-&lt;h3 id=&quot;linux的io设备管理方法&quot;&gt;Linux的IO设备管理方法&lt;/h3&gt;
-&lt;p&gt;在Linux中，所有的I/O设备都被模型化为文件，所有的输入和输出都被当作对相应的文件的读和写来执行。这种将设备映射为文件的方式允许Linux内核引出一个简单、低级的应用接口，称为UnixI/O，这使得所有的输入和输出都能以一种统一且一致的方式来执行。&lt;/p&gt;
-&lt;h3 id=&quot;unix-io接口及其函数&quot;&gt;Unix I/O接口及其函数&lt;/h3&gt;
-&lt;p&gt;Unix I/O 是系统引出的一个简单、低级的应用接口，用来辅助主存和外部设备之间复制数据，使所有输入输出的方式以同一且一致的方式运行。&lt;/p&gt;
-
-&lt;h3 id=&quot;unix-io-函数主要包括&quot;&gt;Unix I/O 函数主要包括：&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;read 和 write —— 读写函数&lt;/li&gt;
-  &lt;li&gt;lseek —— 随机访问文件&lt;/li&gt;
-  &lt;li&gt;open 和 close —— 打开关闭文件&lt;/li&gt;
-  &lt;li&gt;stat —— 检索文件信息&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;printf的实现分析&quot;&gt;printf的实现分析&lt;/h4&gt;
-&lt;p&gt;printf是标准IO函数提供的一个更加完整的带缓冲的替代品。查看printf的源码分析其实现：&lt;/p&gt;
-
-&lt;p&gt;声明了256字节的数组buf作为缓存区—&amp;gt;取出第一个参数—&amp;gt;调用vsprintf函数—&amp;gt;调用write函数—&amp;gt;返回vsprintf的返回值。其中((char*)(&amp;amp;fmt) + 4)表示的是printf函数的第一个参数。
-vsprintf的作用是格式化。它接受确定输出格式的格式字符串fmt。用格式字符串对个数变化的参数进行格式化，产生格式化输出。返回的是要打印出来的字符串的长度。&lt;/p&gt;
-
-&lt;p&gt;write为Unix I/O函数，查看write函数的反汇编代码：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; mov eax, _NR_write 
- mov ebx, [esp + 4] 
- mov ecx, [esp + 8] 
- int INT_VECTOR_SYS_CALL
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;前三行即参数传递，第四行表示要调用中断门。通过中断门来实现特定的系统服务。int INT_VECTOR_SYS_CALL表示要通过系统来调用sys_call这个函数。也就是说write通过产生陷阱使系统调用sys_call，把输出的任务移交给操作系统内核完成。&lt;/p&gt;
-
-&lt;p&gt;在此之后字符显示驱动子程序：从ASCII到字模库到显示vram（存储每一个点的RGB颜色信息）。显示芯片按照刷新频率逐行读取vram，并通过信号线向液晶显示器传输每一个点（RGB分量）。&lt;/p&gt;
-
-&lt;h3 id=&quot;getchar的实现分析&quot;&gt;getchar的实现分析&lt;/h3&gt;
-&lt;p&gt;来自I/O设备的信号导致异步异常——键盘中断，触发中断处理程序：键盘中断处理子程序，它接受按键扫描码转成ascii码，保存到系统的键盘缓冲区。
-getchar等调用read系统函数，通过系统调用读取按键ascii码，直到接受到回车键才返回。当我们按下回车键时，就开始调用getchar()函数，把缓冲区最先存储的字符读取，并且把这个字符从缓冲区中清除。然后利用循环继续读取，释放。&lt;/p&gt;
-&lt;h3 id=&quot;本章小结&quot;&gt;本章小结&lt;/h3&gt;
-&lt;p&gt;Linux中将设备的模型化为文件， 使用Unix I/O接口进行设备管理。Linux提供了少量的基于Unix I/O 模型的系统级函数，它们允许应用程序打开、关闭、读写文件、提取文件的元数据和IO重定向。Linux读和写操作会出现不足值，应用程序必须能正确的预计并处理这种情况。应用程序不应直接调用UnixI/O函数，而是应该使用RIO函数包，RIO通过反复执行读写操作，直到传送完所有的请求数据，自动处理不足值。&lt;/p&gt;
-
-&lt;p&gt;标准I/O库是基于UnixI/O实现的，并提供了一组强大的高级I/O例程。对于绝大多数应用程序而言，标准I/O比更简单，对于网络应用程序来说Unix I/O更胜一筹。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;总结&quot;&gt;总结&lt;/h1&gt;
-&lt;ul&gt;
-  &lt;li&gt;我们的hello.c代码经过预处理、编译、汇编、链接四个阶段的加工，从代码一步步转变为汇编语言、机器语言、二进制文本，最后成为可执行文件，也就是我们的程序——hello。&lt;/li&gt;
-  &lt;li&gt;当我们在shell 中输入命令行执行hello后，shell为hello创建一个新的子进程，并在子进程中调用execve来加载并执行该进程。执行结束后shell回收hello进程。&lt;/li&gt;
-  &lt;li&gt;当hello调用printf时产生系统调用，进行上下文切换，从用户模式切换至内核模式，通过 I/O流向屏幕输出一行字符。每输出一次将休眠一段时间，直至输出10次。接着getchar函数会从输入缓冲区读取一个字符，然后执行return 0指令结束程序的执行。在进程运行的过程中，可以发送信号至进程使其停止或终止。&lt;/li&gt;
-  &lt;li&gt;在这个过程中，我们认识了CPU如何处理hello中的指令序列；访问内存过程中的VA和PA怎样进行相互转换；TLB、四级页表为什么可以加快地址翻译；缺页中断如何处理；三级cache的访问方式。&lt;/li&gt;
-  &lt;li&gt;从分析过程中可以进一步加深对P2P，O2O、计算机系统的理解，从而写出更好的程序。&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Thu, 20 Dec 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/chengxurensheng.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/chengxurensheng.html</guid>
-        
-        <category>CSAPP</category>
-        
-        
-        <category>coding</category>
-        
-      </item>
-    
-      <item>
-        <title>Kotlin</title>
-        <description>&lt;h2 id=&quot;basic-grammer&quot;&gt;Basic Grammer&lt;/h2&gt;
-&lt;h3 id=&quot;valvar&quot;&gt;val&amp;amp;var&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;a:Int 
-val b:Int = 2 //val variable can only be assignmented once
-val c = &quot;Hello Kotlin&quot;
-val d // wrong
-val e:Int //right
-var f : Char = '1'
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;fun&quot;&gt;fun&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fun main(arg:Array&amp;lt;String&amp;gt;) {
-    
-    fun sum(): Unit {
-        print(&quot;param:void,return:void&quot;)
-    }
-    
-    fun sum(): Unit {
-        print(&quot;Unit can be omitted&quot;)
-    }
-    
-    fun sum(a:Int): Int {
-        print(&quot;param:int,return:int&quot;)
-    }
-    
-    fun sum(a:Int, b:Int) = a + b;
-    
-    fun maxOf(a: Int, b: Int) = if (a &amp;gt; b) a else b
-    
-    fun parseInt(str: String): Int? {
-        return null;//?means possible return null
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;string&quot;&gt;String&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val boy = 5
-var girl = 7
-var all = &quot;There are $boy boys and $girl girls&quot;
-print(all)
-val text = &quot;&quot;&quot;
-    for (c in &quot;foo&quot;)
-        print(c)
-    &quot;&quot;&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;instanceof&quot;&gt;instanceof()&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var a:Any = &quot;123&quot;//Any is commom parent class of all classes
-if (a is String){
-    print(a.length)//meanwhile type conversion
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;circulation&quot;&gt;Circulation&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var a = listOf(1, 2, 3, 1)
-for (b in a) {
-    print(b + &quot;\n&quot;) //wrong
-    print(&quot;$b \n&quot;)  //right
-}
-for (b in a.indices) {
-    print(&quot;item:&quot; + b + &quot;值&quot; + a[b] + &quot;\n&quot;)
-}
-print(&quot;item:$b 值${a[b]}\n&quot;)
-for ((a,b)in items.withIndex()) print(&quot;$a, $b\n&quot;)
-//0,1 1,2 2,3 3,1
-var items = listOf(1, 3, 5, 7, 9)
-
-for (a in items) {
-    if (a == 5) {
-        continue | break | return
-    }
-    print(&quot;$a \n&quot;)//1,3,7,9
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;when&quot;&gt;When&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var x = 1;
-var y = 1;
-when (x) {
-    1 -&amp;gt;
-        if (x + y &amp;gt; 5) {
-            print(&quot;a&quot;)
-        } else {
-            print(&quot;b&quot;)
-        }
-    2 -&amp;gt; print(&quot;x == 2&quot;)
-    else -&amp;gt; { 
-        print(&quot;x is neither 1 nor 2&quot;)
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;range&quot;&gt;Range&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val x = 5
-if (x in 1..10) {
-    println(&quot;fits in range&quot;)
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;set&quot;&gt;Set&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var a = listOf(1, 2, 3, 1)
-for (b in a) {
-    print(&quot;$b \n&quot;)
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;underline&quot;&gt;Underline&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val oneMillion = 1_000_000 //100000
-val creditCardNumber = 1234_5678_9012_3456L //1234567890123456
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;equals&quot;&gt;equals&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val a: Int = 10000
-print(a === a) //true
-val boxedA: Int? = a
-val anotherBoxedA: Int? = a
-print(boxedA === anotherBoxedA) //false 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;type-conversion&quot;&gt;Type Conversion&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val b: Byte = 1
-val i: Int = b.toInt()
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;array&quot;&gt;Array&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val items = listOf&amp;lt;String&amp;gt;(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;)
-val itemNulls = arrayOfNulls&amp;lt;Int&amp;gt;(10)
-//null
-val asc = Array(5, { i -&amp;gt; (i * i).toString() }) 
-//[&quot;0&quot;, &quot;1&quot;, &quot;4&quot;, &quot;9&quot;, &quot;16&quot;]
-val asc = Array(5, {i -&amp;gt; (i * i)})
-// [0, 1, 4, 9, 16]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;constructor&quot;&gt;Constructor&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class TestClass {
-    class TestClass constructor(firstName: String) {
-        init {
-            //Initialize 
-        }
-    }
-    constructor(firstName: String) {
-        print(&quot;subconstructor&quot;)
-    }
-}
-class Person {
-    constructor(parent: Person) {
-        parent.children.add(this)
-    }
-}
-class Test{
-    val test = TestClass(&quot;Kotlin&quot;);//new object
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;extend&quot;&gt;Extend&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;open class BaseClass {
-    class BaseClass constructor(str:String){
-    
-    }
- }
-class SubClass : BaseClass(){
-
-} If there isn't a constructor in class, every subconstructor must use the key word &quot;super&quot; to initialize.
-
-class MyView : View {
-    constructor(ctx: Context) : super(ctx)
-    constructor(ctx: Context, attrs: AttributeSet) : super(ctx, attrs)
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;override&quot;&gt;Override&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;open class Base {
-    open var a = 9;
-    open fun v() {
-        print(&quot;Base...&quot;)
-    }
-    fun nv() {}
-}
-class Subclass() : Base() {
-    override var a = 8;//override attribute
-    override fun v() {
-        //super.v() call the method in baseclass
-        print(&quot;Subclass...&quot;)//override method
-    }
-}
-fun main(args: Array&amp;lt;String&amp;gt;) {
-    val sub = Subclass();
-    son.v()
-    print(son.a)
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-        <pubDate>Fri, 02 Feb 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/Kotlin.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/Kotlin.html</guid>
-        
-        <category>CODE</category>
-        
-        <category>KOTLIN</category>
-        
-        <category>ANDROID</category>
-        
-        
-        <category>coding</category>
-        
-      </item>
-    
-      <item>
-        <title>Crawler</title>
-        <description>&lt;h2 id=&quot;requests-library&quot;&gt;Requests Library&lt;/h2&gt;
-
-&lt;h3 id=&quot;seven-main-methods&quot;&gt;Seven main methods&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;requests.request()&lt;/li&gt;
-  &lt;li&gt;requests.get()&lt;/li&gt;
-  &lt;li&gt;requests.head()&lt;/li&gt;
-  &lt;li&gt;requests.post()&lt;/li&gt;
-  &lt;li&gt;requests.put()&lt;/li&gt;
-  &lt;li&gt;requests.patch()&lt;/li&gt;
-  &lt;li&gt;requests.delete()&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import requests
-r = requests.get(&quot;http://www.baidu.com&quot;)
-r.status_code
-#200 (Succeed) 404 (Failed)
-R.encoding = 'utf-8'
-r.text
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;request-method&quot;&gt;request method&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;requests.request(method, url, **kwargs)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;method:GET, HEAD, POST, PUT, PATCH, DELETE, OPTION&lt;/p&gt;
-
-&lt;p&gt;**kwargs:params data json headers cookies auth files timeout proxies allow_redirects stream verify cert(True/False)&lt;/p&gt;
-
-&lt;h3 id=&quot;response-object-properties&quot;&gt;Response Object Properties&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;r.status_code&lt;/li&gt;
-  &lt;li&gt;r.text&lt;/li&gt;
-  &lt;li&gt;r.encoding ( If charset didn’t apparent in header,default:ISO-8859-1)&lt;/li&gt;
-  &lt;li&gt;r.apparent_encoding&lt;/li&gt;
-  &lt;li&gt;r.content&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;code-framework&quot;&gt;Code Framework&lt;/h3&gt;
-&lt;h5 id=&quot;exceptions-in-requests-library&quot;&gt;Exceptions in Requests Library&lt;/h5&gt;
-&lt;ul&gt;
-  &lt;li&gt;requests.ConnectionError&lt;/li&gt;
-  &lt;li&gt;requests.HTTPError&lt;/li&gt;
-  &lt;li&gt;requests.URLRequired&lt;/li&gt;
-  &lt;li&gt;requests.TooManyRedirects&lt;/li&gt;
-  &lt;li&gt;requests.ConnectTimeout&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;requests.Timeout&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;r.raise_for_status 
- ( If return value isn’t 200,it will throw requests.HTTPError exception)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import requests
-def getHTMLText(url):
-    try:
-        r = requests.get(url, timeout = 30)
-        r.raise_for_status()
-        r.encoding = r.apparent_encoding
-        return r.text
-    except:
-        return &quot;产生异常&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;http-protocol&quot;&gt;HTTP Protocol&lt;/h3&gt;
-
-&lt;p&gt;URL: http://host[:port][path]&lt;/p&gt;
-
-&lt;p&gt;host:legal Internet host domain name or IP address&lt;/p&gt;
-
-&lt;p&gt;port:port number, defalt 80&lt;/p&gt;
-
-&lt;p&gt;http://www.hit.edu.cn&lt;/p&gt;
-
-&lt;p&gt;http://220.181.111.188/duty&lt;/p&gt;
-
-&lt;p&gt;HTTP protocol operation :GET, HEAD, POST, PUT, PATCH, DELETE&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;payload{'key1':'value1', 'key2','value2'}
-r = requests.post('http://httpbin.org/post', data = payload)
-print(r.text)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;robot-protocol&quot;&gt;Robot Protocol&lt;/h3&gt;
-&lt;p&gt;User-agent: *&lt;/p&gt;
-
-&lt;p&gt;Disallow: /&lt;/p&gt;
-
-&lt;h3 id=&quot;crawl-web-pictures&quot;&gt;Crawl Web pictures&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import requests
-import os
-
-url = &quot;http://news.hit.edu.cn/_upload/article/images/8e/ea/8376999048edb1b3ca17cce1e5f2/78f2ba13-d001-4546-b4bf-77f43caf8c6f.jpg&quot;
-root = &quot;Users/ucla/&quot;
-path = root + url.split('/')[-1]
-   
-try:
-    if not os.path.exists(root):
-        os.mkdir(root)
-    if not os.path.get(url):
-        r = requests.get(url)
-        with open(path,'wb') as f:
-            f.write(r.content)
-            f.close()
-            print(&quot;文件保存成功&quot;)
-    else:
-        print(&quot;文件已存在&quot;)
-except:
-    print(&quot;爬取失败&quot;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;get-method&quot;&gt;get method&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;r = requests.get(url) 
-#return Response 
-requests.get(url,params=None,**kwargs)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;modify-user-agent&quot;&gt;Modify User-agent:&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kv = {'user-agent':'Mozilla/5.0'}
-url = 'https://www.amazon.cn/gp/product/B01M8L5Z3Y'
-r = requestts.get(url, headers = kv)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;use-search-engine&quot;&gt;Use Search engine:&lt;/h4&gt;
-
-&lt;p&gt;http://www.baidu.com/s?wd=keyword&lt;/p&gt;
-
-&lt;p&gt;http://www.so.com/s?q=keyword&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import requests
-kv = {'wd':'Python'}
-r = requests.get(&quot;http://www.baidu.com/s&quot;, params = kv)
-r.request.url  #'http://www.baidu.com/s?wd=Python'
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;ip-address-searching&quot;&gt;IP address Searching&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import requests
-url = &quot;http://m.ip138.com/ip.asp?ip=&quot;
-r = requests.get(url + '202.204.80.112')
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;beautiful-soup&quot;&gt;Beautiful Soup&lt;/h2&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import requests
-r = requests.get(&quot;http://python123.io/ws/demo.html&quot;)
-demo = r.text
-from bs4 import BeautifulSoup
-soup = BeautifulSoup(demo, &quot;html.parser&quot;)
-soup2 = BeautifulSoup(open(&quot;Users/ucla/demo.html&quot;), &quot;html.parser&quot;)
-print(soup.prettify())
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;tag&quot;&gt;Tag&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;titile&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Basic Element:
-Tag, Name, Attributes, NavigableString, Comment.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;from bs4 import BeautifulSoup
-soup = BeautifulSoup(demo, &quot;html.parser&quot;)
-soup.a.name 
-soup.a.parent.name
-soup.a.parent.parent.name 
-tag = soup.a
-tag.attrs['class']
-type(tag.attrs) #&amp;lt;class 'dict'&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;traversal&quot;&gt;Traversal&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;.contents&lt;/li&gt;
-  &lt;li&gt;.children&lt;/li&gt;
-  &lt;li&gt;.descendants&lt;/li&gt;
-  &lt;li&gt;.parent&lt;/li&gt;
-  &lt;li&gt;.parents&lt;/li&gt;
-  &lt;li&gt;.next_sibling&lt;/li&gt;
-  &lt;li&gt;.previous_sibling&lt;/li&gt;
-  &lt;li&gt;.next_siblings&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;.previous_siblings&lt;/p&gt;
-
-    &lt;p&gt;for sibling in soup.a.next_siblings:
-      print(sibling)&lt;/p&gt;
-
-    &lt;p&gt;for sibling in soup.a.previous_siblings:
-      print(sibling)&lt;/p&gt;
-
-    &lt;p&gt;for child in soup.body.children:
-      print(child)&lt;/p&gt;
-
-    &lt;p&gt;for child in soup.body.children:
-      print(child)&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;markup-language&quot;&gt;Markup Language&lt;/h3&gt;
-&lt;h4 id=&quot;xml&quot;&gt;XML&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;name&amp;gt; ... &amp;lt;/name&amp;gt;
-&amp;lt;name ... /&amp;gt;
-&amp;lt;!-- --&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;yaml&quot;&gt;YAML&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;key : value
-key : #Comment
--value1
--value2
-key :
-    subkey : subvalue
-text : |
-bundle data
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;json&quot;&gt;JSON&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&quot;key&quot; : &quot;value&quot;
-&quot;key&quot; : [&quot;value1&quot;, &quot;value2&quot;]
-&quot;key&quot; :{
-    &quot;subkey&quot;:&quot;subvalue&quot;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;process-information&quot;&gt;Process Information&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;from bs4 import BeautifulSoup
-soup = BeautifulSoup(demo, &quot;http.parser&quot;)
-for link in soup.find_all('a')
-    print(link.get('href'))
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;find_all&quot;&gt;find_all&lt;/h4&gt;
-&lt;p&gt;&amp;lt;&amp;gt;.find_all(name,attrs,recursive,string,**kwargs)&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;for tag in soup.find_all(True):
-    print(tag)
-    
-import re
-for tag in soup.find_all(re.compile('b')):
-    print(tag.name)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;attrs:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;soup.find_all('p', 'course')
-soup.findall('id=link1')
-import re
-soup.find_all(id=re.compile('link'))
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;recursive:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;soup.find_all('a')
-soup.find_all('a',recursive=False)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;string:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;soup.find_all(string = &quot;Basic Python&quot;)
-soup.find_all(string = re.compile(&quot;python&quot;))
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Extension Methods&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;soup() #soup.find_all(...) 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&amp;lt;&amp;gt;.find()&lt;/li&gt;
-  &lt;li&gt;&amp;lt;&amp;gt;.find_parents()&lt;/li&gt;
-  &lt;li&gt;&amp;lt;&amp;gt;.find_parent()&lt;/li&gt;
-  &lt;li&gt;&amp;lt;&amp;gt;.find_next_siblings()&lt;/li&gt;
-  &lt;li&gt;&amp;lt;&amp;gt;.find_next_sibling()&lt;/li&gt;
-  &lt;li&gt;&amp;lt;&amp;gt;.find_previous_siblings()&lt;/li&gt;
-  &lt;li&gt;&amp;lt;&amp;gt;.find_previous_sibling()&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;re&quot;&gt;RE&lt;/h2&gt;
-
-&lt;h3 id=&quot;grammer&quot;&gt;Grammer&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;[abc] [a-z] [^abc]&lt;/li&gt;
-  &lt;li&gt;abc*  ab  abc  abc  abccc…&lt;/li&gt;
-  &lt;li&gt;abc+ abc abcc abccc…&lt;/li&gt;
-  &lt;li&gt;abc? ab abc&lt;/li&gt;
-  &lt;li&gt;abc|def  abc def&lt;/li&gt;
-  &lt;li&gt;ab{2}c abbc&lt;/li&gt;
-  &lt;li&gt;ab{1,2}c abc abbc&lt;/li&gt;
-  &lt;li&gt;^abc  abclskejg&lt;/li&gt;
-  &lt;li&gt;abc$  sldkjgabc&lt;/li&gt;
-  &lt;li&gt;\d  [0-9]&lt;/li&gt;
-  &lt;li&gt;\w  [A-Za-z0-9_]&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;example&quot;&gt;Example&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;\^[A-Za-z]+$&lt;/li&gt;
-  &lt;li&gt;\^[A-Za-z0-9]+$&lt;/li&gt;
-  &lt;li&gt;\^-?\d+$&lt;/li&gt;
-  &lt;li&gt;\^[0-9]*[1-9][0-9]*$&lt;/li&gt;
-  &lt;li&gt;[1-9]\d{5}&lt;/li&gt;
-  &lt;li&gt;[\u4e00-\u9fa5]   judge character in utf-8&lt;/li&gt;
-  &lt;li&gt;(([1-9]?\d|1\d{2}|2[0-4]\d|25[0-5]).){3}[1-9]?\d|1\d{2}|2[0-4]\d|25[0-5]  IP address&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;main-functions&quot;&gt;Main Functions&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;re.search() return match object&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;re.search(pattern, string, flags=0)&lt;/p&gt;
-
-&lt;p&gt;flags:re.I re.IGNORECASE, re.M re.MULTILINE, re.S re.DOTALL&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;re.match() return match object&lt;/li&gt;
-  &lt;li&gt;re.findall()&lt;/li&gt;
-  &lt;li&gt;re.split() return list&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;re.split(pattern, string, maxsplit=0, flags=0)&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;re.finditer() return match object&lt;/li&gt;
-  &lt;li&gt;re.sub()&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;re.sub(pattern, repl, string, count=0, flags=0)&lt;/p&gt;
-
-&lt;p&gt;match.string
-match.re
-match.pos
-match.endpos&lt;/p&gt;
-
-&lt;p&gt;match.group(0)
-match.start()
-match.end()
-match.span()&lt;/p&gt;
-
-&lt;p&gt;*?   +?  ??  {m,n}?  return min&lt;/p&gt;
-</description>
-        <pubDate>Tue, 30 Jan 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/Crawler.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/Crawler.html</guid>
-        
-        <category>CODE</category>
-        
-        <category>PYTHON</category>
         
         
         <category>coding</category>

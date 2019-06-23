@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- CSS -->
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/coding/Java%E7%BB%86%E8%8A%82%E6%80%BB%E7%BB%93.html">
+  <link rel="alternate" type="application/rss+xml" title="Aether's Blog" href="http://localhost:4000/feed.xml">
+
+<!-- Google font -->
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto Sans">
+
+<!-- font awesome -->
+
+<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
+
+</head>
+
+
+  
+
+  
+
+  </head>
+
+  <body>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Java一些有趣的小问题总结</title>
+  <meta name="description" content="Java内部类访问局部变量必须声明为final？public static void main(String[] args) {  String str = "haha";  // str = "test";  new Thread() {    @Override    public void run() { ...">
+</head>
+
+
+  <div class="wrapper">
+          <header class="post-header">
+
+    <center><div class="post-title" itemprop="name headline">Java一些有趣的小问题总结</div>
+
+		<div class="post-meta"><i class="fa fa-calendar-o"></i> <time datetime="23 Jun 2019" itemprop="datePublished">Jun 23 2019</time>
+
+		&nbsp;&nbsp;•&nbsp;&nbsp;<i class="fa fa-user-secret"></i> <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Aether</span>
+        
+		<br>
+	</div>
+
+        
+        <div class="post-tags">
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">SOFTWARE-CONSTRUCTION</a>
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">JAVA</a>
+        
+	</div>
+    </center>
+
+</header>
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<div class="post-content">
+    <center>
+	
+	<p></p>
+	
+    </center>
+</div>
+
+
+
+<div class="post-content" itemprop="articleBody">
+    <h2 id="java内部类访问局部变量必须声明为final">Java内部类访问局部变量必须声明为final？</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public static void main(String[] args) {
+  String str = "haha";
+  // str = "test";
+  new Thread() {
+    @Override
+    public void run() {
+      System.out.println(str);
+    }
+  }.start();
+}
+</code></pre></div></div>
+<p>以上代码能够通过编译正常运行，取消注释后编译不通过，报错如下：</p>
+<blockquote>
+  <p>Local variable str defined in an enclosing scope must be final or effectively
+final</p>
+</blockquote>
+
+<p>即Java内部类访问局部变量必须声明为final <br /> Java一开始没有报错是默认认为变量为final，若变量被修改过，则默认的假设不成立，Java报错。</p>
+<blockquote>
+  <p>内部类的生命周期比局部变量的长，故定义str时JVM做了程序员看不到的操作：将str拷贝了一份给局部内部类，也就是说JVM在局部内部类中定义了一个<code class="highlighter-rouge">final String str = "haha";</code></p>
+</blockquote>
+
+<h2 id="判断奇偶数">判断奇偶数</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public boolean isOdd(int i) {
+return i % 2 == 1;
+}
+</code></pre></div></div>
+<blockquote>
+  <p>使用<code class="highlighter-rouge">x % 2 == 1</code>的方式判断奇偶性对负数无效 <br /> Spotbugs指出：
+If this code is intending to check for oddness, consider using <code class="highlighter-rouge">x &amp; 1 == 1</code>, or <code class="highlighter-rouge">x % 2 != 0</code>.</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public boolean isOdd(int i) {
+return (i &amp; 1) == 1;
+}
+</code></pre></div></div>
+
+<h2 id="字符串去哪儿了">字符串去哪儿了？</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>String a = "a";
+String b = "a";
+System.out.println("a and b: " + a == b);
+</code></pre></div></div>
+<p>Output:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>false
+</code></pre></div></div>
+
+<blockquote>
+  <ol>
+    <li>’+’ 的运算优先级’==’ 高     ‘&amp;&amp;’ 优先级比 ‘||’ 高 <br /></li>
+    <li>equals() 和 ==</li>
+  </ol>
+</blockquote>
+
+<h2 id="integer为什么不相等">Integer为什么不相等？</h2>
+<h3 id="plan-a--使用constructor生成integer">Plan A — 使用constructor生成Integer</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Integer a = new Integer(200);
+Integer b = new Integer(200);
+System.out.println(a == b);
+</code></pre></div></div>
+<p>Output:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>false
+</code></pre></div></div>
+<blockquote>
+  <p>’==’ 判断是否指向同一对象</p>
+</blockquote>
+
+<h3 id="plan-b--使用valueof生成integer">Plan B — 使用valueOf生成Integer</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Integer a = Integer.valueOf(200);
+Integer b = Integer.valueOf(200);
+System.out.println(a == b);
+</code></pre></div></div>
+<p>Output:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>false
+</code></pre></div></div>
+<h3 id="plan-c--直接生成integer">Plan C — 直接生成Integer</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Integer a = 200, b = 200;
+</code></pre></div></div>
+<p>Output:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>false
+</code></pre></div></div>
+<p><code class="highlighter-rouge">Integer a = 200</code>的时候，会自动调用<code class="highlighter-rouge">Integer</code>中的<code class="highlighter-rouge">valueOf()</code>方法，故<code class="highlighter-rouge">Integer a = 200;</code> 和 <code class="highlighter-rouge">Integer a = Integer.valueOf(200);</code>等同</p>
+
+<h3 id="从200变为2结果却不一样">从200变为2，结果却不一样？</h3>
+<h4 id="plan-b">Plan B:</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Integer a = Integer.valueOf(2);
+Integer b = Integer.valueOf(2);
+System.out.println(a == b);
+</code></pre></div></div>
+<p>Output:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>true
+</code></pre></div></div>
+<h4 id="plan-c">Plan C:</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Integer a=2, b=2;
+</code></pre></div></div>
+<p>Output:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>true
+</code></pre></div></div>
+<p>查看<code class="highlighter-rouge">valueOf()</code>的源码如下：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public static Integer valueOf(int i) {
+  if (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)
+    return IntegerCache.cache[i + (-IntegerCache.low)];
+  return new Integer(i);
+}
+</code></pre></div></div>
+<blockquote>
+  <p><code class="highlighter-rouge">valueOf()</code>在返回之前，会进行判断，判断当前i的值是否在 <code class="highlighter-rouge">-128~127</code>之间。如果存在，则直接返回一个缓存的引用，不再重新开辟内存空间。
+如果不存在，就创建一个新的对象<code class="highlighter-rouge">new Integer()</code>。
+<br />
+ <code class="highlighter-rouge">Integer</code>存在缓存类<code class="highlighter-rouge">IntegerCache</code>，而缓存类会在第一次加载时初始化一个<code class="highlighter-rouge">Integer缓存数组</code>，这个数组大小不是固定的，但是一定大于或等于256，覆盖范围为[-128,127]。</p>
+</blockquote>
+
+<h3 id="integercache大小修改">IntegerCache大小修改</h3>
+
+<p>cache的大小可以通过jvm指令修改：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-XX:AutoBoxCacheMax==&lt;size&gt;
+</code></pre></div></div>
+<blockquote>
+  <p>除<code class="highlighter-rouge">float</code>和<code class="highlighter-rouge">double</code>以外的<code class="highlighter-rouge">所有基础数据类型对应的封装类型</code>都实现了缓存。他们缓存都是通过<code class="highlighter-rouge">valueOf()</code>静态工厂完成的。</p>
+</blockquote>
+
+<h3 id="的位置影响结果">++的位置影响结果</h3>
+<p>Test</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Integer a = new Integer(2);
+Integer b = new Integer(2);
+System.out.println(a++ == b++);
+System.out.println(++a == ++b);
+</code></pre></div></div>
+<p>Output:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>false
+true
+</code></pre></div></div>
+<blockquote>
+  <p>++a和++b是<code class="highlighter-rouge">autoboxing</code>之后的结果 用到了cache<br />
+a++和b++是原来Integer的结果</p>
+</blockquote>
+
+<h2 id="被哪里捕捉了">被哪里捕捉了?</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>try {
+  try{
+    FileInputStream p = new FileInputStream("a.txt");
+  }catch(FileNotFoundException e) {
+    System.out.println("a");
+  }
+}catch(Exception e) {
+  System.out.println("b");
+}
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+a
+</code></pre></div></div>
+
+<blockquote>
+  <p>try catch嵌套时若内层catch能捕获，则外层catch不执行。</p>
+</blockquote>
+
+<h2 id="finally-vs-return">finally vs return</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>boolean func() {
+  try {
+    return true;
+  } finally {
+    return false;
+  }
+}
+</code></pre></div></div>
+<p>Result:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>false
+</code></pre></div></div>
+
+<h2 id="类型参数命名惯例">类型参数命名惯例</h2>
+
+<blockquote>
+  <p>By convention, type parameter names are single, uppercase letters. This stands in sharp contrast to the variable naming conventions that you already know about, and with good reason: Without this convention, it would be difficult to tell the difference between a type variable and an ordinary class or interface name.</p>
+</blockquote>
+
+<p>最常用的类型参数命名如下:</p>
+<ul>
+  <li>E - Element (used extensively by the Java Collections Framework)</li>
+  <li>K - Key</li>
+  <li>N - Number</li>
+  <li>T - Type</li>
+  <li>V - Value</li>
+  <li>S,U,V etc. - 2nd, 3rd, 4th types</li>
+</ul>
+
+<h2 id="调用了哪个方法">调用了哪个方法？</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class A {
+  void foo() {
+    this.bar();
+  }
+  void bar() {
+    print("A.bar");
+  }
+}
+
+class B extends A {
+  void foo() {
+    super.foo();
+  }
+  void bar() {
+    print("B.bar");
+  }
+}
+</code></pre></div></div>
+<p>Output:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>B.bar
+</code></pre></div></div>
+<p>B中的<code class="highlighter-rouge">foo()</code>override了A中的<code class="highlighter-rouge">foo()</code></p>
+<blockquote>
+  <p>Overridden的实例方法被调用的是子类型中的。<br />区分于hidden的情况（hide适用于field和静态方法）
+hidden的静态方法被调用的是哪一个取决于它被调用的位置（子类型还是父类型）</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class Test {
+  public static void main(String[] args) {
+    new B().foo();
+  }
+}
+
+class A {
+  void foo() {
+    barStatic();
+  }
+  static void barStatic() {
+    System.out.println("A.barStatic");
+  }
+}
+
+class B extends A {
+  void foo() {
+    super.foo();
+  }
+  static void barStatic() {
+    System.out.println("B.barStatic");
+  }
+}
+</code></pre></div></div>
+<p>Output:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A.barStatic
+</code></pre></div></div>
+
+<h2 id="返回值协变">返回值协变</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface A {
+  public C build(...);
+}
+class B implements A {
+  public D build(...) {
+    ...
+  }
+}
+其中D是C的子类型
+
+客户端：
+C c = new B().create();
+此时c的运行时类型其实是D
+
+接口和类之间的override同样可以covariance。
+</code></pre></div></div>
+
+<h2 id="catch-exception-的顺序问题">catch Exception 的顺序问题</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>try {
+  FileInputStream p = new FileInputStream("a.txt");
+}catch(Exception e) {
+  System.out.println("exception");
+}catch(FileNotFoundException e) {
+  System.out.println("file not found exception");
+}
+</code></pre></div></div>
+<blockquote>
+  <p>Unreachable catch block for FileNotFoundException. It is already handled by the catch block for Exception</p>
+</blockquote>
+
+
+</div>
+
+<div>
+	
+	<div class="tbc"></div>
+	
+</div>
+
+<div class="share">
+    <p>Share this post with: </p>
+	<a href="https://twitter.com/intent/tweet?text=Java一些有趣的小问题总结@&amp;url=http://localhost:4000/coding/Java%E7%BB%86%E8%8A%82%E6%80%BB%E7%BB%93.html" class="twitter-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/coding/Java%E7%BB%86%E8%8A%82%E6%80%BB%E7%BB%93.html" class="facebook-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://plus.google.com/share?url=http://localhost:4000/coding/Java%E7%BB%86%E8%8A%82%E6%80%BB%E7%BB%93.html" class="googleplus-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+</div>
+
+
+<div id="disqus_thread"></div>
+
+
+ 
+</div>
+
+
+</article>
+
+  </div>
+
+</body>
+
+<foot>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <center>
+
+		<p><a class="link" href="/archive/">Archive</a> /
+		<a class="link" href="/category/">Category</a> /
+		<a class="link" href="/tags/">Tags</a> /
+		<a class="link" href="/about/">About</a> /
+		<a class="link" href="/contact/">Contact</a>
+        </p>
+
+        <span><script>document.write(new Date().getFullYear());</script></span>
+        <span>&copy;</span>
+
+		<a class="link" href="https://aether.github.io">Aether</a>
+		<br>
+
+    </center>
+
+  </div>
+
+</footer>
+
+    <foot>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Derictory -->
+
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script src="http://yandex.st/highlightjs/6.2/highlight.min.js"></script>
+
+<!-- Hit analytics -->
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Directory -->
+
+<script src="/js/main.js"></script>
+
+</foot>
+
+
+</foot>
+
+</html>

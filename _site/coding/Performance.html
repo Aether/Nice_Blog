@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- CSS -->
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/coding/Performance.html">
+  <link rel="alternate" type="application/rss+xml" title="Aether's Blog" href="http://localhost:4000/feed.xml">
+
+<!-- Google font -->
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto Sans">
+
+<!-- font awesome -->
+
+<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
+
+</head>
+
+
+  
+
+  
+
+  </head>
+
+  <body>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>面向性能的构造技术</title>
+  <meta name="description" content="MetricsTime performance  get execution time">
+</head>
+
+
+  <div class="wrapper">
+          <header class="post-header">
+
+    <center><div class="post-title" itemprop="name headline">面向性能的构造技术</div>
+
+		<div class="post-meta"><i class="fa fa-calendar-o"></i> <time datetime="20 Jun 2019" itemprop="datePublished">Jun 20 2019</time>
+
+		&nbsp;&nbsp;•&nbsp;&nbsp;<i class="fa fa-user-secret"></i> <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Aether</span>
+        
+		<br>
+	</div>
+
+        
+        <div class="post-tags">
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">CODE</a>
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">SOFTWARECONSTRUCTION</a>
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">JAVA</a>
+        
+	</div>
+    </center>
+
+</header>
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<div class="post-content">
+    <center>
+	
+	<p></p>
+	
+    </center>
+</div>
+
+
+
+<div class="post-content" itemprop="articleBody">
+    <h2 id="metrics">Metrics</h2>
+<h3 id="time-performance">Time performance</h3>
+<ul>
+  <li>
+    <p>get execution time</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> System.currentTimeMillis()
+</code></pre></div>    </div>
+  </li>
+  <li>Basic statements</li>
+  <li>Algorithms</li>
+  <li>Data structure</li>
+  <li>I/O (file, database, network communication, etc)</li>
+  <li>Concurrency / multi-thread / lock
+    <h3 id="space-performance">Space performance</h3>
+  </li>
+  <li>Get memory consumption
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Get the Java runtime
+Runtime runtime = Runtime.getRuntime();
+// Run the garbage collector
+runtime.gc();
+// Calculate the used memory
+long memory = runtime.totalMemory() - runtime.freeMemory();
+</code></pre></div>    </div>
+  </li>
+  <li>Algorithms</li>
+  <li>Data structure</li>
+  <li>Memory allocation</li>
+  <li>Garbage collection</li>
+</ul>
+
+<hr />
+
+<h2 id="memory-performance-and-garbage-collection">Memory Performance and Garbage Collection</h2>
+<h3 id="memory-management-in-os-and-application-level">Memory Management in OS and Application Level</h3>
+<ul>
+  <li>memory allocation 内存分配</li>
+  <li>garbage collection 垃圾回收</li>
+</ul>
+
+<h3 id="object-model-内存对象模型">Object Model 内存对象模型</h3>
+<ul>
+  <li>Create a new object x</li>
+  <li>Attach it to the reference x;</li>
+  <li>Initialize its fields.</li>
+</ul>
+
+<h3 id="three-modes-of-object-management">Three modes of object management</h3>
+<ul>
+  <li>Static mode ——在编译阶段就已经确定好了内存分配</li>
+  <li>Dynamic allocation
+    <ul>
+      <li>Stack-based mode
+        <ul>
+          <li>存储方法调和局部变量</li>
+          <li>多线程之间传递数据，是通过复制而非引用局部的基本数据类型</li>
+        </ul>
+      </li>
+      <li>Heap-based mode  (free mode)
+        <ul>
+          <li>在一块内存里分为多个小块，每块包含 一个对象，或者未被占用</li>
+          <li>所有对象</li>
+          <li>即使是局部变量的object，也是在堆上创建</li>
+          <li>堆上创建的对象可被所有线程共享引用</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="java-memory-model">Java Memory Model</h3>
+<ul>
+  <li>Thread Stack — All local variables of primitive types</li>
+  <li>Heap — All objects</li>
+</ul>
+
+<h3 id="memory-structure-of-jvm">Memory Structure of JVM</h3>
+<ol>
+  <li>Stacks
+    <ul>
+      <li>Reference/Local variable</li>
+    </ul>
+  </li>
+  <li>Heap
+    <ul>
+      <li>Object/Value</li>
+      <li>An object’s primitive member variables</li>
+      <li>a member variable is a reference to an objectf</li>
+    </ul>
+  </li>
+  <li>Native Stacks 本地方法栈
+    <ul>
+      <li>manage native methods (coded in C) used by JVM</li>
+    </ul>
+  </li>
+  <li>Program Counter Register (PC)
+    <ul>
+      <li>代码行号指示器，用于指示， 跳转下一条需要执行的命令</li>
+    </ul>
+  </li>
+  <li>Method Area
+    <ul>
+      <li>用于存储被VM加载的类信息、常量、静态变量等 class Static variable</li>
+      <li>HotSpot JVM中用Permanent Area (Perm)实现该区域，并作为heap的一部分</li>
+      <li>Java 8之后改名为Metaspace (使用native memory)</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="garbage-collection">Garbage Collection</h3>
+<ol>
+  <li>static modes
+无需进行内存回收:所有都是已确定的</li>
+  <li>stack-based modes
+在栈上进行内存空间回收:按block(某个方法)整体进行</li>
+  <li>heap-based (free) modes
+    <ul>
+      <li>Reachable Objects vs. Unreachable Objects — Live vs. Dead <br /></li>
+      <li>从root对象开始进行有向图的搜索，将图分为root可达部分和root不可达部分 <br /></li>
+      <li><strong>roots</strong> 包括：<br />
+1) Words in the static area 静态区域的数据<br />
+2) Registers 寄存器<br />
+3) Words on the execution stack that point into the heap. 目前的执行栈中的数据所指向的内存对象</li>
+    </ul>
+  </li>
+</ol>
+
+<h4 id="help-the-gc-that-you-are-finished-with-an-object">Help the GC that you are finished with an object</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>r = new FileReader(filename)
+// use the reader
+...
+reader.close();
+reader = null;
+</code></pre></div></div>
+
+<h4 id="without-automatic-gc">Without Automatic GC</h4>
+<p>内存泄露，很多dead objects仍占据着内存空间 <br />
+原本live的对象却被回收了 (Dangling Pointers 悬空指针)，导致程序执行失效。</p>
+
+<hr />
+<h2 id="basic-algorithms-of-garbage-collection">Basic Algorithms of Garbage Collection</h2>
+<h3 id="reference-counting-引用计数">Reference counting 引用计数</h3>
+<blockquote>
+  <p>为每个object存储一个计数RC，当有其他 reference指向它时，RC++;当其他reference与其断开时，RC–;如 果RC==0，则回收它 (及其所有指向的object)。</p>
+</blockquote>
+
+<p>Advantages</p>
+<ul>
+  <li>简单</li>
+  <li>计算代价分散</li>
+  <li>“幽灵时间”短-&gt;0</li>
+</ul>
+
+<p>Disadvantages</p>
+<ul>
+  <li>不全面(容易漏掉循环引用的对象cyclic)</li>
+  <li>并发支持较弱</li>
+  <li>占用额外内存空间等</li>
+</ul>
+
+<h3 id="mark-sweep-标记-清除">Mark-Sweep 标记-清除</h3>
+<blockquote>
+  <p>标记-清除:为每个object设定状态位(live/dead)并记录，即mark阶段;将标记为dead的对象进行清理，即sweep阶段。</p>
+</blockquote>
+
+<p>Disadvantages</p>
+<ul>
+  <li>需要停止程序执行来Mark和Sweep，导致幽灵时间过长，也影响程序本身的性能</li>
+  <li>碎片化</li>
+</ul>
+
+<h3 id="mark-compact-标记-整理">Mark-Compact 标记-整理</h3>
+<p>Advantages</p>
+<ul>
+  <li>避免碎片化</li>
+</ul>
+
+<p>Disadvantages</p>
+<ul>
+  <li>时间消耗太长，影响程序本身</li>
+</ul>
+
+<h3 id="fragmentation-and-copying-复制">Fragmentation and Copying 复制</h3>
+
+<blockquote>
+  <p>该GC策略与mark-compact的区别在于:不是在同一个区域内进行整理，而是将live对象全部复制到另一个区域。<br /> 将堆分为两部分 Fromspace and Tospace</p>
+</blockquote>
+
+<hr />
+
+<h2 id="garbage-collection-in-jvm">Garbage Collection in JVM</h2>
+<p>Java GC将堆分为不同的区域，各区域采用不同的GC策略，以提高GC的效率</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-verbose:gc
+</code></pre></div></div>
+
+<h3 id="three-major-space-in-hotspot-vm-sun-jvm">Three major space in HotSpot VM (Sun JVM)</h3>
+<h4 id="young-generation">young generation</h4>
+<ul>
+  <li>Eden</li>
+  <li>From survivor space</li>
+  <li>To survivor space</li>
+  <li>只有一小部分对象可较长时间存活，故采用<strong>copy</strong>算法减少GC代价</li>
+  <li>使用<strong>minor GC</strong>进行垃圾收集</li>
+  <li>Minor GC所需时间较短</li>
+  <li>如果历经多次minor GC仍存活下来，将其copy到old generation</li>
+</ul>
+
+<h4 id="old-generation-space-tenured">old generation space (tenured)</h4>
+<ul>
+  <li>这里的对象有很高的幸存度，使用<strong>Mark-Sweep</strong>或<strong>Mark-Compact</strong>算法</li>
+  <li>启动<strong>full GC</strong></li>
+  <li>Old generation满，意味着无法进行下一次minor GC</li>
+  <li>Minor GC和full GC独立进行，减小代价</li>
+</ul>
+
+<h4 id="permanent-generation-space-perm">Permanent generation space (perm)</h4>
+<ul>
+  <li>当perm generation满了之后，无法存储更多的元数据，也启动full GC</li>
+</ul>
+
+<p>只有当某个区域不能再为对象分配内存时(满)才启动GC
+<code class="highlighter-rouge">java.lang.OutOfMemoryError</code></p>
+
+<hr />
+
+<h2 id="garbage-collection-tuning-in-jvm">Garbage Collection Tuning in JVM</h2>
+<h3 id="specifying-vm-heap-size-确定堆的大小">Specifying VM heap size 确定堆的大小</h3>
+<h4 id="控制young-generation的大小">控制Young generation的大小</h4>
+<ul>
+  <li>-XX: NewSize=<n>[g|m|k]</n></li>
+  <li>-XX: MaxNewSize=<n>[g|m|k]</n></li>
+  <li>
+    <p>-Xmn<n>[g|m|k]
+-三个参数依次为最小值、最大值和固定值。</n></p>
+  </li>
+  <li>-Xms and -Xmx 初始和最大的heap尺寸
+heap尺寸变化时需 要full GC</li>
+  <li>-XX:MetaspaceSize -XX:MaxMetaspaceSize for Java 8 and later</li>
+  <li>-XX:SurvivorRatio=<n></n></li>
+  <li>-XX:NewRatio=<n> --- young and old generation is 1:n</n></li>
+</ul>
+
+<p>old generation的尺寸不需要设置，根据其他各参数的取值可计算得到</p>
+
+<h3 id="choosing-a-garbage-collection-scheme-选择gc模式">Choosing a garbage collection scheme 选择GC模式</h3>
+<ul>
+  <li>-XX:+UseSerialGC：使用单线程GC。</li>
+  <li>-XX:+UseParallelGC：对MinorGC使用多线程进行回收，但对MajorGC仍采用单线程。</li>
+  <li>-XX:+UseConcMarkSweepGC：与程序的运行同步地进行垃圾回收，回收时会短暂地暂停程序。</li>
+  <li>-XX:+UseTrainGC：每次MinorGC回收一部分老年代对象，以尝试最小化MajorGC的长时暂停。
+    <h4 id="garbage-first-collector">Garbage-First collector</h4>
+    <blockquote>
+      <p>designed for heap sizes greater than 4GB. It divides the heap size into regions. After the marking phase is complete, G1 collects the region with lesser live data, which usually yields a large amount of free space. So G1 collects these regions first.
+<br />Default in Java 9.</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p>Automatically logging low memory conditions 自动记录内存将要不足的情况</p>
+<ul>
+  <li>-Xloggc:../../logs/gc-console.log</li>
+</ul>
+
+<p>Manually requesting garbage collection 手工请求GC</p>
+<ul>
+  <li>System.gc()</li>
+</ul>
+
+<hr />
+
+<h2 id="io-and-algorithm-performance">I/O and Algorithm Performance</h2>
+<h3 id="buffer对数据进行缓冲">Buffer：对数据进行缓冲</h3>
+<ul>
+  <li>BufferedReader</li>
+  <li>BufferedWriter</li>
+</ul>
+
+<h3 id="stream将数据视作流">Stream：将数据视作流</h3>
+<ul>
+  <li>FileInputStream</li>
+  <li>FileOutputStream</li>
+</ul>
+
+<h3 id="nionew-io">NIO：New I/O</h3>
+<ul>
+  <li>Buffers（包括CharBuffer、ByteBuffer、IntBuffer、DoubleBuffer等）</li>
+  <li>Channels（包括FileChannel、SockerChannel等，可向Buffer提供数据）</li>
+</ul>
+
+<h3 id="lamda">Lamda</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Files.lines(Paths.get(args[0])).forEach(System.out::println);
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="dynamic-program-analysis-methods-and-tools">Dynamic Program Analysis Methods and Tools</h2>
+<h3 id="80-20-rule">80-20 rule</h3>
+<p>20% of program responsible for 80% of execution time</p>
+<h3 id="dynamic-program-analysis">Dynamic Program Analysis</h3>
+<ul>
+  <li>Program Hot Spots — 每个程序实体 (语句、分支、路径、方法等)的执行概率/频度是多少</li>
+  <li>Path profiling</li>
+</ul>
+
+<h3 id="profiling-approaches">Profiling Approaches</h3>
+<ul>
+  <li>Insertion/Instrumentation 代码注入/代码插入</li>
+</ul>
+
+<p>在原始程序中加入某些语句来收集运行时数据，这些语句不改变原程序的语义，但对原程序的性能有了轻微变化</p>
+<ul>
+  <li>Sampling: observation of behavior 采样</li>
+</ul>
+
+<p>以特定的频率观察程序执行的特定时刻所展现出的行为与状态</p>
+
+<ul>
+  <li>Instrumented virtual machine 借助于虚拟机获取程序性能数据</li>
+</ul>
+
+<h3 id="program-profiling-tools-in-java">Program Profiling Tools in Java</h3>
+
+<ul>
+  <li>Command-line profiling tools
+    <ul>
+      <li>jhat — 在Web浏览器中查看heap dump文件的内容</li>
+      <li>jmap — jmap -dump 生成 java heap dump</li>
+      <li>jstat</li>
+      <li>jstack — 打印 stack traces</li>
+    </ul>
+  </li>
+  <li>JConsole</li>
+  <li>Visual VM</li>
+  <li>Memory Analyzer (MAT) — 显示堆转储的内容分析</li>
+</ul>
+
+<hr />
+
+<h2 id="code-tuning-for-performance-optimization">Code Tuning for Performance Optimization</h2>
+<h3 id="java代码调优的设计模式">Java代码调优的设计模式</h3>
+<h4 id="singleton-pattern">Singleton Pattern</h4>
+<blockquote>
+  <p>逻辑上仅能存在唯一一个实例，为了防止多个该对象实例被创建，将构造方法设为私有，并提供获取该类唯一实例的方法（ <code class="highlighter-rouge">getInstance()</code> ）</p>
+</blockquote>
+
+<ul>
+  <li>static final instance
+    <blockquote>
+      <p>设置静态变量来存储单一实例对象</p>
+    </blockquote>
+  </li>
+  <li>private constructor
+    <blockquote>
+      <p>将构造器设置为private，从而client无法new <br />  在构造器中new新实例</p>
+    </blockquote>
+  </li>
+  <li>static getInstance()
+    <blockquote>
+      <p>提供静态方法来获取单一实例对象 <br />  进一步提升性能:在需要的时候再new，而非提前构造</p>
+    </blockquote>
+  </li>
+</ul>
+
+<h3 id="flyweight-pattern">Flyweight Pattern</h3>
+<blockquote>
+  <p>当某对象由大量对象组成，而部分Flyweight对象可被共享以减少资源消耗时，可创建一个工厂类以方便外界获得可被共享的对象，对于目前不存在的ConcreteFlyweight对象，工厂类会创建之，而对于已存在的ConcreteFlyweight对象，工厂类会直接返回之。</p>
+</blockquote>
+
+<ul>
+  <li>固定 — 内部rep</li>
+  <li>可变 — 外部特征</li>
+  <li>Immutable</li>
+</ul>
+
+<h4 id="prototype-pattern-cloneable">Prototype Pattern /cloneable</h4>
+<blockquote>
+  <p>当需要客户端指定要创建的对象的类型，且之后需创建的对象与先前指定的完全相同时，可通过给出第一个对象（称为原型对象）以指明之后所有对象的类型，之后所有对象通过复制第一个对象来创建。</p>
+</blockquote>
+
+<p>implement <code class="highlighter-rouge">Cloneable</code>, override <code class="highlighter-rouge">clone()</code></p>
+<ul>
+  <li>reference copy — shallow copy</li>
+  <li>object copy — deep copy</li>
+</ul>
+
+<h4 id="object-pool-pattern">Object Pool Pattern</h4>
+<blockquote>
+  <p>当某类对象（图中为Object类对象）的创建代价极大，而该类对象可以以较小的代价被重复利用时，可以预先建立一个对象池用于保存该类对象。对象池中可预先创建几个对象等待使用，使用完的对象会回到对象池中被重新初始化并被再利用，减少对象的创建操作。</p>
+</blockquote>
+
+<p>代价:原本可被GC的对象，现在要留在pool中，导致内存浪费 —— 用空间换时间</p>
+<h4 id="canonicalizing-objects">Canonicalizing Objects</h4>
+
+<h3 id="string-constant-pool">String Constant Pool</h3>
+<p>堆中包含字符串对象引用的特殊内存区域</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>String s = “java”;
+String s = new String(“java”);
+</code></pre></div></div>
+
+</div>
+
+<div>
+	
+	<div class="eof"></div>
+	
+</div>
+
+<div class="share">
+    <p>Share this post with: </p>
+	<a href="https://twitter.com/intent/tweet?text=面向性能的构造技术@&amp;url=http://localhost:4000/coding/Performance.html" class="twitter-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/coding/Performance.html" class="facebook-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://plus.google.com/share?url=http://localhost:4000/coding/Performance.html" class="googleplus-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+</div>
+
+
+<div id="disqus_thread"></div>
+
+
+ 
+</div>
+
+
+</article>
+
+  </div>
+
+</body>
+
+<foot>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <center>
+
+		<p><a class="link" href="/archive/">Archive</a> /
+		<a class="link" href="/category/">Category</a> /
+		<a class="link" href="/tags/">Tags</a> /
+		<a class="link" href="/about/">About</a> /
+		<a class="link" href="/contact/">Contact</a>
+        </p>
+
+        <span><script>document.write(new Date().getFullYear());</script></span>
+        <span>&copy;</span>
+
+		<a class="link" href="https://aether.github.io">Aether</a>
+		<br>
+
+    </center>
+
+  </div>
+
+</footer>
+
+    <foot>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Derictory -->
+
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script src="http://yandex.st/highlightjs/6.2/highlight.min.js"></script>
+
+<!-- Hit analytics -->
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Directory -->
+
+<script src="/js/main.js"></script>
+
+</foot>
+
+
+</foot>
+
+</html>
