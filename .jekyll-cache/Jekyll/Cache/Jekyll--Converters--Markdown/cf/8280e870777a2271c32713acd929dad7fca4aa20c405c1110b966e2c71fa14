@@ -1,0 +1,21 @@
+I"�<h1 id="-降维">🍳 降维</h1>
+
+<h2 id="主成分分析-principal-component-analysis--pca">主成分分析 <em>Principal Component Analysis</em> —— PCA</h2>
+
+<p>PCA的本质是将$n$维数据投影到$k$维空间中。若存在一个超平面，可以对正交属性空间中的样本点进行恰当的表达，那么这个超平面具有最近重构性和最大可分性。</p>
+
+<ul>
+  <li><strong>最近重构性</strong>：样本点到这个超平面的距离都足够近</li>
+  <li><strong>最大可分性</strong>：样本点在这个超平面上的投影尽可能分开</li>
+</ul>
+
+<h4 id="从最大可分性证明">从最大可分性证明</h4>
+
+<p>​	样本点$\boldsymbol x_i $在新空间中超平面上的投影是$\bf W^T \boldsymbol x_i $，若使所有样本点的投影尽可能分开，则应该使投影后样本点的方差最大化。投影后样本点的方差为$\sum_i \bf W^T \boldsymbol x_i \boldsymbol x_i^T\bf W$，则优化目标和限制条件如下：</p>
+
+<script type="math/tex; mode=display">\max_{\boldsymbol W} \ \rm{tr}( \bf W^T\bf X \bf X^T\bf W )</script>
+
+<script type="math/tex; mode=display">\rm {s.t.}  \bf W^T \bf W = \bf I</script>
+
+<p>使用拉格朗日乘子法：</p>
+:ET

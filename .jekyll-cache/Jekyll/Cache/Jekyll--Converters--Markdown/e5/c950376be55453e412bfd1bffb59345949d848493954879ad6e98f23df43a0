@@ -1,0 +1,33 @@
+I"Ž<h3 id="json">JSON:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+    "name":{
+        "firstName":"John",
+        "lastName":"Doe",
+    }
+    "title":"Missing Person"
+}
+</code></pre></div></div>
+
+<h3 id="initialize-json-object-from-json-string">Initialize JSON Object from JSON string</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>JSONObject contact = new JSONObject(contactJSONString);
+</code></pre></div></div>
+
+<h3 id="name-into-a-json-object">Name into a JSON Object</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>JSONObject name = contact.getJSONObject("name");
+</code></pre></div></div>
+
+<h3 id="first-and-last-names">First and last names</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>String firstName = name.getString("firstName");
+String lastName = name.getString("lastName");
+</code></pre></div></div>
+
+<h3 id="title">Title</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>String title = contact.getString("title");
+</code></pre></div></div>
+
+:ET

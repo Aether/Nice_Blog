@@ -1,0 +1,206 @@
+I"�<h2 id="multi-dimensional-software-views">Multi-dimensional software views</h2>
+
+<ul>
+  <li>
+    <p>By phases: <strong>build-time</strong> and <strong>run-time</strong> views</p>
+  </li>
+  <li>
+    <p>By dynamics: <strong>moment</strong> and <strong>period</strong> views</p>
+  </li>
+  <li>
+    <p>By levels: <strong>code</strong> and <strong>component</strong> views</p>
+    <ul>
+      <li>logically / physically</li>
+      <li>in-memory states / physical environment</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="build-time">Build-time</h3>
+<ul>
+  <li>idea—&gt;requirement—&gt;design—&gt;code—&gt;installable / executable package</li>
+  <li>moment
+    <ul>
+      <li>code
+        <ul>
+          <li>Build-time, moment, and code-level view</li>
+          <li>Lexical-oriented source code :e.g.,Lexical-based semi-structured source code</li>
+          <li>Syntax-oriented program structure: e.g., Abstract Syntax Tree (AST)</li>
+          <li><strong>Semantics-oriented program structure: e.g., Class Diagram(UML)</strong></li>
+        </ul>
+      </li>
+      <li>component
+        <ul>
+          <li>Build-time, period, and code-level view</li>
+          <li>file, package, library</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>period
+    <ul>
+      <li>code
+        <ul>
+          <li>code churn</li>
+        </ul>
+      </li>
+      <li>component
+        <ul>
+          <li>SCI</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="run-time">Run-time</h3>
+<ul>
+  <li>High-level concepts
+    <ul>
+      <li>Executable programs</li>
+      <li>Libraries</li>
+      <li>Configuration and data files</li>
+      <li>Distributed program</li>
+    </ul>
+  </li>
+  <li>moment
+    <ul>
+      <li>code
+        <ul>
+          <li>Snapshot diagram</li>
+          <li>Memory dump</li>
+        </ul>
+      </li>
+      <li>component
+        <ul>
+          <li>Deployment diagram in URL</li>
+          <li>Dynamic linking</li>
+          <li>Framework/Net</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>period
+    <ul>
+      <li>code
+        <ul>
+          <li><strong>Sequence diagram in UML</strong></li>
+          <li>Stack Trace</li>
+        </ul>
+      </li>
+      <li>component
+        <ul>
+          <li>Event log</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="types-of-transformations">Types of Transformations</h3>
+<ul>
+  <li>NULL —&gt; Code
+    <ul>
+      <li>– Programming / Coding</li>
+      <li>– Review, static analysis/checking</li>
+    </ul>
+  </li>
+  <li>Code —&gt; Component
+    <ul>
+      <li>– Design (Chapter 3 ADT/OOP</li>
+      <li>– Build: compile, static link, package, install, etc</li>
+    </ul>
+  </li>
+  <li>Build-time —&gt; Run-time
+    <ul>
+      <li>– Install / deploy</li>
+      <li>– Debug, unit/integration testing</li>
+    </ul>
+  </li>
+  <li>Moment —&gt; Period
+    <ul>
+      <li>– Refactoring</li>
+      <li>– Version control</li>
+      <li>– Loading, dynamic linking, interpreting,execution</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="quality-objectives">Quality Objectives</h2>
+
+<h3 id="external-quality-factors">External quality factors</h3>
+<ul>
+  <li><strong>Correctness</strong>
+    <ul>
+      <li>Conditional</li>
+    </ul>
+  </li>
+  <li><strong>Robustness</strong></li>
+  <li><strong>Extendibility</strong></li>
+  <li><strong>Reusability</strong></li>
+  <li>Compatibility</li>
+  <li><strong>Efficiency</strong></li>
+  <li>Portability</li>
+  <li>Ease of use</li>
+  <li>Functionality</li>
+  <li>Timeliness</li>
+  <li>Other qualities
+    <ul>
+      <li>Verifiability</li>
+      <li>Integrity</li>
+      <li>Repairability</li>
+      <li>Economy</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="external-quality-factors-1">External quality factors</h3>
+<ul>
+  <li>LoC</li>
+  <li>Complexity</li>
+  <li>Easy to understand</li>
+</ul>
+
+<h2 id="software-lifecycle-and-configuration-management">Software Lifecycle and Configuration Management</h2>
+
+<h3 id="scm">SCM</h3>
+<ul>
+  <li>SCI
+    <ul>
+      <li>Software Configuration Item (e.g., file)</li>
+    </ul>
+  </li>
+  <li>baseline
+    <ul>
+      <li>release</li>
+    </ul>
+  </li>
+  <li>CMDB
+    <ul>
+      <li>.git</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="version-control-system-vcs">Version Control System (VCS)</h3>
+<ul>
+  <li>Local VCS</li>
+  <li>Centralized VCS</li>
+  <li>Distributed VCS</li>
+  <li>objectgraph
+    <ul>
+      <li>Commits: nodes in Object Graph</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="software-development-lifecyclesdlc">Software Development Lifecycle(SDLC)</h2>
+<ul>
+  <li>Waterfall (Linear)</li>
+  <li>Incremental (Linear)</li>
+  <li>Prototyping (Iterative)</li>
+  <li>V-Model (for verification and validation)</li>
+  <li>Sprial (Iterative)</li>
+  <li>Agile (Incremental+Iterative)</li>
+</ul>
+:ET

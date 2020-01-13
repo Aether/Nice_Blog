@@ -1,0 +1,60 @@
+I"�<h2 id="equality-in-adt-and-oop">Equality in ADT and OOP</h2>
+
+<h3 id="equals">equals</h3>
+<ul>
+  <li>equality: 自反、传递、对称</li>
+  <li>引用等价性 referential equality —— <code class="highlighter-rouge">==</code>
+    <ul>
+      <li>判断是否指向同一块内存地址</li>
+    </ul>
+  </li>
+  <li>对称等价性 object equality —— <code class="highlighter-rouge">equals()</code></li>
+  <li><code class="highlighter-rouge">instanceof</code> is dynamic type checking, not the static type checking. It should be disallowed anywhere except for implementing equals. (<code class="highlighter-rouge">getClass()</code> is also disallowed.)</li>
+  <li><code class="highlighter-rouge">a.equals(b)</code> —&gt; <code class="highlighter-rouge">a.hashcode() == b.hashcode()</code></li>
+  <li><code class="highlighter-rouge">a.hashcode() == b.hashcode()</code> –\–&gt;  <code class="highlighter-rouge">a.equals(b)</code></li>
+  <li><code class="highlighter-rouge">x.equals(null)</code> must return false</li>
+  <li><code class="highlighter-rouge">int</code> 放入<code class="highlighter-rouge">Map&lt;String, Integer&gt;</code>后自动变为<code class="highlighter-rouge">Integer</code>类型，取出后应该用<code class="highlighter-rouge">equals()</code>方法比较</li>
+</ul>
+
+<h3 id="clone">clone</h3>
+<ul>
+  <li>调用<code class="highlighter-rouge">clone()</code>返回的对象是一个独立的副本，两个对象地址不同，属性相同。</li>
+  <li>若类型<code class="highlighter-rouge">A</code>中有mutable成员变量<code class="highlighter-rouge">B</code>，那么对<code class="highlighter-rouge">A</code>的clone对象进行修改时将修改原有的<code class="highlighter-rouge">B</code></li>
+  <li>如果实现完整的深拷贝，需要被复制对象的继承链、引用链上的每一个对象都实现克隆机制。</li>
+</ul>
+
+<h3 id="immutable-type">Immutable type</h3>
+<ul>
+  <li>AF(a) = AF(b)</li>
+  <li>必须同时重写<code class="highlighter-rouge">equals()</code>和<code class="highlighter-rouge">hashcode()</code></li>
+  <li>对于immutable类型的对象来说，因为没有mutable方法，所以观察等价性与行为等价性一致。</li>
+</ul>
+
+<h3 id="mutable-type">Mutable type</h3>
+<ul>
+  <li><strong>观察等价性 observational equality</strong>
+    <ul>
+      <li>在不改变状态的情况下观察两个mutable对象是否看起来一致</li>
+    </ul>
+  </li>
+  <li>行为等价性 behavioral equality
+    <ul>
+      <li>调用对象的任何方法都展示出一致的结果</li>
+      <li>mutable内容改变后<code class="highlighter-rouge">hashcode</code>随之改变
+        <ul>
+          <li>如果某个mutable的对象包含在集合类中，当其发生改变后，集合类的行为不确定😢</li>
+          <li>只影响<code class="highlighter-rouge">HashSet</code>，不影响<code class="highlighter-rouge">TreeSet</code></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">Collections</code> 使用<strong>观察等价性</strong> —— <code class="highlighter-rouge">List</code> 的<code class="highlighter-rouge">equals()</code>方法被重写
+    <ul>
+      <li>List 首先判断Null 然后判断size 最后依次比较每个内容的<code class="highlighter-rouge">equals()</code>方法比较</li>
+    </ul>
+  </li>
+  <li>其他可变类型 (如<code class="highlighter-rouge">StringBuilder</code>) 使用<strong>行为等价性</strong> —— <code class="highlighter-rouge">StringBuilder</code> 的 <code class="highlighter-rouge">equals()</code>方法继承自<code class="highlighter-rouge">Object</code>类</li>
+  <li>大多情况下无需重写 直接继承</li>
+</ul>
+
+:ET

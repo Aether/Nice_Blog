@@ -1,0 +1,258 @@
+I"�+<h2 id="concurrency">Concurrency</h2>
+<h3 id="two-models-for-concurrent-programming">Two Models for Concurrent Programming</h3>
+<ul>
+  <li>Shared memory — 并发模块通过在内存中读写共享对象进行交互。</li>
+  <li>Message passing — sending messages to each other through a communication channel. Modules send off messages, and incoming messages to each module are queued up for handling.</li>
+</ul>
+
+<h3 id="应用">应用</h3>
+<ul>
+  <li>网络上的两台计算机通过网络连接通讯</li>
+  <li>浏览器和Web服务器，A请求页面，B发送页面数据给A</li>
+  <li>即时通讯软件的客户端和服务器</li>
+  <li>同一台计算机上的两个程序通过管道连接进行通讯</li>
+</ul>
+
+<h2 id="process--thread">Process &amp; Thread</h2>
+<h3 id="process">Process</h3>
+<ul>
+  <li>在同一机器上独立于其它进程的一个运行中程序的实例。它拥有自己独立的内存空间。可视为一台虚拟机。</li>
+  <li>拥有整台计算机的资源</li>
+  <li>私有空间 彼此隔离 不共享内存</li>
+  <li>通过消息传递进行协作</li>
+  <li>JVM通常运行单一进程，但也可以创建新的进程</li>
+  <li>共享可变对象时需要同步</li>
+</ul>
+
+<h3 id="thread">Thread</h3>
+<ul>
+  <li>一个运行中程序的控制轨迹，每个线程在程序中某个位置执行，拥有自己独立的运行时栈。可视为一个虚拟处理器。</li>
+  <li>共享内存 消息队列</li>
+  <li>轻量级</li>
+  <li>共享可变对象时需要同步</li>
+  <li>unsafe to kill</li>
+</ul>
+
+<h4 id="new-thread">new Thread</h4>
+
+<ul>
+  <li>(Seldom used) Subclassing Thread.
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class MyThread extends Thread {
+@Override
+public void run() {
+  ...
+}
+}
+(new MyThread()).start();
+</code></pre></div>    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(new MyThread()).run();可运行，未启动线程
+</code></pre></div>    </div>
+  </li>
+  <li>(More generally used) 从Runnable接口构造Thread对象
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>new Thread(new Runnable() {
+ public void run() {
+     System.out.println("Hello");
+ }
+}).start();
+</code></pre></div>    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class MyThread implements Runnable {
+@Override
+public void run() {
+  ...
+}
+(new Thread(new MyThread())).start();
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="heisenbugs">Heisenbugs</h3>
+<p>Nondeterministic and hard to reproduce <br />
+A heisenbug may even disappear when you try to look at it with println or debugger</p>
+<h3 id="bohrbugs">Bohrbugs</h3>
+<p>Showing up repeatedly whenever you look at it.</p>
+<h2 id="interleaving-and-race-condition">Interleaving and Race Condition</h2>
+<h3 id="time-slicing">Time slicing</h3>
+<ul>
+  <li>在单核计算机中，每一时刻仅有一个线程在实际运行。单个核心的运行时间通过操作系统的特性被各个进程和线程共享，这种行为称为时间分片。</li>
+  <li>在多核计算机中，当线程数大于核心数时，也通过时间分片来模拟线程并行运行。</li>
+  <li>时间切片不可预测、不确定，这意味着线程可以随时暂停或恢复</li>
+</ul>
+
+<h3 id="shared-memory-among-threads">Shared Memory among Threads</h3>
+<ul>
+  <li>Interleaving 交叉存取 — 当两线程并行运行时，底层指令可能交错运行</li>
+</ul>
+
+<h3 id="race-condition">Race Condition</h3>
+<ul>
+  <li>The correctness of the program (the satisfaction of postconditions and invariants) depends on the relative timing of events in concurrent computations A and B. When this happens, we say “A is in a race with B.”</li>
+  <li>单行、单条语句都未必是原子的。是否原子由JVM确定</li>
+  <li>also called “Thread Interference”</li>
+</ul>
+
+<h2 id="some-operations-for-interfering-automatic-interleaving-of-threads">Some operations for interfering automatic interleaving of threads</h2>
+<h3 id="threadsleep">Thread.sleep()</h3>
+<ul>
+  <li>不会失去对现有monitor锁的所有权</li>
+  <li>在sleep()的时候检测是否收到别人的中断信号, catch(IntterruptedException e)</li>
+</ul>
+
+<h3 id="threadinterrupt">Thread.interrupt()</h3>
+<ul>
+  <li>t.interrupt()</li>
+  <li>t.isInterrupted()
+-正常运行期间，即使受到中断信号也不理会</li>
+</ul>
+
+<h3 id="threadyield-避免使用">Thread.yield() (避免使用)</h3>
+<ul>
+  <li>线程会告诉调度器可以放弃CPU的占用权, 从而可能引起调度器唤醒其他线程</li>
+</ul>
+
+<h3 id="threadjoin">Thread.join()</h3>
+<ul>
+  <li>让当前线程保持执行，直到其执行结束</li>
+</ul>
+
+<h3 id="objectwait">object.wait()</h3>
+<ul>
+  <li>使用前提为线程已获得被调用对象的对象锁。当前线程放弃对象锁并进入等待状态，直到其它获得该对象锁的线程对该对象调用notify()或notifyAll()方法。当前线程被通知或被中断时，尝试重新获得锁并继续运行。若被中断，InterruptedException将在获得对象锁之后抛出。</li>
+</ul>
+
+<h2 id="thread-safety">Thread Safety</h2>
+<h3 id="confinement">Confinement</h3>
+<ul>
+  <li>Don’t share: isolate mutable state in individual threads</li>
+  <li>将可变数据限制在单一线程内部，避免竞争</li>
+  <li>不允许任何线程直接读写该数据</li>
+  <li>避免全局变量 如Singleton设计模式 两个线程同时调用getInstance()违背设计</li>
+</ul>
+
+<h3 id="immutability">Immutability</h3>
+<ul>
+  <li>Don’t mutate: share only immutable state</li>
+  <li>共享不可变的引用和数据类型</li>
+  <li>如果使用了beneficent mutation还是要加锁</li>
+  <li>不含mutator方法</li>
+  <li>所有字段必须被private final修饰</li>
+  <li>子类不可重写方法</li>
+  <li>没有表示泄露</li>
+  <li>表示中的可变对象不得变化</li>
+</ul>
+
+<h3 id="using-threadsafe-data-types">Using Threadsafe Data Types</h3>
+<ul>
+  <li>Threadsafe Collections</li>
+  <li>private static Map&lt;Integer,Boolean&gt; cache = Collections.synchronizedMap(new HashMap&lt;&gt;());</li>
+  <li>多个操作间不保证安全 如(!list.isEmpty()) list.get(0)</li>
+</ul>
+
+<h3 id="locks-and-synchronization">Locks and Synchronization</h3>
+<ul>
+  <li>在使用synchronizedMap(hashMap)之后，不要再把参数hashMap共享给其他线程，不要保留别名，一定要彻底销毁</li>
+  <li>即使在线程安全的集合类上，使用iterator也是不安全的（除非使用lock机制）</li>
+  <li>即使是线程安全的collection类，仍可能产生竞争</li>
+</ul>
+
+<h3 id="volatile">Volatile</h3>
+<ul>
+  <li>volatile也可保证基本类型变量变化对于所有线程的可见性（同步缓存），但不一定保证操作的原子性。</li>
+  <li>当且仅当对volatile修饰的变量进行的修改与任何变量（包括自身）的值无关时，其才是线程安全的。</li>
+</ul>
+
+<h3 id="线程安全策略撰写">线程安全策略撰写</h3>
+<ul>
+  <li>采取了四种方法中的哪一种</li>
+  <li>如果是后两种，还需考虑对数据的访问 都是原子的，不存在interleaving</li>
+</ul>
+
+<h4 id="confinement-1">Confinement</h4>
+<ul>
+  <li>局限访问策略通常不适用于仅仅讨论一个数据类型的情况，因为你需要知道系统中存在哪些线程，每个线程可访问哪些对象。</li>
+  <li>若访问该数据类型的线程均由自身创建，则可讨论这些线程间如何保持访问的局限性</li>
+  <li>若线程来自于外部，则无法讨论</li>
+  <li>通常在将系统作为一个整体，讨论一些模块或数据类型不需要线程安全的原因时，会从设计的角度论证线程间不会共享数据。</li>
+</ul>
+
+<h4 id="immutability-1">Immutability</h4>
+<ul>
+  <li>说明对象中数据为何能够保持不可变性即可</li>
+</ul>
+
+<h4 id="using-threadsafe-data-types-1">Using Threadsafe Data Types</h4>
+<ul>
+  <li>表明该数据类型的所有原子操作都被恰当地设计，使得该数据类型依赖的不变式不受原子操作的交错执行影响。</li>
+  <li>nodes和edges举例</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>private final Set&lt;Node&gt; nodes = Collections.synchronizedSet(new HashSet&lt;&gt;());
+private final Map&lt;Node,Set&lt;Node&gt;&gt; edges = Collections.synchronizedMap(new HashMap&lt;&gt;());
+// 表示不变式：
+// 对于所有满足y是edges.get(x)的成员的二元组x和y，x,y都是nodes的成员。
+该类是线程安全的，因为：nodes和edges都声明为final，因此它们都是不可变的且是线程安全的。
+</code></pre></div></div>
+
+<blockquote>
+  <p>nodes和edges都指向线程安全的Set和Map数据类型。
+该论证仅防止了某些竞争条件，但不是全部。由于该类的表示不变式中要求了nodes与edges成员间的关系，因此还应论证两者成员的改变应当是同时的、原子的。若该点无法证明，则可以构造竞争条件。</p>
+</blockquote>
+
+<h4 id="locks-and-synchronization-1">Locks and Synchronization</h4>
+<ul>
+  <li>表明该数据类型的所有原子操作都被恰当地设计，使得该数据类型依赖的不变式不受原子操作的交错执行影响。</li>
+</ul>
+
+<h2 id="locks-and-synchronization-2">Locks and Synchronization</h2>
+<h3 id="monitor模式adt所有方法都是互斥访问">Monitor模式:ADT所有方法都是互斥访问</h3>
+<ul>
+  <li>reads must be guarded as well as writes</li>
+  <li>public synchronized void fun(){…} == synchronized(this)</li>
+</ul>
+
+<h3 id="fine-grained-synchronization">fine-grained synchronization.</h3>
+<p>synchronized(object)</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public synchronized Constructor(){
+  ...
+} // wrong
+</code></pre></div></div>
+<ul>
+  <li>用ADT自己做lock</li>
+</ul>
+
+<h3 id="lock">Lock</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Object lock = new Object();
+synchronized (lock) {
+  ...
+}
+</code></pre></div></div>
+
+<h2 id="liveness">Liveness</h2>
+<h3 id="deadlock">Deadlock</h3>
+<p>多个线程竞争lock，相互等待对方释放lock</p>
+
+<h4 id="解决方案">解决方案：</h4>
+
+<ol>
+  <li>两线程均按顺序征用锁-两个线程均先获得A锁再获得B锁
+    <ul>
+      <li>缺点1:不是模块化的——代码必须知道系统中的所有锁，或者至少知道子系统中的所有锁</li>
+      <li>缺点2:代码可能很难或不可能在获取第一个锁之前准确地知道它需要哪些锁 <br /></li>
+    </ul>
+  </li>
+  <li>粗粒度的lock
+    <ul>
+      <li>缺点：性能下降</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="starvation">Starvation</h3>
+<ul>
+  <li>因为其他线程lock时间太长，一个线程长时间无法获取其所需的资源访问权(lock)，导致无法往下进行</li>
+</ul>
+
+<h3 id="livelock">Livelock</h3>
+<ul>
+  <li>两线程的行为互相由对方的行为决定（通常是为了避免死锁），线程没有锁死，仍在正常运行，但无法正常工作。</li>
+</ul>
+:ET

@@ -1,0 +1,18 @@
+I"�<h2 id="java内部类访问局部变量必须声明为final">Java内部类访问局部变量必须声明为final？</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public static void main(String[] args) {
+  String str = "haha";
+  // str = "test";
+  new Thread() {
+    @Override
+    public void run() {
+      System.out.println(str);
+    }
+  }.start();
+}
+</code></pre></div></div>
+<p>以上代码能够通过编译正常运行，取消注释后编译不通过，报错如下：</p>
+<blockquote>
+  <p>Local variable str defined in an enclosing scope must be final or effectively
+final</p>
+</blockquote>
+:ET

@@ -1,0 +1,7 @@
+I"�<h2 id="concurrency">Concurrency</h2>
+<h3 id="two-models-for-concurrent-programming">Two Models for Concurrent Programming</h3>
+<ul>
+  <li>Shared memory — 并发模块通过在内存中读写共享对象进行交互。</li>
+  <li>Message passing — sending messages to each other through a communication channel. Modules send off messages, and incoming messages to each module are queued up for handling.</li>
+</ul>
+:ET

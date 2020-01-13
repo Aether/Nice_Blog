@@ -1,0 +1,352 @@
+I"�&<h2 id="requests-library">Requests Library</h2>
+
+<h3 id="seven-main-methods">Seven main methods</h3>
+<ul>
+  <li>requests.request()</li>
+  <li>requests.get()</li>
+  <li>requests.head()</li>
+  <li>requests.post()</li>
+  <li>requests.put()</li>
+  <li>requests.patch()</li>
+  <li>requests.delete()</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import requests
+r = requests.get("http://www.baidu.com")
+r.status_code
+#200 (Succeed) 404 (Failed)
+R.encoding = 'utf-8'
+r.text
+</code></pre></div></div>
+
+<h3 id="request-method">request method</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>requests.request(method, url, **kwargs)
+</code></pre></div></div>
+
+<p>method:GET, HEAD, POST, PUT, PATCH, DELETE, OPTION</p>
+
+<p>**kwargs:params data json headers cookies auth files timeout proxies allow_redirects stream verify cert(True/False)</p>
+
+<h3 id="response-object-properties">Response Object Properties</h3>
+<ul>
+  <li>r.status_code</li>
+  <li>r.text</li>
+  <li>r.encoding ( If charset didn’t apparent in header,default:ISO-8859-1)</li>
+  <li>r.apparent_encoding</li>
+  <li>r.content</li>
+</ul>
+
+<h3 id="code-framework">Code Framework</h3>
+<h5 id="exceptions-in-requests-library">Exceptions in Requests Library</h5>
+<ul>
+  <li>requests.ConnectionError</li>
+  <li>requests.HTTPError</li>
+  <li>requests.URLRequired</li>
+  <li>requests.TooManyRedirects</li>
+  <li>requests.ConnectTimeout</li>
+  <li>
+    <p>requests.Timeout</p>
+  </li>
+  <li>r.raise_for_status 
+ ( If return value isn’t 200,it will throw requests.HTTPError exception)</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import requests
+def getHTMLText(url):
+    try:
+        r = requests.get(url, timeout = 30)
+        r.raise_for_status()
+        r.encoding = r.apparent_encoding
+        return r.text
+    except:
+        return "产生异常"
+</code></pre></div></div>
+
+<h3 id="http-protocol">HTTP Protocol</h3>
+
+<p>URL: http://host[:port][path]</p>
+
+<p>host:legal Internet host domain name or IP address</p>
+
+<p>port:port number, defalt 80</p>
+
+<p>http://www.hit.edu.cn</p>
+
+<p>http://220.181.111.188/duty</p>
+
+<p>HTTP protocol operation :GET, HEAD, POST, PUT, PATCH, DELETE</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>payload{'key1':'value1', 'key2','value2'}
+r = requests.post('http://httpbin.org/post', data = payload)
+print(r.text)
+</code></pre></div></div>
+
+<h3 id="robot-protocol">Robot Protocol</h3>
+<p>User-agent: *</p>
+
+<p>Disallow: /</p>
+
+<h3 id="crawl-web-pictures">Crawl Web pictures</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import requests
+import os
+
+url = "http://news.hit.edu.cn/_upload/article/images/8e/ea/8376999048edb1b3ca17cce1e5f2/78f2ba13-d001-4546-b4bf-77f43caf8c6f.jpg"
+root = "Users/ucla/"
+path = root + url.split('/')[-1]
+   
+try:
+    if not os.path.exists(root):
+        os.mkdir(root)
+    if not os.path.get(url):
+        r = requests.get(url)
+        with open(path,'wb') as f:
+            f.write(r.content)
+            f.close()
+            print("文件保存成功")
+    else:
+        print("文件已存在")
+except:
+    print("爬取失败")
+</code></pre></div></div>
+
+<h4 id="get-method">get method</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>r = requests.get(url) 
+#return Response 
+requests.get(url,params=None,**kwargs)
+</code></pre></div></div>
+
+<h4 id="modify-user-agent">Modify User-agent:</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kv = {'user-agent':'Mozilla/5.0'}
+url = 'https://www.amazon.cn/gp/product/B01M8L5Z3Y'
+r = requestts.get(url, headers = kv)
+</code></pre></div></div>
+
+<h4 id="use-search-engine">Use Search engine:</h4>
+
+<p>http://www.baidu.com/s?wd=keyword</p>
+
+<p>http://www.so.com/s?q=keyword</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import requests
+kv = {'wd':'Python'}
+r = requests.get("http://www.baidu.com/s", params = kv)
+r.request.url  #'http://www.baidu.com/s?wd=Python'
+</code></pre></div></div>
+
+<h4 id="ip-address-searching">IP address Searching</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import requests
+url = "http://m.ip138.com/ip.asp?ip="
+r = requests.get(url + '202.204.80.112')
+</code></pre></div></div>
+
+<h2 id="beautiful-soup">Beautiful Soup</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import requests
+r = requests.get("http://python123.io/ws/demo.html")
+demo = r.text
+from bs4 import BeautifulSoup
+soup = BeautifulSoup(demo, "html.parser")
+soup2 = BeautifulSoup(open("Users/ucla/demo.html"), "html.parser")
+print(soup.prettify())
+</code></pre></div></div>
+
+<h3 id="tag">Tag</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"titile"</span><span class="nt">&gt;</span>...<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+</code></pre></div></div>
+
+<p>Basic Element:
+Tag, Name, Attributes, NavigableString, Comment.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from bs4 import BeautifulSoup
+soup = BeautifulSoup(demo, "html.parser")
+soup.a.name 
+soup.a.parent.name
+soup.a.parent.parent.name 
+tag = soup.a
+tag.attrs['class']
+type(tag.attrs) #&lt;class 'dict'&gt;
+</code></pre></div></div>
+
+<h3 id="traversal">Traversal</h3>
+<ul>
+  <li>.contents</li>
+  <li>.children</li>
+  <li>.descendants</li>
+  <li>.parent</li>
+  <li>.parents</li>
+  <li>.next_sibling</li>
+  <li>.previous_sibling</li>
+  <li>.next_siblings</li>
+  <li>
+    <p>.previous_siblings</p>
+
+    <p>for sibling in soup.a.next_siblings:
+      print(sibling)</p>
+
+    <p>for sibling in soup.a.previous_siblings:
+      print(sibling)</p>
+
+    <p>for child in soup.body.children:
+      print(child)</p>
+
+    <p>for child in soup.body.children:
+      print(child)</p>
+  </li>
+</ul>
+
+<h3 id="markup-language">Markup Language</h3>
+<h4 id="xml">XML</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;name&gt; ... &lt;/name&gt;
+&lt;name ... /&gt;
+&lt;!-- --&gt;
+</code></pre></div></div>
+
+<h4 id="yaml">YAML</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>key : value
+key : #Comment
+-value1
+-value2
+key :
+    subkey : subvalue
+text : |
+bundle data
+</code></pre></div></div>
+
+<h4 id="json">JSON</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"key" : "value"
+"key" : ["value1", "value2"]
+"key" :{
+    "subkey":"subvalue"
+}
+</code></pre></div></div>
+
+<h3 id="process-information">Process Information</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from bs4 import BeautifulSoup
+soup = BeautifulSoup(demo, "http.parser")
+for link in soup.find_all('a')
+    print(link.get('href'))
+</code></pre></div></div>
+
+<h4 id="find_all">find_all</h4>
+<p>&lt;&gt;.find_all(name,attrs,recursive,string,**kwargs)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for tag in soup.find_all(True):
+    print(tag)
+    
+import re
+for tag in soup.find_all(re.compile('b')):
+    print(tag.name)
+</code></pre></div></div>
+
+<p>attrs:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>soup.find_all('p', 'course')
+soup.findall('id=link1')
+import re
+soup.find_all(id=re.compile('link'))
+</code></pre></div></div>
+
+<p>recursive:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>soup.find_all('a')
+soup.find_all('a',recursive=False)
+</code></pre></div></div>
+
+<p>string:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>soup.find_all(string = "Basic Python")
+soup.find_all(string = re.compile("python"))
+</code></pre></div></div>
+
+<p>Extension Methods</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>soup() #soup.find_all(...) 
+</code></pre></div></div>
+
+<ul>
+  <li>&lt;&gt;.find()</li>
+  <li>&lt;&gt;.find_parents()</li>
+  <li>&lt;&gt;.find_parent()</li>
+  <li>&lt;&gt;.find_next_siblings()</li>
+  <li>&lt;&gt;.find_next_sibling()</li>
+  <li>&lt;&gt;.find_previous_siblings()</li>
+  <li>&lt;&gt;.find_previous_sibling()</li>
+</ul>
+
+<h2 id="re">RE</h2>
+
+<h3 id="grammer">Grammer</h3>
+<ul>
+  <li>[abc] [a-z] [^abc]</li>
+  <li>abc*  ab  abc  abc  abccc…</li>
+  <li>abc+ abc abcc abccc…</li>
+  <li>abc? ab abc</li>
+  <li>abc|def  abc def</li>
+  <li>ab{2}c abbc</li>
+  <li>ab{1,2}c abc abbc</li>
+  <li>^abc  abclskejg</li>
+  <li>abc$  sldkjgabc</li>
+  <li>\d  [0-9]</li>
+  <li>\w  [A-Za-z0-9_]</li>
+</ul>
+
+<h3 id="example">Example</h3>
+<ul>
+  <li>\^[A-Za-z]+$</li>
+  <li>\^[A-Za-z0-9]+$</li>
+  <li>\^-?\d+$</li>
+  <li>\^[0-9]*[1-9][0-9]*$</li>
+  <li>[1-9]\d{5}</li>
+  <li>[\u4e00-\u9fa5]   judge character in utf-8</li>
+  <li>(([1-9]?\d|1\d{2}|2[0-4]\d|25[0-5]).){3}[1-9]?\d|1\d{2}|2[0-4]\d|25[0-5]  IP address</li>
+</ul>
+
+<h3 id="main-functions">Main Functions</h3>
+<ul>
+  <li>re.search() return match object</li>
+</ul>
+
+<p>re.search(pattern, string, flags=0)</p>
+
+<p>flags:re.I re.IGNORECASE, re.M re.MULTILINE, re.S re.DOTALL</p>
+<ul>
+  <li>re.match() return match object</li>
+  <li>re.findall()</li>
+  <li>re.split() return list</li>
+</ul>
+
+<p>re.split(pattern, string, maxsplit=0, flags=0)</p>
+
+<ul>
+  <li>re.finditer() return match object</li>
+  <li>re.sub()</li>
+</ul>
+
+<p>re.sub(pattern, repl, string, count=0, flags=0)</p>
+
+<p>match.string
+match.re
+match.pos
+match.endpos</p>
+
+<p>match.group(0)
+match.start()
+match.end()
+match.span()</p>
+
+<p>*?   +?  ??  {m,n}?  return min</p>
+:ET

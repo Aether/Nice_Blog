@@ -1,0 +1,9 @@
+I"v<script type="math/tex; mode=display">\boldsymbol w = \left[\begin{matrix}        w_1 \\    w_2\\  \vdots\\     w_n\end{matrix}\right],
+\boldsymbol x = \left[\begin{matrix}     x_1  \\     x_2 \\       \vdots\\     x_n\end{matrix}\right] \rightarrow f(x) = w_1x_1+ w_2x_2+ ... + w_nx_n+b = \boldsymbol w^T \boldsymbol x+b</script>
+
+<h2 id="对数几率回归-logitstic-regression">对数几率回归 Logitstic Regression</h2>
+
+<p>考虑二分类任务，将线性回归模型的预测值$h(\boldsymbol x) =\boldsymbol{w}^T\boldsymbol{x} + b$转换为0/1值</p>
+
+<h4 id="对数几率函数-sigmoid">对数几率函数 Sigmoid</h4>
+:ET

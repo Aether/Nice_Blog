@@ -1,0 +1,4 @@
+I"L<script type="math/tex; mode=display">\boldsymbol w = \left[\begin{matrix}        w_1 \\    w_2\\  \vdots\\     w_n\end{matrix}\right],
+\boldsymbol x = \left[\begin{matrix}     x_1  \\     x_2 \\       \vdots\\     x_n\end{matrix}\right] \rightarrow f(x) = w_1x_1+ w_2x_2+ ... + w_nx_n+b = \boldsymbol w^T \boldsymbol x+b</script>
+
+:ET

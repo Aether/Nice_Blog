@@ -1,0 +1,109 @@
+I"[<h3 id="ask-permissions">Ask permissions</h3>
+<p>Android manifest.xml</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;uses-permission android:name="android.permission.INTERNET"/&gt;
+</code></pre></div></div>
+
+<h3 id="connect-to-the-internet">Connect to the Internet</h3>
+
+<p>In order to get an http connection,we just call an <strong>open connnection</strong> on URL.Note that doesn’t actually talk to the network yet. It just creates the http URL connection object.</p>
+
+<p>At this point,we could set the request method,or add header fields,of change properties of the connection.</p>
+
+<p>We then get an input stream from the open connection.Next we have to read the contents of this input stream.There are many ways to do this in Java,but we’ve chosen to do using scanner,which is used to tokenize Streams,because it’s simple an relatively fast.</p>
+
+<p>By setting the delimiter to \\A, beginning of the Stream.We force the scanner to read the entire contents of the stream into the next token stream.</p>
+
+<p>It buffers the data. This means that it not only pulls the data from the network in small chunks,but because http isn’t required to give us a content size,our code needs to be ready to handle buffers of different sizes.This code automatically allocates and deallocates the buffer as needed. It also handles the character encoding for us.Specifically,it translates from UTF-8 which is the default encoding for json and JavaScript to UTF-16,the format used by android.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public static String getResponseFromHttpUrl(URL url) throws IOException {
+    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+    try {
+        InputStream in = urlConnection.getInputStream();
+
+        Scanner scanner = new Scanner(in);
+        scanner.useDelimiter("\\A");
+
+        boolean hasInput = scanner.hasNext();
+        if (hasInput) {
+            return scanner.next();
+        } else {
+            return null;
+        }
+    } finally {
+        urlConnection.disconnect();
+    }
+}
+</code></pre></div></div>
+
+<p>Then we just have to change the makeGitHubSearchQuery method to call network utils that get response from URL rather than simply displaying the URL.Store the response in a string called GithubSearchResults.What’s more,cache that io exception.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>private void makeGithubSeachQuery(){
+    String githubQuery = mSearchBoxEditText.getText().toString();
+    URL githubSearchUrl = NetworkUtils.buildUrl(githubQuery);
+    mUrlDisplayTextView.setText(githubSearchUrl.toString());
+    String githubSearchResults = null;
+    try {
+        githubSearchResults = NetworkUtils.getResponseFromHttpUrl(githubSearchUrl);
+        mSearchBoxEditText.setText(githubSearchResults);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+</code></pre></div></div>
+
+<h3 id="async-task">Async task</h3>
+<p>Android throws an exception when you try to access the network on the main tread.We need to run the network task on a secondary execution thread.</p>
+
+<p>AsyncTask allows you to run a task on a background thread while publishing results to the UI thread.The three types used by an AsyncTask are the following.</p>
+
+<ul>
+  <li>Params</li>
+  <li>Progress</li>
+  <li>Result</li>
+</ul>
+
+<p>These three parameters correspond to three primary functions you can override in AsyncTask.</p>
+
+<ul>
+  <li>doInBackground</li>
+  <li>onProgressUpdate</li>
+  <li>onPostExecute</li>
+  <li>
+    <p>onPreExecute</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  public class GithubQueryTask extends AsyncTask&lt;URL, Void, String&gt; {
+  @Override
+  protected String doInBackground(URL... urls) {
+      URL searchUrl = urls[0];
+      String githubSearchResults = null;
+      try {
+          githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+      return githubSearchResults;
+  }
+
+  @Override
+  protected void onPostExecute(String s) {
+      if (s != null &amp;&amp; !s.equals("")) {
+          mSearchResultsTextView.setText(s);
+      }
+  }
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Start our AsyncTask,<code class="highlighter-rouge">makeGitHubSearchQuery</code> replace the networking code with instantiating and executing our GitHubQueryTask.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> private void makeGithubSeachQuery(){
+    String githubQuery = mSearchBoxEditText.getText().toString();
+    URL githubSearchUrl = NetworkUtils.buildUrl(githubQuery);
+    mUrlDisplayTextView.setText(githubSearchUrl.toString());
+    String githubSearchResults = null;
+    new GithubQueryTask().execute(githubSearchUrl);
+}
+</code></pre></div></div>
+
+:ET

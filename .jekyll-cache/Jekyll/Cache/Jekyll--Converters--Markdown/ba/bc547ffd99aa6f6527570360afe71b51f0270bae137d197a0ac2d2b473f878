@@ -1,0 +1,411 @@
+I".<h3 id="hashmap">HashMap</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class Coin {
+    private HashMap&lt;Integer, String&gt; coinnames = new HashMap&lt;Integer, String&gt;();
+    
+    public Coin() {
+    coinnames.put(1, "penny");
+    coinnames.put(10, "dime");
+    coinnames.put(25, "quarter");
+    coinnames.put(50, "half-dollar");
+    coinnames.put(50, "0.5");
+    }
+    
+    public String getName(int amount) {
+        return coinnames.get(amount);
+    }
+    
+    public static void main(String[] args){
+        Scanner in = new Scanner(System.in);
+        int amount = in.nextInt();
+        Coin coin = new Coin();
+    }
+}
+</code></pre></div></div>
+<h3 id="hashset">HashSet</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public static void main(String[] args) {
+    HashSet&lt;String&gt; s = new HashSet&lt;String&gt;();
+    s.add("first");
+    s.add("second");
+    s.add("first");//{first,second}
+}
+</code></pre></div></div>
+
+<h3 id="use-stringbuffer-instead-of-add-string">Use StringBuffer instead of add string</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public String getExitDesc() {
+    StringBuffer sb = new StringBuffer();
+    if (northExit != null) {
+        sb.append("north ");
+    }
+    if (southExit != null) {
+        sb.append("south ");
+    }
+    if (eastExit != null) {
+        sb.append("east ");
+    }
+    if (westExit != null) {
+        sb.append("west ");
+    }
+    return sb.toString();
+}
+</code></pre></div></div>
+
+<h3 id="handler">Handler</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class Game {
+    private HashMap&lt;String, Handler&gt; handlers = new HashMap&lt;String, Handler&gt;;
+    public Game() {
+        handlers.put("bye", new HandlerBye());
+    }
+}
+
+public class Handler {
+    public void doCmd(String word) {
+        public boolean isBye() {
+            return flase;
+        }
+    }
+}
+
+public class HandlerBye extends Handler {
+    @Override
+    public boolean isBye() {
+        return true;
+    }
+}
+</code></pre></div></div>
+
+<h3 id="abstract">Abstract</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public abstract class Shape {
+    
+    public abstract void draw(Graphics g);
+    
+}
+</code></pre></div></div>
+
+<p>Abstract class can’t generate object,but it can define variable.</p>
+
+<p>A subclass of an abstractclass must override abstract function in the super class.</p>
+
+<h3 id="interface">Interface</h3>
+
+<p>Interface is abstract class.All member functions and member variables are <strong>public static final</strong>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class Fox extends Animal implements Cell {
+    //......
+}
+
+public interface Cell {
+    //......
+}
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Interface can inherit interface, but it can’t inherit class.</p>
+  </li>
+  <li>
+    <p>Class can implement many interfaces,but interface can’t implement interface.</p>
+  </li>
+</ul>
+
+<h3 id="exception">Exception</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>int[] a = new int[10];
+int idx;
+Scanner in = new Scanner(System.in);
+idx = in.nextInt();
+try {
+    a[idx] = 10;
+    System.out.println("hello");
+} catch (ArrayIndexOutOfBoundsException e) {
+    System.out.println("Caught");
+}
+
+try {
+    // possible exception
+} catch (Type1 id1){
+    // deal with it
+} catch (Type2 id2){
+    // deal with it
+} catch (Type3 id3){
+    // deal with it
+}
+</code></pre></div></div>
+
+<p>When it catches an exception in a function,it won’t lead to the termination, instead, it will go back the code where the function was called,skip over the function and continue running.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>try {
+    
+} catch (Exception e) {
+    System.out.println("caught");
+    System.out.println(e.getMessage);
+    System.out.println(e);
+    e.printStackTrace();
+}
+</code></pre></div></div>
+
+<ul>
+  <li>String getMessage();</li>
+  <li>void printStackTrace();</li>
+</ul>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>try{
+
+} catch (Exception e) {
+    System.err.println("An exception was thrown");
+    throw e;
+}
+</code></pre></div></div>
+
+<p>If you can’t deal with the exception, you can throw it again.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class OpenException extends Throwable {
+    
+}
+
+public class ArrayIndex{
+
+    public static void readFile() throws OpenException {
+        throw new OpenException();
+    }
+    
+    public static void main(String[] args) {
+        try {
+            readFile();
+        } catch (OpenException e) {
+            
+        }
+    }
+}
+</code></pre></div></div>
+
+<ul>
+  <li>throw new Exception();</li>
+  <li>throw new Exception(“ERROR~”);</li>
+</ul>
+
+<p>When you override a function,subclass can’t declare more exception than superclass.</p>
+
+<p>All the possible exceptions must be declared in the constructor of subclass.</p>
+
+<hr />
+
+<h3 id="stream">Stream</h3>
+<h4 id="inputstream">InputStream</h4>
+<ul>
+  <li>int available();</li>
+  <li>void close;</li>
+  <li>void mark(int readlimit);</li>
+  <li>boolean markSupported();</li>
+  <li>abstract int read();</li>
+  <li>int read(byte[] b);</li>
+  <li>int read(byte[] b, int off, int len);</li>
+  <li>void reset();</li>
+  <li>long skip(long n);</li>
+</ul>
+
+<h4 id="outputstream">OutputStream</h4>
+<ul>
+  <li>void close();</li>
+  <li>void flush();</li>
+  <li>void write(byte[] b);</li>
+  <li>void write(byte[] b, int off, int len);</li>
+  <li>
+    <p>abstract void write(int b);</p>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  public class Main{
+    public class void main(String[] args) {
+        System.out.println("hello world");
+        byte[] buffer = new byte[1024];
+        try {
+            int len = System.in.read(buffer);//len-&gt;GB code
+                String s = new String(buffer, 0, len);//s.length-&gt;Unicode
+        } catch (IOException e)
+        e.printStackTrace();
+    }
+  }
+</code></pre></div></div>
+
+<h4 id="fileinputstreamfileoutputstream">FileInputStream/FileOutputStream</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class Main{
+   public class void main(String[] args) {
+    System.out.println("hello world");
+    byte[] buffer = new byte[10];
+    for (int i = 0; i&lt;buffer.length; i++) {
+        buffer[i] = (byte)i;
+    }
+    try {
+        FileOutputStream out = new FileOutputStream("a.dat");
+        out.write(buffer);
+        out.close
+    } catch (FileNotFoundException e)
+        e.printStackTrace();
+    } catch (IOException e)
+        e.printStackTrace();
+    }
+}
+</code></pre></div></div>
+
+<h4 id="stream-filter">Stream Filter</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>try {
+    DataOutputStream out = new DataOutputStream(
+                                new BufferedOutputStream(
+                                    new FileOutputStream("a.dat")));
+    binary input and output
+}
+</code></pre></div></div>
+
+<h4 id="readerwriter">Reader/Writer</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PrintWriter out = new PrintWriter(
+    new BufferWriter(
+        new OutputStreamWriter(
+            new FileOutputStream("a.txt"))));
+            
+int i = 123456;
+out.println(i); //Unicode -&gt; ASCII or GB code
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BufferedReader in = new BufferedReader(
+                        new InputStreamReader(
+                            new FileInputStream("src/hello/Main.java")));
+
+String line;
+while ((line = in.readLine()) != null) {
+    System.out.println(line);
+}
+</code></pre></div></div>
+
+<ul>
+  <li>BufferedReader readLine();</li>
+  <li>
+    <p>LineNumberReader getLineNumber();</p>
+  </li>
+</ul>
+
+<p><code class="highlighter-rouge"> BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream("utf8.txt"), "utf8"));</code></p>
+
+<h4 id="streamreaderscanner">Stream/Reader/Scanner</h4>
+<p>binary -&gt; InputStream</p>
+
+<p>text -&gt; Reader</p>
+
+<p>data -&gt; Scanner</p>
+
+<h4 id="socket">Socket</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class Main {
+    public static void main(String[] args) {
+        try {
+            Socket socket = new Socket(InetAddress.getByName("localhost"),12345);
+            PrintWriter out = new PrintWriter(
+                new BufferedWriter(
+                    new OutputStreamWriter(socket.getOutputStream)));
+            out.println("Hello");
+            out.flush();
+            BufferedReader in = new BufferedReader(
+                new InputStreamReader(
+                    socket.getInputStream()));
+            String line;
+            line = in.readLine();
+            System.out.println(line);
+            out.close;
+            socket.close();
+        } catch(IOException e){
+            e.printStackTrace;
+        }
+    }
+}
+</code></pre></div></div>
+
+<p>terminal</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nc -l 12345
+</code></pre></div></div>
+
+<ul>
+  <li>the read()/nextInt()/readLine() function is blocked,you can use thread of use nio channel</li>
+  <li>
+    <p>for socket,we can set SO time</p>
+
+    <p>setSoTimeout(int timeOut)</p>
+  </li>
+</ul>
+
+<h3 id="object-serialization">Object Serialization</h3>
+<ul>
+  <li>ObjectInputStream class</li>
+  <li>
+    <p>readObject();</p>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Student implements Serializable {
+        private String name;
+        private int age;
+        private int grade;
+    
+    public Student(String name, int age, int grade) {
+        this.name = name;
+        this.age = age;
+        this.grade = grade;
+    }
+
+     public String toString() {
+         return name+" "+age+" "+grade;
+     }
+ }
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            Student s1 = new Student("John",18,5);
+            System.out.println(s1);
+            ObjectOutputStream out = new ObjectOutputStream(
+                    new FileOutputStream("obj.dat"))
+            out.writeObject(s1);
+            out.close();
+            ObjectInputStream in = new ObjectInputStream(
+                new FileInputStream("obj.dat"));
+            Student s2 = (Student)in.readObject();
+            System.out.println(s2);//s1!=s2
+            in.close;
+        } catch (IOException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre></div></div>
+
+<h3 id="inversion-of-control">Inversion of Control</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>JButton btnStep = new JButton("Button");
+frame.add(btnStep, BorderLayout.NORTH);
+btnStep.addActionListener(new ActionListener() { 
+    @Override
+    public void actionPerformed(Action e) {
+        //.....
+    }
+});
+</code></pre></div></div>
+
+<h4 id="inner-class">Inner class</h4>
+<p>Inner class is defined in class or function, it can access all the resources outside, including any private member.(If it is defined in a function,it can only access the final variable)</p>
+
+<h4 id="anonymous-class">Anonymous Class</h4>
+<p>Anonymous Class can inherit class and implement interface.</p>
+
+<h3 id="mvc">MVC</h3>
+<p>M = Model</p>
+
+<p>V = View</p>
+
+<p>C = Control</p>
+:ET

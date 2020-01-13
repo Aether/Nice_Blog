@@ -1,0 +1,15 @@
+I"�<h2 id="test-first-programming">Test-First Programming</h2>
+<h3 id="testing-levels">Testing levels</h3>
+<ul>
+  <li>Unit testing 单元测试
+    <ul>
+      <li>等价类划分 partitioning
+ • 全覆盖 Full cartestian produck
+ • 覆盖每个取值 Cover each part</li>
+      <li>边界值分析 BVA (binary value analysis)</li>
+    </ul>
+  </li>
+  <li>Integration testing 集成测试</li>
+  <li>System testing 系统测试</li>
+</ul>
+:ET

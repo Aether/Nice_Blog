@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- CSS -->
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/coding/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92.html">
+  <link rel="alternate" type="application/rss+xml" title="Aether's Blog" href="http://localhost:4000/feed.xml">
+
+<!-- Google font -->
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto Sans">
+
+<!-- font awesome -->
+
+<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
+<!-- 数学公式 -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      inlineMath: [['$','$']]
+    }
+  });
+</script>
+
+</head>
+
+
+  
+
+  
+
+  </head>
+
+  <body>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>线性回归</title>
+  <meta name="description" content="线性模型">
+</head>
+
+
+  <div class="wrapper">
+          <header class="post-header">
+
+    <center><div class="post-title" itemprop="name headline">线性回归</div>
+
+		<div class="post-meta"><i class="fa fa-calendar-o"></i> <time datetime="01 Nov 2019" itemprop="datePublished">Nov 1 2019</time>
+
+		&nbsp;&nbsp;•&nbsp;&nbsp;<i class="fa fa-user-secret"></i> <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Aether</span>
+        
+		<br>
+	</div>
+
+        
+        <div class="post-tags">
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">CODE</a>
+        
+		<a class="post-tags-item" href="http://localhost:4000/tags/">MACHINELEARNING</a>
+        
+	</div>
+    </center>
+
+</header>
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<div class="post-content">
+    <center>
+	
+	<p></p>
+	
+    </center>
+</div>
+
+
+
+<div class="post-content" itemprop="articleBody">
+    <h2 id="线性模型">线性模型</h2>
+
+<script type="math/tex; mode=display">\boldsymbol w = \left[\begin{matrix}        w_1 \\    w_2\\  \vdots\\     w_n\end{matrix}\right],
+\boldsymbol x = \left[\begin{matrix}     x_1  \\     x_2 \\       \vdots\\     x_n\end{matrix}\right] \rightarrow f(x) = w_1x_1+ w_2x_2+ ... + w_nx_n+b = \boldsymbol w^T \boldsymbol x+b</script>
+
+<script type="math/tex; mode=display">\boldsymbol \theta = \left[\begin{matrix}     b  \\     w_1 \\    w_2\\  \vdots\\     w_n\end{matrix}\right],
+\boldsymbol x = \left[\begin{matrix}   1\\   x_1  \\     x_2 \\       \vdots\\     x_n\end{matrix}\right] \rightarrow f(x)= \boldsymbol \theta^T \boldsymbol x</script>
+
+<h2 id="线性回归">线性回归</h2>
+
+<p>目标：<strong>均方误差</strong>$MSE$（$Mean\ Squared\ Error$）最小化，即</p>
+
+<script type="math/tex; mode=display">(w^*,b^*) = \mathop {\arg\min}_{(w,b)}\sum_{i=1}^m(f(x_i)-y_i)^2</script>
+
+<p>基于均方误差最小化的模型求解方法为<strong>最小二乘法</strong>：试图找到一条线，使所有样本到直线上的欧式距离之和最小，求解过程为<strong>参数估计</strong>。</p>
+
+
+</div>
+
+<div>
+	
+	<div class="eof"></div>
+	
+</div>
+
+<div class="share">
+    <p>Share this post with: </p>
+	<a href="https://twitter.com/intent/tweet?text=线性回归@&amp;url=http://localhost:4000/coding/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92.html" class="twitter-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/coding/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92.html" class="facebook-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+    
+	<a href="https://plus.google.com/share?url=http://localhost:4000/coding/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92.html" class="googleplus-share">
+		<span class="fa-stack fa-lg">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+</div>
+
+
+<div id="disqus_thread"></div>
+
+
+ 
+</div>
+
+
+</article>
+
+  </div>
+
+</body>
+
+<foot>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <center>
+
+		<p><a class="link" href="/archive/">Archive</a> /
+		<a class="link" href="/category/">Category</a> /
+		<a class="link" href="/tags/">Tags</a> /
+		<a class="link" href="/about/">About</a> /
+		<a class="link" href="/contact/">Contact</a>
+        </p>
+
+        <span><script>document.write(new Date().getFullYear());</script></span>
+        <span>&copy;</span>
+
+		<a class="link" href="https://aether.github.io">Aether</a>
+		<br>
+
+    </center>
+
+  </div>
+
+</footer>
+
+    <foot>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Derictory -->
+
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script src="http://yandex.st/highlightjs/6.2/highlight.min.js"></script>
+
+<!-- Hit analytics -->
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Directory -->
+
+<script src="/js/main.js"></script>
+
+</foot>
+
+
+</foot>
+
+</html>

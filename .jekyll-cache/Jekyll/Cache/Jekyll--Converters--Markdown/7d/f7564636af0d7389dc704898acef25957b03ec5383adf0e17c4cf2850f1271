@@ -1,0 +1,168 @@
+I"h<h2 id="java中-able总结">Java中-able总结</h2>
+
+<ul>
+  <li>Comparable &amp; Comparator</li>
+  <li>Iterable &amp; Iterator</li>
+  <li>Observable &amp; Observer</li>
+  <li>Throwable</li>
+  <li>Cloneable</li>
+  <li>Runnable</li>
+</ul>
+
+<h3 id="comparable--comparator">Comparable &amp; Comparator</h3>
+
+<h4 id="comparable">Comparable</h4>
+<p>需override<code class="highlighter-rouge">compareTo()</code>方法</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Person implements Comparable&lt;Person&gt; {
+   @Override
+   public int compareTo(Person o) {
+     if (...) return -1;
+     else if (...) return 1;
+     else return 0;
+   }
+}
+</code></pre></div></div>
+
+<h4 id="comparator">Comparator</h4>
+<p><code class="highlighter-rouge">Comparator</code>是策略模式<code class="highlighter-rouge">strategy design pattern</code>，可使用不同的Comparator对象实现不同策略的排序。
+需override<code class="highlighter-rouge">compare()</code>方法</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Cmp implements Comparator {
+  @Override
+  public int compare(Object arg0, Object arg1) {
+    Person a = (Person) arg0;
+    Person b = (Person) arg1;
+    if (...) return -1;
+    else if (...) return 1;
+    else return 0;
+  }
+}
+</code></pre></div></div>
+<p>调用方法：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Person[] p = new Person[4];
+Arrays.sort(p);//默认排序
+Arrays.sort(p, new Cmp());//自定义排序
+</code></pre></div></div>
+
+<h4 id="summary">Summary</h4>
+<ul>
+  <li>顾名思义，某个class实现<code class="highlighter-rouge">Comparable</code>可以使该class的对象可比较：<code class="highlighter-rouge">a.compareTo(b)</code></li>
+  <li><code class="highlighter-rouge">Comparator</code>为比较器和一种比较策略，内部需override<code class="highlighter-rouge">compare()</code>方法</li>
+</ul>
+
+<h3 id="iterable--iterator">Iterable &amp; Iterator</h3>
+
+<h4 id="iterator">Iterator</h4>
+<p>Iterator的定义：包含<code class="highlighter-rouge">hasNext()</code>，<code class="highlighter-rouge">next()</code>和<code class="highlighter-rouge">remove()</code>方法。</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public interface Iterator {  
+　　boolean hasNext();  
+　　Object next();  
+　　void remove();  
+}
+</code></pre></div></div>
+<p>Iterator的使用：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Iterator iter = l.iterator();
+while(iter.hasNext()){
+    String str = (String) iter.next();
+    System.out.println(str);
+}
+</code></pre></div></div>
+
+<h4 id="iterable">Iterable</h4>
+
+<p>Iterabler的定义：包含<code class="highlighter-rouge">iterator()</code>方法。</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public interface Iterable&lt;T&gt; {
+  Iterator&lt;T&gt; iterator();
+}
+</code></pre></div></div>
+<p>Iterable的使用：override<code class="highlighter-rouge">iterator()</code>方法</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class ArrayMap&lt;K, V&gt; implements Iterable&lt;K&gt; {
+  @Override
+  public Iterator&lt;K&gt; iterator() {
+      return new KeyIterator();
+  }
+}
+
+public class KeyIterator implements Iterator&lt;K&gt; {
+  @Override
+  public boolean hasNext() {
+      ...
+  }
+  @Override
+  public K next() {
+      ...
+  }
+}
+</code></pre></div></div>
+
+<h3 id="observable--observer">Observable &amp; Observer</h3>
+
+<h4 id="observer">Observer</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public interface Observer {
+  void update(Observable o, Object arg);
+}
+</code></pre></div></div>
+<h4 id="observerable">Observerable</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class NumObservable extends Observable {
+  private int data = 0;
+  public int getData() {
+     return data;
+  }
+  public void setData(int i) {
+     data = i;
+     setChanged();
+     notifyObservers();
+  }
+}
+</code></pre></div></div>
+<p>被观察者<code class="highlighter-rouge">NumObserable</code>执行了<code class="highlighter-rouge">notifyObservers()</code>后，观察者执行<code class="highlighter-rouge">update()</code>方法。</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class NumObserver implements Observer {
+
+  @Override
+  public void update(Observable o, Object arg) {
+    NumsObservable myObserable = (NumsObservable) o;
+    System.out.println("Data has changed to " + myObserable.getData());
+  }
+
+}
+</code></pre></div></div>
+
+<h3 id="throwable">Throwable</h3>
+<p>This is a <strong>class</strong>, not interface.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class MyException_another extends Throwable {
+   private static final long serialVersionUID = 1L;
+   public MyException_another() {
+     super();
+   }
+   public MyException_another(String msg) {
+     super(msg);
+   }
+   public MyException_another(String msg, Throwable cause) {
+     super(msg, cause);
+   }
+   public MyException_another(Throwable cause) {
+     super(cause);
+   }
+}
+</code></pre></div></div>
+
+<h3 id="cloneable">Cloneable</h3>
+<p>需重写<code class="highlighter-rouge">clone()</code>方法</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class Test implements Cloneable {
+  @Override
+  protected Object clone() throws CloneNotSupportedException {
+      ...
+  }
+}
+</code></pre></div></div>
+
+<h3 id="runnable">Runnable</h3>
+
+<p>需重写<code class="highlighter-rouge">run()</code>方法</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class MyThread1 implements Runnable {
+  @Override
+  public synchronized void  run() {
+    ...
+  }
+}
+</code></pre></div></div>
+:ET

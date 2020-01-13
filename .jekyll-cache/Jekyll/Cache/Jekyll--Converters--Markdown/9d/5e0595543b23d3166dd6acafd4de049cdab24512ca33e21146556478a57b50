@@ -1,0 +1,25 @@
+I"ß<h3 id="hashmap">HashMap</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class Coin {
+    private HashMap&lt;Integer, String&gt; coinnames = new HashMap&lt;Integer, String&gt;();
+    
+    public Coin() {
+    coinnames.put(1, "penny");
+    coinnames.put(10, "dime");
+    coinnames.put(25, "quarter");
+    coinnames.put(50, "half-dollar");
+    coinnames.put(50, "0.5");
+    }
+    
+    public String getName(int amount) {
+        return coinnames.get(amount);
+    }
+    
+    public static void main(String[] args){
+        Scanner in = new Scanner(System.in);
+        int amount = in.nextInt();
+        Coin coin = new Coin();
+    }
+}
+</code></pre></div></div>
+<h3 id="hashset">HashSet</h3>
+:ET

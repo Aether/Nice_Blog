@@ -6,9 +6,787 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 23 Jun 2019 22:52:53 +0800</pubDate>
-    <lastBuildDate>Sun, 23 Jun 2019 22:52:53 +0800</lastBuildDate>
-    <generator>Jekyll v3.8.5</generator>
+    <pubDate>Mon, 13 Jan 2020 12:57:15 +0800</pubDate>
+    <lastBuildDate>Mon, 13 Jan 2020 12:57:15 +0800</lastBuildDate>
+    <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>🍳主成分分析 PCA</title>
+        <description>&lt;h1 id=&quot;-降维&quot;&gt;🍳 降维&lt;/h1&gt;
+
+&lt;h2 id=&quot;主成分分析-principal-component-analysis--pca&quot;&gt;主成分分析 &lt;em&gt;Principal Component Analysis&lt;/em&gt; —— PCA&lt;/h2&gt;
+
+&lt;p&gt;PCA的本质是将$n$维数据投影到$k$维空间中。若存在一个超平面，可以对正交属性空间中的样本点进行恰当的表达，那么这个超平面具有最近重构性和最大可分性。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;最近重构性&lt;/strong&gt;：样本点到这个超平面的距离都足够近&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;最大可分性&lt;/strong&gt;：样本点在这个超平面上的投影尽可能分开&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;从最大可分性证明&quot;&gt;从最大可分性证明&lt;/h2&gt;
+
+&lt;p&gt;​	样本点$\boldsymbol x_i $在新空间中超平面上的投影是$\bf W^T \boldsymbol x_i $，若使所有样本点的投影尽可能分开，则应该使投影后样本点的方差最大化。投影后样本点的方差为$\sum_i \bf W^T \boldsymbol x_i \boldsymbol x_i^T\bf W$，则优化目标和限制条件如下：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\max_{\boldsymbol W} \ \rm{tr}( \bf W^T\bf X \bf X^T\bf W )&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\rm {s.t.}  \bf W^T \bf W = \bf I&lt;/script&gt;
+
+&lt;p&gt;使用拉格朗日乘子法：&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\bf X \bf X^T\bf W = \lambda \bf W&lt;/script&gt;
+对协方差矩阵$\boldsymbol X \boldsymbol X^T$进行特征值分解，并将求的的特征值进行排序，取前$k$个最大的特征值对应的特征向量构成投影矩阵$\bf W = {\boldsymbol w_1,\boldsymbol w_2, \dots,\boldsymbol w_k}$&lt;/p&gt;
+
+&lt;p&gt;注：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+{\bf X} =\left[    \begin{matrix}        {\boldsymbol x}^{(1)} - \overline {\bf X}\\        {\boldsymbol x}^{(2)}- \overline {\bf X} \\        \vdots \\        {\boldsymbol x}^{(m)} - \overline {\bf X}   \end{matrix}    \right] =    \left[        \begin{matrix}            x^{(1)}_{1}- \overline {x}_1 &amp; x^{(1)}_{2}- \overline {x}_2   &amp; \cdots &amp; x^{(1)}_{n}- \overline {x}_n   \\            x^{(2)}_{1}- \overline {x}_1 &amp; x^{(2)}_{2} - \overline {x}_2  &amp; \cdots &amp; x^{(2)}_{n}- \overline {x}_n   \\            \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\            x^{(m)}_{1}- \overline {x}_1 &amp; x^{(m)}_{2}- \overline {x}_2 &amp; \cdots &amp; x^{(m)}_{n}- \overline {x}_n        \end{matrix}        \right] %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;故$\boldsymbol X \boldsymbol X^T$为协方差矩阵&lt;/p&gt;
+
+&lt;h2 id=&quot;算法流程&quot;&gt;算法流程&lt;/h2&gt;
+
+&lt;p&gt;给定数据集$D = { \boldsymbol x_1, \boldsymbol x_2, \dots, \boldsymbol x_m}$，对样本进行中心化，即&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol x_i \leftarrow \boldsymbol x_i - \boldsymbol \mu&lt;/script&gt;
+
+&lt;p&gt;其中${\boldsymbol \mu} = \frac{1}{m}\sum\limits_{j = 1}^m{\boldsymbol x}_j$，为数据集的$D$的均值向量。这个步骤相当于平移坐标轴到所有数据点的平均中点位置。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../img/PCA.png&quot; alt=&quot;6&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;​	当数据受到噪声影响时，最小的特征值对应的特征向量往往与噪声有关，将它们舍弃在一定程度上起到去噪的效果。&lt;/p&gt;
+
+&lt;h2 id=&quot;信噪比-snr--signal-to-noise-ratio&quot;&gt;信噪比 SNR —— &lt;em&gt;Signal to Noise Ratio&lt;/em&gt;&lt;/h2&gt;
+
+&lt;p&gt;信噪比公式如下：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;{SNR} = 10·\log_{10}\left[\frac{\sum\limits_{x=1}^{N_x}\sum\limits_{y=1}^{N_y}\left[f(x,y)\right]^2}{\sum\limits_{x=1}^{N_x}\sum\limits_{y=1}^{N_y}\left[f(x,y)-\hat f(x,y)\right]^2}\right]&lt;/script&gt;
+
+&lt;p&gt;设样本个数为$m$，维数为$n$
+&lt;script type=&quot;math/tex&quot;&gt;\hat y = X^T\boldsymbol \theta_0 + \sum_{j=1}^Mc_j·\max
+\{0,X^T\boldsymbol \theta_j\}&lt;/script&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol \theta = \left[\begin{matrix}     b  \\     \theta_1 \\    \theta_2\\  \vdots\\     \theta_n\end{matrix}\right],
+\boldsymbol x = \left[\begin{matrix}   1\\   x_1  \\     x_2 \\       \vdots\\     x_n\end{matrix}\right] \rightarrow f(x)= \boldsymbol \theta^T \boldsymbol x&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+{\boldsymbol \theta} =\left[    
+\begin{matrix}        
+{\boldsymbol \theta}^{(1)}\\        
+{\boldsymbol \theta}^{(2)} \\        
+\vdots \\        
+{\boldsymbol \theta}^{(M)} 
+\end{matrix}    \right] =    
+\left[        
+\begin{matrix}            
+\theta^{(1)}_{1} &amp; \theta^{(1)}_{2}  &amp;\dots&amp; \theta^{(1)}_{n}   \\      
+
+\theta^{(2)}_{1} &amp; \theta^{(2)}_{2}  &amp;\dots&amp; \theta^{(2)}_{n}   \\   
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots&amp;\\
+
+\theta^{(M)}_{1} &amp; \theta^{(M)}_{2}  &amp;\dots&amp; \theta^{(M)}_{n}   \\   
+
+\end{matrix}        
+\right] 
+
+\boldsymbol X = 
+\left[
+\begin{matrix}   
+1&amp;1&amp;\dots&amp;1\\  
+x^{(1)}_1&amp;x^{(2)}_1&amp;\dots&amp;x^{(m)}_1  \\     
+x^{(1)}_2&amp;x^{(2)}_2&amp;\dots&amp;x^{(m)}_2 \\       
+\vdots\\     
+x^{(1)}_n&amp;x^{(2)}_n&amp;\dots&amp;x^{(m)}_n
+\end{matrix}
+
+\right]
+
+\\
+
+\boldsymbol \theta \boldsymbol X = 
+\left[\begin{matrix}   
+ 
+\boldsymbol \theta^{(1)}\boldsymbol x^{(1)} &amp;
+\boldsymbol \theta^{(1)}\boldsymbol x^{(2)} &amp;
+\dots &amp;
+\boldsymbol \theta^{(1)}\boldsymbol x^{(m)}\\ 
+
+\boldsymbol \theta^{(2)}\boldsymbol x^{(1)} &amp;
+\boldsymbol \theta^{(2)}\boldsymbol x^{(2)} &amp;
+\dots &amp;
+\boldsymbol \theta^{(2)}\boldsymbol x^{(m)}\\    
+
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\     
+ 
+\boldsymbol \theta^{(M)}\boldsymbol x^{(1)} &amp;
+\boldsymbol \theta^{(M)}\boldsymbol x^{(2)} &amp;
+\dots &amp;
+\boldsymbol \theta^{(M)}\boldsymbol x^{(m)}\\   
+\end{matrix}
+
+\right]
+\\
+\boldsymbol \theta^{(j)} \boldsymbol x^{(k)} =  \sum  \boldsymbol \theta^{(j)}_i \boldsymbol x^{(k)}_i %]]&gt;&lt;/script&gt;
+
+</description>
+        <pubDate>Sun, 24 Nov 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/PCA.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/PCA.html</guid>
+        
+        <category>CODE</category>
+        
+        <category>MACHINELEARNING</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>🐣 SVM推导与总结</title>
+        <description>&lt;h2 id=&quot;logistic代价函数推导svm&quot;&gt;Logistic代价函数推导SVM&lt;/h2&gt;
+
+&lt;p&gt;0/1损失函数$l_{0/1}$非凸、非连续，数学性质差，故常用其他函数代替$l_{0/1}$&lt;/p&gt;
+
+&lt;p&gt;三种常用的替代损失函数：
+&lt;script type=&quot;math/tex&quot;&gt;l_{hinge}(z) = \max(0,1-z)&lt;/script&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;l_{exp}(z) = e^{-z}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;l_{log}(z) = log(1+e^{-z})&lt;/script&gt;
+
+&lt;h3 id=&quot;logistic-regression&quot;&gt;Logistic Regression&lt;/h3&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\min_\theta \frac{1}{m} \left[ \sum_{i=1}^m y^{(i)}\left[-\log(h_{\theta}(x^{(i)}))\right]+(1-y^{(i)})\left[-\log(1-h_{\theta}(x^{(i)}))\right]\right]+\frac{\lambda}{2m}\sum_{j=1}^n\theta_j^2&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\min_\theta  \left[ \sum_{i=1}^m 
+y^{(i)}cost_1
++(1-y^{(i)})cost_0\right] 
++\frac{\lambda}{2}\sum_{j=1}^n\theta_j^2&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;A + \lambda B&lt;/script&gt;
+
+&lt;h3 id=&quot;svm&quot;&gt;SVM&lt;/h3&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;C A + B&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\min_\theta C  \sum_{i=1}^m\left[ y^{(i)}cost_1(\boldsymbol \theta^T\boldsymbol x^{(i)})+(1-y^{(i)})cost_0({\boldsymbol \theta}^T\boldsymbol x^{(i)})\right]+\frac{1}{2}\sum_{j=1}^n\theta_j^2&lt;/script&gt;
+
+&lt;p&gt;其中SVM中的代价函数$cost$采用$hinge$损失
+&lt;script type=&quot;math/tex&quot;&gt;l_{hinge}(z) = \max(0,1-z)&lt;/script&gt;
+如下所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../img/svm_cost.png&quot; alt=&quot;5&quot; style=&quot;zoom:70%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;可以直观地发现当$y=1$时，我们希望$\boldsymbol \theta^T\boldsymbol x \gg 1$，这样使$cost_1$最小；当$y=0$时，我们希望$\boldsymbol \theta^T\boldsymbol x \ll -1$，这样使$cost_0$最小。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;margin&quot;&gt;Margin&lt;/h2&gt;
+
+&lt;p&gt;设划分超平面的方程为
+&lt;script type=&quot;math/tex&quot;&gt;\boldsymbol w^T\boldsymbol x +b =0&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;样本中任意点到该超平面的距离为
+&lt;script type=&quot;math/tex&quot;&gt;d = \frac{\boldsymbol w^T x +b}{||\boldsymbol w||}&lt;/script&gt;
+对于$y=1$，$y=-1$两类样本点，任意点到超平面的距离应大于$d$
+&lt;script type=&quot;math/tex&quot;&gt;\frac{\boldsymbol w^T  x^{(i)} +b}{||\boldsymbol w||} \geq d, \ \forall y^{(i)} = 1\\
+\frac{\boldsymbol w^T  x^{(i)} +b}{||\boldsymbol w||} \leq -d, \ \forall y^{(i)} = -1
+\\ \Downarrow \\
+\frac{\boldsymbol w^T  x^{(i)} +b}{||\boldsymbol w||d} \geq 1, \ \forall y^{(i)} = 1\\
+\frac{\boldsymbol w^T  x^{(i)} +b}{||\boldsymbol w||d} \leq -1, \ \forall y^{(i)} = -1
+\\ \Downarrow \\
+\boldsymbol w_d^T  x^{(i)} +b_d \geq 1, \ \forall y^{(i)} = 1\\
+\boldsymbol w_d^T  x^{(i)} +b_d \leq -1, \ \forall y^{(i)} = -1
+\\ \Downarrow \\
+y^{(i)}(\boldsymbol w^T  x^{(i)} +b) \geq 1&lt;/script&gt;
+&lt;img src=&quot;../img/svm_margin.png&quot; style=&quot;zoom:30%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;对于任意支撑向量，优化目标为最大化点到超平面的距离：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\max \frac{|\boldsymbol w^T x +b|}{||\boldsymbol w||} \Rightarrow \max \frac{1}{||\boldsymbol w||}  \Rightarrow \min \frac{1}{2}||w||^2&lt;/script&gt;
+
+&lt;p&gt;则SVM的优化目标为：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\min_{\boldsymbol w,b} \frac{1}{2}||\boldsymbol w||^2 \\
+{\rm{s.t.}} \ \ y^{(i)}(\boldsymbol w^T \boldsymbol x^{(i)}+b)\geq 1, \ i = 1,2,\dots,m.&lt;/script&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;软间隔-soft-margin-svm&quot;&gt;软间隔 Soft Margin SVM&lt;/h2&gt;
+
+&lt;p&gt;非线性可分情况，允许误差$\xi_i$&lt;/p&gt;
+
+&lt;p&gt;L1正则&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\min_{\boldsymbol w,b} \frac{1}{2}||\boldsymbol w||^2 + C\sum_{i=1}^m \xi_i\\
+{\rm{s.t.}} \ \ y^{(i)}(\boldsymbol w^T \boldsymbol x^{(i)}+b)\geq 1 - \xi_i \\\ i = 1,2,\dots,m,\ \xi_i\geq0&lt;/script&gt;
+
+&lt;p&gt;L2正则&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\min_{\boldsymbol w,b} \frac{1}{2}||\boldsymbol w||^2 + C\sum_{i=1}^m \xi_i^2\\
+{\rm{s.t.}} \ \ y^{(i)}(\boldsymbol w^T \boldsymbol x^{(i)}+b)\geq 1 - \xi_i \\\ i = 1,2,\dots,m,\ \xi_i\geq0&lt;/script&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;拉格朗日对偶性-lagrangian-duality&quot;&gt;拉格朗日对偶性 Lagrangian Duality&lt;/h2&gt;
+
+&lt;p&gt;​	在约束最优化问题中，常常利用拉格朗日对偶性将原始问题转为对偶问题，通过解决对偶问题而得到原始问题的解。当满足一定条件时，原始问题与对偶问题的解是完全等价的。&lt;/p&gt;
+
+&lt;p&gt;原始目标：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\min_{\boldsymbol w,b} \frac{1}{2}||\boldsymbol w||^2&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;{\rm{s.t.}} \ \ y^{(i)}(\boldsymbol w^T \boldsymbol x^{(i)}+b)\geq 1, \ i = 1,2,\dots,m.&lt;/script&gt;
+
+&lt;p&gt;使用拉格朗日乘法构造拉格朗日函数转化为无约束优化问题，其中拉格朗日乘子$\alpha_i\geq0$&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;L(\boldsymbol w,b, \boldsymbol \alpha) = \frac{1}{2}||\boldsymbol w||^2 + \sum_{i=1}^m\alpha_i(1-y^{(i)}(\boldsymbol w^T \boldsymbol x^{(i)}+b))&lt;/script&gt;
+
+&lt;p&gt;将$L(\boldsymbol w,b, \boldsymbol \alpha) $看作是关于$\boldsymbol \alpha$的函数，求&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\max_{\boldsymbol \alpha} L(\boldsymbol w,b, \boldsymbol \alpha)&lt;/script&gt;
+
+&lt;p&gt;当某个约束条件不满足时，如&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+y^{(i)}(\boldsymbol w^T \boldsymbol x^{(i)}+b)&lt; 1 %]]&gt;&lt;/script&gt;，那么显然有&lt;script type=&quot;math/tex&quot;&gt;\max\limits_{\boldsymbol \alpha} L(\boldsymbol w,b, \boldsymbol \alpha) = \infty&lt;/script&gt;（令&lt;script type=&quot;math/tex&quot;&gt;\alpha_i=\infty&lt;/script&gt;即可）而当所有约束条件都满足时，则最优值为&lt;script type=&quot;math/tex&quot;&gt;\frac{1}{2}\|\boldsymbol w\|^2&lt;/script&gt;，即最初要最小化的目标值。因此，在约束条件得到满足的情况下最小化&lt;script type=&quot;math/tex&quot;&gt;\frac{1}{2}\|\boldsymbol w\|^2&lt;/script&gt;，等同于求&lt;script type=&quot;math/tex&quot;&gt;\max\limits_{\boldsymbol \alpha} L(\boldsymbol w,b, \boldsymbol \alpha)&lt;/script&gt;的最小值。&lt;/p&gt;
+
+&lt;p&gt;原始目标变为&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\min_{\boldsymbol w,b}\max_{\boldsymbol \alpha} L(\boldsymbol w,b, \boldsymbol \alpha)&lt;/script&gt;
+
+&lt;p&gt;这个问题只有在满足约束条件下才有极小值，也就是说这个问题的极小值一定满足约束条件。&lt;/p&gt;
+
+&lt;p&gt;令$\nabla_\boldsymbol w L = 0$，$\nabla_b L = 0$，得：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol w =\sum_{i=1}^m\alpha_iy_i\boldsymbol x_i&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{i=1}^m\alpha_iy_i = 0&lt;/script&gt;
+
+&lt;p&gt;将其带入，则原始问题转化对偶问题：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\max_\boldsymbol \alpha\sum_{i=1}^m \alpha_i-\frac{1}{2}\sum_{i=1}^m\sum_{j=1}^m\alpha_i\alpha_jy_iy_j\boldsymbol x_i\boldsymbol x_j \\&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+{\rm{s.t.}} &amp;\  \sum_{i=1}^m\alpha_iy_i = 0,\\ 
+&amp;\ \alpha_i\geq0, \ i = 1,2,\dots,m
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;h3 id=&quot;强对偶和弱对偶-strong-and-weak-duality&quot;&gt;强对偶和弱对偶 strong and weak duality&lt;/h3&gt;
+
+&lt;p&gt;原始问题 Primal Problem&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;p^* = \min_w \max_{\alpha_i \geq 0} L(\boldsymbol w,b, \boldsymbol \alpha)&lt;/script&gt;
+对偶问题 Dual Problem&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;d^* = \max_{\alpha_i \geq 0}\min_w  L(\boldsymbol w,b, \boldsymbol \alpha)&lt;/script&gt;
+弱对偶性：
+&lt;script type=&quot;math/tex&quot;&gt;d^* \leq p^*&lt;/script&gt;
+强对偶性：
+&lt;script type=&quot;math/tex&quot;&gt;d^* = p^*&lt;/script&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;kkt-conditions&quot;&gt;KKT conditions&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;定常方程式 stationary equation&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\nabla_\boldsymbol w L = 0&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\nabla_b L = 0&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;原始可行性 primal feasibility&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;y^{(i)}(\boldsymbol w^T \boldsymbol x^{(i)}+b)\geq 1&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;对偶可行性 dual feasibility&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha_i \geq 0&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;辅松弛 complementary slackness&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha_i(y^{(i)}f(x^{(i)})-1)=0&lt;/script&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;核函数-kernel-trick&quot;&gt;核函数 Kernel Trick&lt;/h2&gt;
+
+&lt;p&gt;在&lt;strong&gt;线性不可分&lt;/strong&gt;的情况下，支持向量机首先在低维空间中完成计算，然后通过核函数将输入空间映射到高维特征空间，最终在高维特征空间中构造出最优分离超平面，从而把平面上本身不好分的非线性数据分开——依靠升维使原本线性不可分的数据线性可分&lt;/p&gt;
+
+&lt;p&gt;SVM优化问题经过对偶转化为了&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\max_\boldsymbol \alpha\sum_{i=1}^m \alpha_i-\frac{1}{2}\sum_{i=1}^m\sum_{j=1}^m\alpha_i\alpha_jy_iy_j\boldsymbol x_i\boldsymbol x_j&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+{\rm{s.t.}} &amp;\  \sum_{i=1}^m\alpha_iy_i = 0,\\ 
+&amp;\ \alpha_i\geq0, \ i = 1,2,\dots,m
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;可以看到数据点仅出现为为内积$\boldsymbol x_i\boldsymbol x_j$&lt;/p&gt;
+
+&lt;p&gt;只要能在特征空间中计算出内积，就不需要显式的映射。而且许多常见的几何操作（角度、距离）可以用内积表示。减少计算量和储存空间。&lt;/p&gt;
+
+&lt;p&gt;定义核函数${\rm{K}} (\boldsymbol x_i,\boldsymbol x_j)=\boldsymbol x_i’·\boldsymbol x_j’=(\boldsymbol x_i·\boldsymbol x_j+1)^2$&lt;/p&gt;
+
+&lt;p&gt;核函数本质是将数据添加多项式特征 $x \rightarrow x’$&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;x'= (x_n^2,\dots,x_1^2,\sqrt2 x_nx_{n-1},\dots,\sqrt2x_n\dots,\sqrt2 x_1,1)&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;核函数不是SVM专有&lt;/li&gt;
+  &lt;li&gt;存在$\boldsymbol x_i·\boldsymbol x_j$即可应用核函数&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;核函数类型&quot;&gt;核函数类型&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;线性核函数 &lt;em&gt;Linear kernel&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;{\rm{K}} (\boldsymbol x_i,\boldsymbol x_j)=\boldsymbol x_i·\boldsymbol x_j&lt;/script&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;多项式核函数 &lt;em&gt;Polynomial kernel&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;{\rm{K}} (\boldsymbol x_i,\boldsymbol x_j)=(\boldsymbol x_i·\boldsymbol x_j+1)^d&lt;/script&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;高斯核函数 /  径向基函数 Radial Basis Function Kernel —— RBF&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;{\rm{K}} (\boldsymbol x_i,\boldsymbol x_j)=e^{-\gamma||\boldsymbol x_i-\boldsymbol x_j||^2}&lt;/script&gt;
+
+&lt;p&gt;将每个样本点映射到无穷维的特征空间，每个数据点都是landmark
+&lt;script type=&quot;math/tex&quot;&gt;x \rightarrow (e^{-\gamma||\boldsymbol x-\boldsymbol l_1||^2},e^{-\gamma||\boldsymbol x-\boldsymbol l_2||^2})&lt;/script&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;m \times n \rightarrow m \times m&lt;/script&gt;
+
+&lt;p&gt;原本$n$维的数据升为$m$维（$m$为数据量）&lt;/p&gt;
+
+&lt;p&gt;应用：自然语言处理&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;svm思想解决回归问题&quot;&gt;SVM思想解决回归问题&lt;/h2&gt;
+
+&lt;p&gt;核心思想：在margin里包含的样本点越多越好&lt;/p&gt;
+
+&lt;p&gt;超参数$\epsilon$指定margin到中间直线的距离&lt;/p&gt;
+</description>
+        <pubDate>Wed, 20 Nov 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/SVM.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/SVM.html</guid>
+        
+        <category>CODE</category>
+        
+        <category>MACHINELEARNING</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>聚类 Clustering —— K-means &amp; GMM</title>
+        <description>&lt;h2 id=&quot;聚类性能度量&quot;&gt;聚类性能度量&lt;/h2&gt;
+
+&lt;p&gt;聚类性能度量：聚类&lt;strong&gt;有效性指标&lt;/strong&gt;——簇内相似度高，簇间相似度低&lt;/p&gt;
+
+&lt;p&gt;衡量指标包括外部指标/内部指标&lt;/p&gt;
+
+&lt;p&gt;定义数据集$D={\boldsymbol x_1,\boldsymbol x_2,…,\boldsymbol x_m}$，通过聚类给出的簇划分为$C={C_1, C_2,…,C_k}$，参考模型给出的簇划分为$C^o={C_1^o, C_2^o,…,C_s^o}$，$\lambda$、$\lambda^o$为对应的簇$C$、$C^o$标记向量 ，其中$\lambda_j$的值表示$\boldsymbol x_j$在第几类，即$\boldsymbol x_j \in C_{\lambda_j}$。将样本两两配对，定义&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+a=|SS|, SS=\{(\boldsymbol{x}_i,\boldsymbol{x}_j)|\lambda_i=\lambda_j,\lambda_i^o=\lambda_j^o,i&lt;j\}\\
+b=|SD|, SD=\{(\boldsymbol{x}_i,\boldsymbol{x}_j)|\lambda_i=\lambda_j,\lambda_i^o\neq\lambda_j^o,i&lt;j\}\\
+c=|DS|, DS=\{(\boldsymbol{x}_i,\boldsymbol{x}_j)|\lambda_i\neq\lambda_j,\lambda_i^o=\lambda_j^o,i&lt;j\}\\
+d=|DD|, DD=\{(\boldsymbol{x}_i,\boldsymbol{x}_j)|\lambda_i\neq\lambda_j,\lambda_i^o\neq\lambda_j^o,i&lt;j\}\\ %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;$SS$包含在$C$、$C^o$中均隶属于相同簇的样本对，$SD$包含在$C$属于同一簇，在$C^o$中隶属于不同簇的样本对。$SS$属于聚类完全正确，$DD$属于聚类结果正确。&lt;/p&gt;
+
+&lt;p&gt;聚类性能度量外部指标：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Jaccard系数 JC&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;JC=\frac{a}{a+b+c}&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;FM指数 FMI&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;FMI=\sqrt{\frac{a}{a+b}·\frac{a}{a+c}}&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Rand指数 RI&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;RI=\frac{2(a+d)}{m(m-1)}&lt;/script&gt;
+
+&lt;p&gt;结果值在$[0,1]$区间，值越大越好。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;k均值算法-k-means-&quot;&gt;K均值算法 &lt;em&gt;k-means&lt;/em&gt; 🥝&lt;/h2&gt;
+
+&lt;p&gt;最小化平方误差&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;E=\sum_{i=1}^k\sum_{\boldsymbol{x}\in C_i}\|\boldsymbol{x}-\boldsymbol{\mu}_i\|_2^2&lt;/script&gt;
+
+&lt;p&gt;其中$\boldsymbol \mu_i=\frac{1}{\vert C_i\vert}\sum_{\boldsymbol x\in C_i}\boldsymbol{x}$ 是簇$C_i$的均值向量(中心)，$E$刻画了簇内样本与中心$\boldsymbol{\mu}_i$的紧密程度。$E$越小，簇内样本相似度越高。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;img src=&quot;../img/k-means.png&quot; alt=&quot;6&quot; style=&quot;zoom:60%;&quot; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;高斯混合聚类-gaussian-mixture-model--gmm-&quot;&gt;高斯混合聚类 Gaussian Mixture Model —— GMM 🥑&lt;/h2&gt;
+
+&lt;p&gt;高斯分布概率密度：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x)= \frac{1}{\sqrt {2 \pi} \sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}&lt;/script&gt;
+
+&lt;p&gt;多元高斯分布的概率密度函数：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(\boldsymbol{x})=\frac{1}{(2\pi)^{\frac{n}{2}}|\boldsymbol{\Sigma}|^{\frac1{2}}}e^{-\frac{1}{2}(\boldsymbol{x}-\boldsymbol\mu)^T\boldsymbol{\Sigma}^{-1}(\boldsymbol{x}-\boldsymbol\mu)}&lt;/script&gt;
+
+&lt;p&gt;其中$\mu$是$n$维均值向量，$\boldsymbol{\Sigma}$是$n\times n$的协方差矩阵。高斯分布完全由均值向量$\boldsymbol\mu$，协方差矩阵$\boldsymbol{\Sigma}$确定。将概率密度函数记为$p(\boldsymbol{x}\vert\boldsymbol{\mu}_i,\boldsymbol\Sigma_i)$，定义高斯混合分布如下&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p_\mathcal{M}(\boldsymbol{x})=\sum_{i=1}^k\alpha_i·p(\boldsymbol{x}|\boldsymbol\mu_i,\boldsymbol{\boldsymbol{\Sigma}}_i)&lt;/script&gt;
+
+&lt;p&gt;高斯混合分布由$k$个&lt;strong&gt;混合成分&lt;/strong&gt;组成，每个混合成分对应一个高斯分布。其中$\mu_i$与$\boldsymbol \Sigma_i$是第$i$个高斯混合成分的参数，$\alpha_i&amp;gt;0$为相应的&lt;strong&gt;混合系数&lt;/strong&gt;，$\sum_{i=1}^k\alpha_i = 1$. 混合系数本质上是第$i$类样本所占整体样本的比例，从另一个角度看则是样本属于第$i$簇的概率。&lt;/p&gt;
+
+&lt;p&gt;使用高斯混合分布的模型在样本空间中生成样本的过程：以$\alpha_1,\alpha_2,…,\alpha_k$作为概率选择出一个混合成分，根据该混合成分的概率密度函数，采样产生出相应的样本。&lt;/p&gt;
+
+&lt;p&gt;给定样本集$D$，可使用&lt;strong&gt;极大似然估计&lt;/strong&gt;，即最大化对数似然函数&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+LL(D) &amp; = \ln \left( \prod \limits_{j=1}^mp_\mathcal{M}(\boldsymbol{x}_j) \right)\\ 
+&amp; = \sum \limits_{j=1}^m \ln \sum_{i=1}^k\alpha_i·p(\boldsymbol{x}|\boldsymbol\mu_i, \boldsymbol{\Sigma}_i)
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;常用$EM$算法进行迭代优化求解&lt;/p&gt;
+
+&lt;h3 id=&quot;期望最大化-expectation-maximization--em-&quot;&gt;期望—最大化 Expectation-Maximization —— EM 🥭&lt;/h3&gt;
+
+&lt;p&gt;设训练集为$D={\boldsymbol{x}&lt;em&gt;1,\boldsymbol{x}_2,…,\boldsymbol{x}_m}$为高斯混合分布模型生成的样本，设$z_j$表示生成样本 $\boldsymbol{x}_j$的高斯混合成分，即$P(z_j=i)$对应于$\alpha_i(i=1,2,…,k)$。根据&lt;strong&gt;贝叶斯定理&lt;/strong&gt;，$z_j$的后验分布对应样本$\boldsymbol{x}_j$由第$i$个高斯混合分布成分生成的&lt;strong&gt;后验概率&lt;/strong&gt;，简记为$\gamma&lt;/em&gt;{ji}$&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+\gamma_{ji}= p_\mathcal{M}(z_j=i|\boldsymbol{x}_j) &amp;= \frac{P(z_j=i)·p_\mathcal{M}(\boldsymbol{x}_j|z_j=i)}{p_\mathcal{M}(\boldsymbol{x}_j)} \\
+&amp; = \frac{\alpha_i·p(\boldsymbol{x}_j|\boldsymbol\mu_i,\boldsymbol\Sigma_i)}{\sum\limits_{l=1}^k\alpha_l·p(\boldsymbol{x}_j|\boldsymbol\mu_l,\boldsymbol\Sigma_l)}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;$\gamma_{ji}$是已知样本为$\boldsymbol{x}_j$，反推该样本属于第$i$类的概率。把$\boldsymbol{x}_j$暂时划分到概率最大的那一类，则样本$\boldsymbol{x}_j$的簇标记$\lambda_j$为&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\lambda_j = \mathop{\arg\max} \limits_{i\in{1,2,...,k}} \gamma_{ji}&lt;/script&gt;
+
+&lt;p&gt;若参数${(\alpha_i,\boldsymbol\mu_i,\boldsymbol{\Sigma}_i)}$能使似然函数最大化，由$\frac{\partial LL(D)}{\partial \boldsymbol\mu_i}= 0$有&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol \mu_i = \frac{\sum \limits_{j=1}^m \gamma_{ji} \boldsymbol x_j}{\sum \limits_{j=1}^m \gamma_{ji}} \tag{1}&lt;/script&gt;
+
+&lt;p&gt;由$\frac{\partial LL(D)}{\partial \boldsymbol\Sigma_i}= 0$有&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf\Sigma_{i}=\cfrac{\sum \limits_{j=1}^m\gamma_{ji}(\boldsymbol x_{j}-\boldsymbol \mu_{i})(\boldsymbol x_{j}-\boldsymbol\mu_{i})^T}{\sum \limits_{j=1}^m\gamma_{ji}}\tag{2}&lt;/script&gt;
+
+&lt;p&gt;每个高斯成分的混合系数由该成分的平均后验概率确定&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha_i=\frac{1}{m}\sum \limits_{j=1}^m \gamma_{ji}\tag{3}&lt;/script&gt;
+
+&lt;p&gt;EM算法：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;E步：根据当前参数计算属于每个高斯成分的后验概率$\gamma_{ji}$&lt;/li&gt;
+  &lt;li&gt;M步：根据$(1)(2)(3)$更新${(\alpha_i,\boldsymbol\mu_i,\boldsymbol{\Sigma}_i)\vert1\leq i \leq k}$&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;img src=&quot;../img/GMM.png&quot; style=&quot;zoom:60%;&quot; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;初始化方案：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;协方差矩阵$\boldsymbol{\Sigma}_i$设为单位矩阵，每个模型比例的先验概率$\alpha_i = 1/k$，均值$\boldsymbol\mu_i$设为随机数&lt;/li&gt;
+  &lt;li&gt;由k-means聚类算法对样本进行聚类，利用各类的均值作为$\boldsymbol\mu_i$，并计算$\boldsymbol{\Sigma}_i$，$\alpha_i$取各类样本占样本总数的比例&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Wed, 20 Nov 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/%E8%81%9A%E7%B1%BB-Clustering-K-means-&-GMM.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/%E8%81%9A%E7%B1%BB-Clustering-K-means-&-GMM.html</guid>
+        
+        <category>CODE</category>
+        
+        <category>MACHINELEARNING</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>🌲 决策树</title>
+        <description>&lt;p&gt;构建决策树之通常包括三个步骤：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;特征选择&lt;/li&gt;
+  &lt;li&gt;决策树生成&lt;/li&gt;
+  &lt;li&gt;决策树剪枝&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;决策树生成&quot;&gt;决策树生成&lt;/h2&gt;
+
+&lt;h3 id=&quot;信息增益&quot;&gt;信息增益&lt;/h3&gt;
+
+&lt;p&gt;通常使用&lt;strong&gt;信息熵&lt;/strong&gt;Information Entropy度量样本集合纯度。样本集合为$D$，第$k$类样本所占比例为$p_k(k=1,2,…,N)$，则样本$D$的信息熵为&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;H(D) =-\sum\limits_{k=1}^{N}p_k{\log}_2p_k&lt;/script&gt;
+
+&lt;p&gt;$Ent(D)$越小，$D$的纯度越高。&lt;/p&gt;
+
+&lt;p&gt;设离散属性$a$有$V$个可能的取值，当用属性$a$对样本集合$D$进行划分所获的的&lt;strong&gt;信息增益&lt;/strong&gt;Information Gain为目标类变量与属性&lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt;变量在&lt;script type=&quot;math/tex&quot;&gt;D&lt;/script&gt;(样本集)上的&lt;strong&gt;互信息&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;Gain(D,a)=H(D)- \sum \limits_{v=1}^V\frac{|D^v|}{|D|}H(D^v)&lt;/script&gt;
+
+&lt;p&gt;一般而言，信息增益越大，意味着使用属性$a$进行划分获得的纯度提升越大。&lt;/p&gt;
+
+&lt;p&gt;ID3选择属性使用信息增益&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;a_* = \mathop{ \arg \max}\limits_{a \in A} Gain(D,a)&lt;/script&gt;
+
+&lt;h3 id=&quot;增益率&quot;&gt;增益率&lt;/h3&gt;
+
+&lt;p&gt;信息增益更偏好于&lt;strong&gt;可取更多的值属性&lt;/strong&gt;，为减小这种偏好的影响，在C4.5选择属性使用&lt;strong&gt;增益率&lt;/strong&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;Gain\_ratio(D,a)=\frac{Gain(D,a)}{IV(a)}&lt;/script&gt;
+
+&lt;p&gt;$IV(a)$为属性$a$的&lt;strong&gt;固有值&lt;/strong&gt;Intrinsic Value。属性$a$可取值越多，$IV(a)$的值通常会越大。&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;IV(a)=-\sum \limits_{v=1}^V\frac{|D^v|}{|D|}\log_2\frac{|D^v|}{|D|}&lt;/script&gt;
+
+&lt;p&gt;个人理解$IV(a)$即计算按属性$a$分类时的信息熵，属性$a$多时混乱程度通常更大，导致信息增益更大。&lt;/p&gt;
+
+&lt;p&gt;C4.5先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择信息增益率最高的。&lt;/p&gt;
+
+&lt;h3 id=&quot;基尼指数&quot;&gt;基尼指数&lt;/h3&gt;
+
+&lt;p&gt;CART决策树使用&lt;strong&gt;基尼指数&lt;/strong&gt;选择划分属性，数据集$D$的纯度可用&lt;strong&gt;基尼值&lt;/strong&gt;度量&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;Gini(D)=\sum_{k=1}^N\sum_{k'\neq k}p_kp_{k'} = 1-\sum_{k=1}^N p_k^2&lt;/script&gt;
+
+&lt;p&gt;直观来说，$Gini(D)$反映了从数据集$D$中随机抽取两个样本，其类别标记不一致的概率，因此$Gini(D)$越小，则数据集$D$纯度越高。&lt;/p&gt;
+
+&lt;p&gt;$Gini$在节点取值分布均匀时取最大值$1-1/V$，在只包含一个类别时取最小值$0$。
+属性$a$的基尼指数定义为&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;𝐺𝑖𝑛𝑖\_𝑖𝑛𝑑𝑒𝑥(𝐷,𝑎)=\sum \limits_{𝑣=1}^𝑉\frac{|D^v|}{|D|}𝐺𝑖𝑛𝑖(𝐷^𝑣)&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;a_* = \mathop{ \arg \min}\limits_{a \in A} Gini\_index(D,a)&lt;/script&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;决策树剪枝&quot;&gt;决策树剪枝&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;剪枝&lt;/strong&gt;pruning是决策树学习算法中避免过拟合的主要手段。&lt;/p&gt;
+
+&lt;h3 id=&quot;预剪枝&quot;&gt;预剪枝&lt;/h3&gt;
+
+&lt;p&gt;​		在决策树生成过程中，对每个结点划分前进行估计，若对此结点划分不能带来决策树泛化性能的提升，则停止划分并标记为叶子结点。&lt;/p&gt;
+
+&lt;p&gt;​		预剪枝使得决策树的很多分支都没有展开，这不仅降低了过拟合的风险，还显著减少了决策树训练和预测的时间开销。&lt;/p&gt;
+
+&lt;p&gt;​		但是另一方面，有些分支的当前划分虽然不能带来泛化性能的提升，甚至可能导致泛化性能暂时下降，但在其基础上进行的后续划分却有可能导致泛化性能显著上升。所以基于贪心策略的预剪枝可能带来欠拟合的风险。&lt;/p&gt;
+
+&lt;h3 id=&quot;后剪枝&quot;&gt;后剪枝&lt;/h3&gt;
+
+&lt;p&gt;首先生成完整的决策树，然后自下而上地逐层剪枝，如果一个节点的子节点被删除后，决策树的准确度没有降低，那么就将该节点设置为叶节点。训练时间开销大。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;连续和缺失值&quot;&gt;连续和缺失值&lt;/h2&gt;
+
+&lt;h3 id=&quot;属性值连续&quot;&gt;属性值连续&lt;/h3&gt;
+
+&lt;p&gt;对于连续的属性而言，属性值可取分界点后构成二分法的分类。分界点的取值同样是两点的中点值，对中点值进行分类增益计算后再进行比较。连续值在子节点上依然能够再次进行分类。&lt;/p&gt;
+
+&lt;h3 id=&quot;样本值缺失&quot;&gt;样本值缺失&lt;/h3&gt;
+
+&lt;p&gt;对于训练决策树时训练集存在某些特征的属性值缺失的情况，会遇到如下两个问题：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;如何选择最优属性进行划分&lt;/li&gt;
+  &lt;li&gt;给定划分属性，若在该属性上值缺失，如何确定样本的归属&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;对于问题1而言：只要将所有的计算换成无缺样本的数据即可。最终增益乘以对应特征所含有值的概率值，&lt;/p&gt;
+
+&lt;p&gt;对于问题2而言：将缺失值的样本按照一定的比例以不同的概率划分到不同的子节点中去。若取值已知，则划分到对应的子节点中去，样本权值在子节点中保持为wx，若取值未知，则将x同时划入所有的子节点中区，并将样本去找你之在对应中调整为对应的比例乘以wx，权重在之后则以概率的形式体现到计算中去。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;多变量决策树&quot;&gt;多变量决策树&lt;/h2&gt;
+
+&lt;p&gt;多变量决策树的学习过程中，不是为每个非叶节点寻找一个最优划分属性，而是试图建立一个合适的线性分类器于一个节点中，减缓决策树的复杂度。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 10 Nov 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/%E5%86%B3%E7%AD%96%E6%A0%91.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/%E5%86%B3%E7%AD%96%E6%A0%91.html</guid>
+        
+        <category>CODE</category>
+        
+        <category>MACHINELEARNING</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>逻辑回归 Logitstic Regression</title>
+        <description>&lt;h2 id=&quot;对数几率回归-logitstic-regression&quot;&gt;对数几率回归 Logitstic Regression&lt;/h2&gt;
+
+&lt;p&gt;考虑二分类任务，将线性回归模型的预测值$h(\boldsymbol x) =\boldsymbol{w}^T\boldsymbol{x} + b$转换为0/1值&lt;/p&gt;
+
+&lt;h3 id=&quot;对数几率函数-sigmoid&quot;&gt;对数几率函数 Sigmoid&lt;/h3&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;y = \frac{1}{1+e^{-z}}&lt;/script&gt;
+
+&lt;p&gt;&lt;img src=&quot;../img/Sigmoid.png&quot; style=&quot;zoom:38%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;当$z&amp;gt;0$时，$Sigmoid&amp;gt;0$，且$z$越大，$Sigmoid$越接近$1$；$z&amp;lt;0$时，$Sigmoid&amp;lt;0$，$z$越小，$Sigmoid$越接近$0$。&lt;/p&gt;
+
+&lt;p&gt;将$h(\boldsymbol x)$代入，可将预测值转换为0/1值，得&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat y = \frac{1}{1+e^{-(\boldsymbol{w}^T\boldsymbol{x}+b)}}&lt;/script&gt;
+
+&lt;p&gt;线性模型可表示为&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;h =\boldsymbol{w}^T\boldsymbol{x} + b = \ln \frac{y}{1-y}&lt;/script&gt;
+
+&lt;p&gt;设$y$为样本$\boldsymbol{x}$为正例的可能性，即后验概率估计$p(y=1{\vert}\boldsymbol{x})$，$1-y$为反例的可能性&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat y = \frac{1}{1+e^{-(\boldsymbol{w}^T\boldsymbol{x}+b)}}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\ln \frac{y}{1-y}=\boldsymbol{w}^T\boldsymbol{x}+b = \ln \frac{p(y=1|\boldsymbol{x})}{p(y=0|\boldsymbol{x})}&lt;/script&gt;
+
+&lt;p&gt;其中$\frac{y}{1-y}$为&lt;strong&gt;几率&lt;/strong&gt;odds，$\ln \frac{y}{1-y}$为&lt;strong&gt;对数几率&lt;/strong&gt;logit&lt;/p&gt;
+
+&lt;p&gt;概率分布如下&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(y=1|\boldsymbol{x}) = \frac{e^{\boldsymbol{w}^T\boldsymbol{x}+b}}{1+e^{\boldsymbol{w}^T\boldsymbol{x}+b}}\\
+p(y=0|\boldsymbol{x}) = \frac{1}{1+e^{\boldsymbol{w}^T\boldsymbol{x}+b}}&lt;/script&gt;
+
+&lt;p&gt;可通过&lt;strong&gt;极大似然法&lt;/strong&gt;估计$\boldsymbol{w}$和$b$，设数据集为${(\boldsymbol{x_i},y_i)}_{i-1}^m$&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\ln L(\boldsymbol{w},b)=\sum _{i=1}^m \ln p(y_i|\boldsymbol{x}_i;\boldsymbol{w},b)&lt;/script&gt;
+
+&lt;h3 id=&quot;代价函数-cost-function&quot;&gt;代价函数 Cost Function&lt;/h3&gt;
+
+&lt;p&gt;由于的$Sigmoid$函数使之前使用的代价函数成为非凸函数，定义新代价函数为&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;Cost(\hat y (x),y) = 
+\left\{
+ \begin{array}{**}
+-\log(\hat y) , y = 1 \\
+-\log(1-\hat y) , y = 0
+\end{array}
+\right. 
+ = -y\log(\hat y)-(1-y)\log(1-\hat y)&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}{}
+Loss&amp; =\frac{1}{m}\sum_{i=1}^mCost(\hat y ^{(i)},y^{(i)}) \\
+&amp; = -\frac{1}{m}\sum_{i=1}^m [y^{(i)}\log\hat y ^{(i)}+(1-y^{(i)})\log(1-\hat y ^{(i)}) ]
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;$Loss$的导数化简结果如下：
+&lt;script type=&quot;math/tex&quot;&gt;Loss(\boldsymbol \theta)= -\frac{1}{m}\sum_{i=1}^m [y^{(i)}\log\frac{1}{1+e^{-\boldsymbol{\theta}^T\boldsymbol{x}}}+(1-y^{(i)})\log(1-\frac{1}{1+e^{-\boldsymbol{\theta}^T\boldsymbol{x}}} ]&lt;/script&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{\partial Loss}{\partial \boldsymbol \theta_j} = 
+\frac{1}{m}\sum_{i=1}^m(\hat y^{(i)}-y^{(i)})x_j^{(i)}&lt;/script&gt;
+
+&lt;h3 id=&quot;梯度下降-gradient-descent&quot;&gt;梯度下降 Gradient Descent&lt;/h3&gt;
+
+&lt;p&gt;如果$Loss(\boldsymbol w )$如果在$\boldsymbol w_i$点可微且有定义，梯度 $\nabla Loss(\boldsymbol w _i)$为函数增长最快的方向，因此梯度的反方向$-\nabla Loss(\boldsymbol w _i)$为函数下降最快的方向。设$\alpha$为学习率，可以用以下公式进行迭代：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}{}
+\boldsymbol w _{i+1}&amp; = \boldsymbol w _i − α \nabla Loss(\boldsymbol w _i)\\
+&amp; = \boldsymbol w _i − α \frac{\partial}{\partial\boldsymbol w _i}Loss(\boldsymbol w) \\
+&amp; = \boldsymbol w _i − α \frac{1}{m} \sum_{j=1}^m (\hat y^{(j)}-y^{(j)})x_i^{(j)} 
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;h3 id=&quot;正则化&quot;&gt;正则化&lt;/h3&gt;
+
+&lt;p&gt;向代价函数中加入L2正则项&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;Loss =\frac{1}{m}\sum_{i=1}^m [Cost(\hat y (x)^{(i)},y^{(i)})+\lambda \sum \limits_{j=1}^n \boldsymbol w^2_j]&lt;/script&gt;
+
+&lt;p&gt;梯度下降法迭代公式为&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol w _{i+1}= \boldsymbol w _i − α \frac{1}{m} \sum_{j=1}^m (\hat y(x^{(j)})-y^{(j)})x_i^{(j)} + \frac{\lambda}{m}\boldsymbol w _i&lt;/script&gt;
+
+&lt;h3 id=&quot;优化目标&quot;&gt;优化目标&lt;/h3&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\min_\theta \frac{1}{m} \left[ \sum_{i=1}^m y^{(i)}\log(h_{\theta}(x^{(i)}))+(1-y^{(i)})\log(1-h_{\theta}(x^{(i)}))\right]+\frac{\lambda}{2m}\sum_{j=1}^n\theta_j^2&lt;/script&gt;
+
+</description>
+        <pubDate>Fri, 08 Nov 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92.html</guid>
+        
+        <category>CODE</category>
+        
+        <category>MACHINELEARNING</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>线性回归</title>
+        <description>&lt;h2 id=&quot;线性模型&quot;&gt;线性模型&lt;/h2&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol w = \left[\begin{matrix}        w_1 \\    w_2\\  \vdots\\     w_n\end{matrix}\right],
+\boldsymbol x = \left[\begin{matrix}     x_1  \\     x_2 \\       \vdots\\     x_n\end{matrix}\right] \rightarrow f(x) = w_1x_1+ w_2x_2+ ... + w_nx_n+b = \boldsymbol w^T \boldsymbol x+b&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\boldsymbol \theta = \left[\begin{matrix}     b  \\     w_1 \\    w_2\\  \vdots\\     w_n\end{matrix}\right],
+\boldsymbol x = \left[\begin{matrix}   1\\   x_1  \\     x_2 \\       \vdots\\     x_n\end{matrix}\right] \rightarrow f(x)= \boldsymbol \theta^T \boldsymbol x&lt;/script&gt;
+
+&lt;h2 id=&quot;线性回归&quot;&gt;线性回归&lt;/h2&gt;
+
+&lt;p&gt;目标：&lt;strong&gt;均方误差&lt;/strong&gt;$MSE$（$Mean\ Squared\ Error$）最小化，即&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;(w^*,b^*) = \mathop {\arg\min}_{(w,b)}\sum_{i=1}^m(f(x_i)-y_i)^2&lt;/script&gt;
+
+&lt;p&gt;基于均方误差最小化的模型求解方法为&lt;strong&gt;最小二乘法&lt;/strong&gt;：试图找到一条线，使所有样本到直线上的欧式距离之和最小，求解过程为&lt;strong&gt;参数估计&lt;/strong&gt;。&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 01 Nov 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/coding/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92.html</link>
+        <guid isPermaLink="true">http://localhost:4000/coding/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92.html</guid>
+        
+        <category>CODE</category>
+        
+        <category>MACHINELEARNING</category>
+        
+        
+        <category>coding</category>
+        
+      </item>
     
       <item>
         <title>Java一些有趣的小问题总结</title>
@@ -1168,780 +1946,6 @@ synchronized (lock) {
         <category>SOFTWARE-CONSTRUCTION</category>
         
         <category>JAVA</category>
-        
-        
-        <category>coding</category>
-        
-      </item>
-    
-      <item>
-        <title>Software Construction Summary 3</title>
-        <description>&lt;h2 id=&quot;equality-in-adt-and-oop&quot;&gt;Equality in ADT and OOP&lt;/h2&gt;
-
-&lt;h3 id=&quot;equals&quot;&gt;equals&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;equality: 自反、传递、对称&lt;/li&gt;
-  &lt;li&gt;引用等价性 referential equality —— &lt;code class=&quot;highlighter-rouge&quot;&gt;==&lt;/code&gt;
-    &lt;ul&gt;
-      &lt;li&gt;判断是否指向同一块内存地址&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;对称等价性 object equality —— &lt;code class=&quot;highlighter-rouge&quot;&gt;equals()&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;instanceof&lt;/code&gt; is dynamic type checking, not the static type checking. It should be disallowed anywhere except for implementing equals. (&lt;code class=&quot;highlighter-rouge&quot;&gt;getClass()&lt;/code&gt; is also disallowed.)&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;a.equals(b)&lt;/code&gt; —&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;a.hashcode() == b.hashcode()&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;a.hashcode() == b.hashcode()&lt;/code&gt; –\–&amp;gt;  &lt;code class=&quot;highlighter-rouge&quot;&gt;a.equals(b)&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;x.equals(null)&lt;/code&gt; must return false&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;int&lt;/code&gt; 放入&lt;code class=&quot;highlighter-rouge&quot;&gt;Map&amp;lt;String, Integer&amp;gt;&lt;/code&gt;后自动变为&lt;code class=&quot;highlighter-rouge&quot;&gt;Integer&lt;/code&gt;类型，取出后应该用&lt;code class=&quot;highlighter-rouge&quot;&gt;equals()&lt;/code&gt;方法比较&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;clone&quot;&gt;clone&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;clone()&lt;/code&gt;返回的对象是一个独立的副本，两个对象地址不同，属性相同。&lt;/li&gt;
-  &lt;li&gt;若类型&lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;中有mutable成员变量&lt;code class=&quot;highlighter-rouge&quot;&gt;B&lt;/code&gt;，那么对&lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;的clone对象进行修改时将修改原有的&lt;code class=&quot;highlighter-rouge&quot;&gt;B&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;如果实现完整的深拷贝，需要被复制对象的继承链、引用链上的每一个对象都实现克隆机制。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;immutable-type&quot;&gt;Immutable type&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;AF(a) = AF(b)&lt;/li&gt;
-  &lt;li&gt;必须同时重写&lt;code class=&quot;highlighter-rouge&quot;&gt;equals()&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;hashcode()&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;对于immutable类型的对象来说，因为没有mutable方法，所以观察等价性与行为等价性一致。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;mutable-type&quot;&gt;Mutable type&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;观察等价性 observational equality&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;在不改变状态的情况下观察两个mutable对象是否看起来一致&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;行为等价性 behavioral equality
-    &lt;ul&gt;
-      &lt;li&gt;调用对象的任何方法都展示出一致的结果&lt;/li&gt;
-      &lt;li&gt;mutable内容改变后&lt;code class=&quot;highlighter-rouge&quot;&gt;hashcode&lt;/code&gt;随之改变
-        &lt;ul&gt;
-          &lt;li&gt;如果某个mutable的对象包含在集合类中，当其发生改变后，集合类的行为不确定😢&lt;/li&gt;
-          &lt;li&gt;只影响&lt;code class=&quot;highlighter-rouge&quot;&gt;HashSet&lt;/code&gt;，不影响&lt;code class=&quot;highlighter-rouge&quot;&gt;TreeSet&lt;/code&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Collections&lt;/code&gt; 使用&lt;strong&gt;观察等价性&lt;/strong&gt; —— &lt;code class=&quot;highlighter-rouge&quot;&gt;List&lt;/code&gt; 的&lt;code class=&quot;highlighter-rouge&quot;&gt;equals()&lt;/code&gt;方法被重写
-    &lt;ul&gt;
-      &lt;li&gt;List 首先判断Null 然后判断size 最后依次比较每个内容的&lt;code class=&quot;highlighter-rouge&quot;&gt;equals()&lt;/code&gt;方法比较&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;其他可变类型 (如&lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt;) 使用&lt;strong&gt;行为等价性&lt;/strong&gt; —— &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt; 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;equals()&lt;/code&gt;方法继承自&lt;code class=&quot;highlighter-rouge&quot;&gt;Object&lt;/code&gt;类&lt;/li&gt;
-  &lt;li&gt;大多情况下无需重写 直接继承&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Mon, 01 Apr 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/Software-Construction-Summary-3.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/Software-Construction-Summary-3.html</guid>
-        
-        <category>CODE</category>
-        
-        <category>SOFTWARE-CONSTRUCTION</category>
-        
-        <category>JAVA</category>
-        
-        
-        <category>coding</category>
-        
-      </item>
-    
-      <item>
-        <title>Software Construction Summary 2</title>
-        <description>&lt;h2 id=&quot;test-first-programming&quot;&gt;Test-First Programming&lt;/h2&gt;
-&lt;h3 id=&quot;testing-levels&quot;&gt;Testing levels&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Unit testing 单元测试
-    &lt;ul&gt;
-      &lt;li&gt;等价类划分 partitioning
- • 全覆盖 Full cartestian produck
- • 覆盖每个取值 Cover each part&lt;/li&gt;
-      &lt;li&gt;边界值分析 BVA (binary value analysis)&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Integration testing 集成测试&lt;/li&gt;
-  &lt;li&gt;System testing 系统测试&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;设计spec —&amp;gt;设计test cases —&amp;gt; code&lt;/p&gt;
-&lt;h3 id=&quot;code-coverage&quot;&gt;Code coverage&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Fuction coverage&lt;/li&gt;
-  &lt;li&gt;Statement coverage&lt;/li&gt;
-  &lt;li&gt;Branch coverage&lt;/li&gt;
-  &lt;li&gt;Condition coverage&lt;/li&gt;
-  &lt;li&gt;Path coverage&lt;/li&gt;
-  &lt;li&gt;path &amp;gt; branch &amp;gt; statement&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;adt&quot;&gt;ADT&lt;/h2&gt;
-&lt;h3 id=&quot;primitive-typesreference-types&quot;&gt;Primitive Types/Reference Types&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;primitive types
-    &lt;ul&gt;
-      &lt;li&gt;stack, exist only when in use&lt;/li&gt;
-      &lt;li&gt;immutable&lt;/li&gt;
-      &lt;li&gt;no ID, only value&lt;/li&gt;
-      &lt;li&gt;dirt cheap&lt;/li&gt;
-      &lt;li&gt;int, long, byte, short, char, float, double, boolean&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Object Reference Types
-    &lt;ul&gt;
-      &lt;li&gt;heap, garbage collected&lt;/li&gt;
-      &lt;li&gt;some mutable, some not&lt;/li&gt;
-      &lt;li&gt;ID + value&lt;/li&gt;
-      &lt;li&gt;more costly&lt;/li&gt;
-      &lt;li&gt;Classes, interfaces, arrays, enums, annotations&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;static-typesdynamic-types&quot;&gt;Static Types/Dynamic Types&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;static types
-    &lt;ul&gt;
-      &lt;li&gt;在编译阶段进行类型检查 – type&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;dynamic data types
-    &lt;ul&gt;
-      &lt;li&gt;在运行阶段进行类型检查 – value&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;immutablemutable&quot;&gt;Immutable/Mutable&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;immutability - final
-    &lt;ul&gt;
-      &lt;li&gt;references / value cannot be changed&lt;/li&gt;
-      &lt;li&gt;final class cannot be inherited&lt;/li&gt;
-      &lt;li&gt;final method cannot be overridden by subclasses&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;String —— immutable&lt;/li&gt;
-  &lt;li&gt;StringBuilder —— mutable (never use Date)
-    &lt;ul&gt;
-      &lt;li&gt;防御式拷贝 defensive copy
-        &lt;ul&gt;
-          &lt;li&gt;避免指向同一内存地址 避免被修改的潜在风险&lt;/li&gt;
-          &lt;li&gt;可能造成内存浪费&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Sat, 16 Mar 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/SoftwareConstructionSummary2.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/SoftwareConstructionSummary2.html</guid>
-        
-        <category>CODE</category>
-        
-        <category>ANDROID</category>
-        
-        <category>JAVA</category>
-        
-        
-        <category>coding</category>
-        
-      </item>
-    
-      <item>
-        <title>Software Construction Summary 1</title>
-        <description>&lt;h2 id=&quot;multi-dimensional-software-views&quot;&gt;Multi-dimensional software views&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;By phases: &lt;strong&gt;build-time&lt;/strong&gt; and &lt;strong&gt;run-time&lt;/strong&gt; views&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;By dynamics: &lt;strong&gt;moment&lt;/strong&gt; and &lt;strong&gt;period&lt;/strong&gt; views&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;By levels: &lt;strong&gt;code&lt;/strong&gt; and &lt;strong&gt;component&lt;/strong&gt; views&lt;/p&gt;
-    &lt;ul&gt;
-      &lt;li&gt;logically / physically&lt;/li&gt;
-      &lt;li&gt;in-memory states / physical environment&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;build-time&quot;&gt;Build-time&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;idea—&amp;gt;requirement—&amp;gt;design—&amp;gt;code—&amp;gt;installable / executable package&lt;/li&gt;
-  &lt;li&gt;moment
-    &lt;ul&gt;
-      &lt;li&gt;code
-        &lt;ul&gt;
-          &lt;li&gt;Build-time, moment, and code-level view&lt;/li&gt;
-          &lt;li&gt;Lexical-oriented source code :e.g.,Lexical-based semi-structured source code&lt;/li&gt;
-          &lt;li&gt;Syntax-oriented program structure: e.g., Abstract Syntax Tree (AST)&lt;/li&gt;
-          &lt;li&gt;&lt;strong&gt;Semantics-oriented program structure: e.g., Class Diagram(UML)&lt;/strong&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;component
-        &lt;ul&gt;
-          &lt;li&gt;Build-time, period, and code-level view&lt;/li&gt;
-          &lt;li&gt;file, package, library&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;period
-    &lt;ul&gt;
-      &lt;li&gt;code
-        &lt;ul&gt;
-          &lt;li&gt;code churn&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;component
-        &lt;ul&gt;
-          &lt;li&gt;SCI&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;run-time&quot;&gt;Run-time&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;High-level concepts
-    &lt;ul&gt;
-      &lt;li&gt;Executable programs&lt;/li&gt;
-      &lt;li&gt;Libraries&lt;/li&gt;
-      &lt;li&gt;Configuration and data files&lt;/li&gt;
-      &lt;li&gt;Distributed program&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;moment
-    &lt;ul&gt;
-      &lt;li&gt;code
-        &lt;ul&gt;
-          &lt;li&gt;Snapshot diagram&lt;/li&gt;
-          &lt;li&gt;Memory dump&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;component
-        &lt;ul&gt;
-          &lt;li&gt;Deployment diagram in URL&lt;/li&gt;
-          &lt;li&gt;Dynamic linking&lt;/li&gt;
-          &lt;li&gt;Framework/Net&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;period
-    &lt;ul&gt;
-      &lt;li&gt;code
-        &lt;ul&gt;
-          &lt;li&gt;&lt;strong&gt;Sequence diagram in UML&lt;/strong&gt;&lt;/li&gt;
-          &lt;li&gt;Stack Trace&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;component
-        &lt;ul&gt;
-          &lt;li&gt;Event log&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;types-of-transformations&quot;&gt;Types of Transformations&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;NULL —&amp;gt; Code
-    &lt;ul&gt;
-      &lt;li&gt;– Programming / Coding&lt;/li&gt;
-      &lt;li&gt;– Review, static analysis/checking&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Code —&amp;gt; Component
-    &lt;ul&gt;
-      &lt;li&gt;– Design (Chapter 3 ADT/OOP&lt;/li&gt;
-      &lt;li&gt;– Build: compile, static link, package, install, etc&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Build-time —&amp;gt; Run-time
-    &lt;ul&gt;
-      &lt;li&gt;– Install / deploy&lt;/li&gt;
-      &lt;li&gt;– Debug, unit/integration testing&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Moment —&amp;gt; Period
-    &lt;ul&gt;
-      &lt;li&gt;– Refactoring&lt;/li&gt;
-      &lt;li&gt;– Version control&lt;/li&gt;
-      &lt;li&gt;– Loading, dynamic linking, interpreting,execution&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;quality-objectives&quot;&gt;Quality Objectives&lt;/h2&gt;
-
-&lt;h3 id=&quot;external-quality-factors&quot;&gt;External quality factors&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Correctness&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Conditional&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Robustness&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Extendibility&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Reusability&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;Compatibility&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Efficiency&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;Portability&lt;/li&gt;
-  &lt;li&gt;Ease of use&lt;/li&gt;
-  &lt;li&gt;Functionality&lt;/li&gt;
-  &lt;li&gt;Timeliness&lt;/li&gt;
-  &lt;li&gt;Other qualities
-    &lt;ul&gt;
-      &lt;li&gt;Verifiability&lt;/li&gt;
-      &lt;li&gt;Integrity&lt;/li&gt;
-      &lt;li&gt;Repairability&lt;/li&gt;
-      &lt;li&gt;Economy&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;external-quality-factors-1&quot;&gt;External quality factors&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;LoC&lt;/li&gt;
-  &lt;li&gt;Complexity&lt;/li&gt;
-  &lt;li&gt;Easy to understand&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;software-lifecycle-and-configuration-management&quot;&gt;Software Lifecycle and Configuration Management&lt;/h2&gt;
-
-&lt;h3 id=&quot;scm&quot;&gt;SCM&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;SCI
-    &lt;ul&gt;
-      &lt;li&gt;Software Configuration Item (e.g., file)&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;baseline
-    &lt;ul&gt;
-      &lt;li&gt;release&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;CMDB
-    &lt;ul&gt;
-      &lt;li&gt;.git&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;version-control-system-vcs&quot;&gt;Version Control System (VCS)&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Local VCS&lt;/li&gt;
-  &lt;li&gt;Centralized VCS&lt;/li&gt;
-  &lt;li&gt;Distributed VCS&lt;/li&gt;
-  &lt;li&gt;objectgraph
-    &lt;ul&gt;
-      &lt;li&gt;Commits: nodes in Object Graph&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;software-development-lifecyclesdlc&quot;&gt;Software Development Lifecycle(SDLC)&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Waterfall (Linear)&lt;/li&gt;
-  &lt;li&gt;Incremental (Linear)&lt;/li&gt;
-  &lt;li&gt;Prototyping (Iterative)&lt;/li&gt;
-  &lt;li&gt;V-Model (for verification and validation)&lt;/li&gt;
-  &lt;li&gt;Sprial (Iterative)&lt;/li&gt;
-  &lt;li&gt;Agile (Incremental+Iterative)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Thu, 14 Mar 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/Sofrware-Construction-Summary1.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/Sofrware-Construction-Summary1.html</guid>
-        
-        <category>SOFTWARE-CONSTRUCTION</category>
-        
-        
-        <category>coding</category>
-        
-      </item>
-    
-      <item>
-        <title>Lab1 Problem Solution</title>
-        <description>&lt;h2 id=&quot;junit测试private方法&quot;&gt;JUnit测试private方法&lt;/h2&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;FriendshipGraph&lt;/code&gt;类中存在以下函数：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;private void addEdge(Person person1, Person person2);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;由于&lt;code class=&quot;highlighter-rouge&quot;&gt;addEdge(Person, Person)&lt;/code&gt;权限为&lt;code class=&quot;highlighter-rouge&quot;&gt;private&lt;/code&gt;，在测试类中试图调用会出现如下报错：&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;The method addEdge(Person, Person) from the type FriendshipGraph is not visible&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;使用Java语言中反射的语言特性：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Method addEdge = graph.getClass().getDeclaredMethod(&quot;addEdge&quot;, Person.class, Person.class);
-addEdge.setAccessible(true);
-Person p1 = new Person(&quot;Test1&quot;);
-addEdge.invoke(graph, p1, p1);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;遍历map的方法&quot;&gt;遍历Map的方法&lt;/h2&gt;
-&lt;h3 id=&quot;mapentry&quot;&gt;Map.Entry&lt;/h3&gt;
-&lt;p&gt;可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;Map.Entry&lt;/code&gt;是Map声明的一个内部接口，此接口为泛型，定义为Entry&amp;lt;K,V&amp;gt;。它表示Map中的一个实体（一个key-value对）。接口中有getKey(),getValue()方法。使用这种方法进行遍历效率高。&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;for (Map.Entry&amp;lt;String,Set&amp;lt;String&amp;gt;&amp;gt; entry:followsGraph.entrySet()) {
-	for (String string : entry.getValue()) {
-    // TODO:
-	}
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h3 id=&quot;lambda&quot;&gt;Lambda&lt;/h3&gt;
-&lt;p&gt;java8提供了Lambda表达式支持，语法看起来更简洁，可以同时拿到key和value，性能低于entrySet。&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public void testLambda() {
-  map.forEach((key, value) -&amp;gt; {
-    // TODO:
-  });
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h3 id=&quot;keysetvalues&quot;&gt;keySet/values&lt;/h3&gt;
-&lt;p&gt;如果只需要map的key或者value，用map的keySet或values方法是最方便的&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public void testKeySet() {
-    for (Integer key : map.keySet()) {
-      System.out.println(key);
-    }
-  }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public void testValues() {
-  for (Integer value : map.values()) {
-    System.out.println(value);
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h3 id=&quot;iterator&quot;&gt;Iterator&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public void testIterator() {
-  Iterator&amp;lt;Map.Entry&amp;lt;Integer, Integer&amp;gt;&amp;gt; iterator = map.entrySet().iterator();
-  while (iterator.hasNext()) {
-    Map.Entry&amp;lt;Integer, Integer&amp;gt; entry = iterator.next();
-    // TODO:
-    // iterator.remove();
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;在用&lt;code class=&quot;highlighter-rouge&quot;&gt;foreach&lt;/code&gt;遍历&lt;code class=&quot;highlighter-rouge&quot;&gt;map&lt;/code&gt;时，如果改变其大小会报错，但如果只是删除元素，可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;Iterator&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;remove&lt;/code&gt;方法删除元素.&lt;/p&gt;
-&lt;h2 id=&quot;javautilconcurrentmodificationexception&quot;&gt;java.util.ConcurrentModificationException&lt;/h2&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Iterator&lt;/code&gt;是工作在一个独立的线程中，并且拥有一个&lt;code class=&quot;highlighter-rouge&quot;&gt;mutex&lt;/code&gt;锁，就是说&lt;code class=&quot;highlighter-rouge&quot;&gt;Iterator&lt;/code&gt;在工作的时候，是不允许被迭代的对象被改变的。&lt;code class=&quot;highlighter-rouge&quot;&gt;Iterator&lt;/code&gt;被创建的时候，建立了一个&lt;code class=&quot;highlighter-rouge&quot;&gt;内存索引表&lt;/code&gt;（单链表），这个索引表指向&lt;code class=&quot;highlighter-rouge&quot;&gt;原来的对象&lt;/code&gt;，当原来的对象数量改变的时候，这个索引表的内容没有同步改变，所以当索引指针往下移动的时候，便找不到要迭代的对象，于是产生错误。&lt;code class=&quot;highlighter-rouge&quot;&gt;List&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;Set&lt;/code&gt;等是动态的，可变对象数量的数据结构，但是&lt;code class=&quot;highlighter-rouge&quot;&gt;Iterator&lt;/code&gt;则是&lt;code class=&quot;highlighter-rouge&quot;&gt;单向不可变&lt;/code&gt;，只能&lt;code class=&quot;highlighter-rouge&quot;&gt;顺序读取&lt;/code&gt;，不能逆序操作的数据结构，当&lt;code class=&quot;highlighter-rouge&quot;&gt;Iterator&lt;/code&gt;指向的原始数据发生变化时，&lt;code class=&quot;highlighter-rouge&quot;&gt;Iterator&lt;/code&gt;自己就迷失了方向。&lt;/p&gt;
-&lt;h2 id=&quot;arraylist的排序&quot;&gt;ArrayList的排序&lt;/h2&gt;
-&lt;p&gt;对&lt;code class=&quot;highlighter-rouge&quot;&gt;list&lt;/code&gt;自定义排序可以使用到了&lt;code class=&quot;highlighter-rouge&quot;&gt;Collections.sort&lt;/code&gt;函数&lt;code class=&quot;highlighter-rouge&quot;&gt;Collections.sort(List, Comparator)&lt;/code&gt;
-在这里自定义&lt;code class=&quot;highlighter-rouge&quot;&gt;Comparator&lt;/code&gt;后对其&lt;code class=&quot;highlighter-rouge&quot;&gt;compare&lt;/code&gt;函数进行重写&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;List&amp;lt;Map.Entry&amp;lt;String,Integer&amp;gt;&amp;gt; list = new ArrayList&amp;lt;Map.Entry&amp;lt;String, Integer&amp;gt;&amp;gt;(followers.entrySet());
-Collections.sort(list,new Comparator&amp;lt;Map.Entry&amp;lt;String, Integer&amp;gt;&amp;gt;(){
-	@Override
-	public int compare(Entry&amp;lt;String, Integer&amp;gt; o1, Entry&amp;lt;String, Integer&amp;gt; o2) {
-		if (o1.getValue() &amp;gt; o2.getValue()) return -1;
-		else return 1;
-	}
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Thu, 07 Mar 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/Bug1.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/Bug1.html</guid>
-        
-        <category>SOFTWARE-CONSTRUCTION</category>
-        
-        <category>JAVA</category>
-        
-        
-        <category>coding</category>
-        
-      </item>
-    
-      <item>
-        <title>Caffe</title>
-        <description>&lt;h2 id=&quot;homebrew--macos-缺失的软件包的管理器&quot;&gt;Homebrew —— macOS 缺失的软件包的管理器&lt;/h2&gt;
-
-&lt;h3 id=&quot;安装homebrew&quot;&gt;安装Homebrew&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;使用 Homebrew 安装 Apple 没有预装但你需要的东西。Homebrew 会将软件包安装到独立目录，并将其文件软链接至 /usr/local。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ brew install wget
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;添加依赖&quot;&gt;添加依赖&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install -vd snappy leveldb gflags glog szip lmdb
-brew tap homebrew/science
-brew install hdf5 opencv
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;brew-edit-opencv-修改以下内容&quot;&gt;brew edit opencv 修改以下内容&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-DPYTHON_LIBRARY=#{py_prefix}/lib/libpython2.7.dylib
--DPYTHON_INCLUDE_DIR=#{py_prefix}/include/python2.7
-
-# with Python pycaffe needs dependencies built from source
-brew install --build-from-source --with-python -vd protobuf
-brew install --build-from-source -vd boost boost-python
-# without Python the usual installation suffices
-brew install protobuf boost
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;编译&quot;&gt;编译&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir build
-cd build
-cmake ..
-make all
-make install
-make runtest
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;solutions&quot;&gt;Solutions&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python/caffe/_caffe.cpp:1:10: fatal error: 'Python.h' file not found
-
-export CPLUS_INCLUDE_PATH=&quot;$CPLUS_INCLUDE_PATH:/anaconda3/pkgs/python-3.6.5-hc167b69_1/include/python3.6m&quot;
-
-python/caffe/_caffe.cpp:10:10: fatal error: 'numpy/arrayobject.h' file not found
-
-export CPLUS_INCLUDE_PATH=&quot;$CPLUS_INCLUDE_PATH:/anaconda3/lib/python3.6/site-packages/numpy/core/include&quot;
-     
-conda create -n py2 python=2.7
-activate/deactivate py2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;修改环境变量&quot;&gt;修改环境变量&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; 打开配置文件
- $ open ~/.bash_profile
-
- 写入python的外部环境变量
- export PATH=${PATH}:/Library/Frameworks/Python.framework/Versions/3.6/bin
- 
-重命名python
-alias python=&quot;/Library/Frameworks/Python.framework/Versions/3.6/bin/python3.6&quot;
-（这步很重要，直接关系到默认启动的python版本是否修改）
-
-$ source ~/.bash_profile
-
-查看是否修改成功
-$ python
-
-export PYTHONPATH=&amp;lt;path_to_caffe&amp;gt;/caffe-1.0/python:$PYTHONPATH
-
-verify build
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;检验安装是否成功&quot;&gt;检验安装是否成功&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python -c 'import caffe'
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;install--launch-digits&quot;&gt;install &amp;amp; launch DIGITS&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;添加环境变量
-export DIGITS_ROOT=&quot;~/Documents/DIGITS&quot;
-export CAFFE_ROOT='~/Documents/caffe'
-
-git clone https://github.com/NVIDIA/caffe.git $CAFFE_ROOT
-cd $DIGITS_ROOT
-sudo pip install -r $CAFFE_ROOT/python/requirements.txt
-open ./digits-devserver 修改最后一行 python 为 python2.7
-
-运行
-./digits-devserver
-
-http://localhost:5000
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Caught PicklingError while saving job 20171212-140813-6b62: Can't pickle &amp;lt;class 'caffe.proto.caffe_pb2.NetParameter'&amp;gt;: it's not the same object as caffe.proto.caffe_pb2.NetParameter
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;this bug has a long story https://github.com/NVIDIA/DIGITS/issues/306&lt;/p&gt;
-
-&lt;p&gt;Replace all the &lt;code class=&quot;highlighter-rouge&quot;&gt;import caffe_pb2&lt;/code&gt; with &lt;code class=&quot;highlighter-rouge&quot;&gt;import caffe.proto.caffe_pb2 as caffe_pb2&lt;/code&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 10 Feb 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/Caffe.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/Caffe.html</guid>
-        
-        <category>CAFFE</category>
-        
-        <category>INSTALL</category>
-        
-        
-        <category>coding</category>
-        
-      </item>
-    
-      <item>
-        <title>Raspberry Pi</title>
-        <description>&lt;h2 id=&quot;wifi&quot;&gt;WIFI&lt;/h2&gt;
-&lt;p&gt;在根目录下添加&lt;code class=&quot;highlighter-rouge&quot;&gt;wpa_supplicant.conf&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;ssh&lt;/code&gt;两个文件，其中&lt;code class=&quot;highlighter-rouge&quot;&gt;ssh&lt;/code&gt;为空&lt;/p&gt;
-&lt;h3 id=&quot;bootwpa_supplicantconf&quot;&gt;/boot/wpa_supplicant.conf&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;country=GB
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-update_config=1
-
-network={
-    ssid=&quot;WIFI名&quot;
-    psk=&quot;WIFI密码&quot;
-    key_mgmt=WPA-PSK
-    priority=1
-}
-
-network={
-    ssid=&quot;WIFI名&quot;
-    psk=&quot;WIFI密码&quot;
-    key_mgmt=WPA-PSK
-    priority=2
-} --- ## Bluetooth
-
-安装支持包
-sudo apt-get install pi-bluetooth
-sudo apt-get install bluetooth bluez blueman
-
-添加pi用户到蓝牙组 
-sudo usermod -G bluetooth -a pi
-
-启动/增加SPP
-sudo nano /etc/systemd/system/dbus-org.bluez.service 
-  
-修改内容如下:
-ExecStart=/usr/lib/bluetooth/bluetoothd -C
-ExecStartPost=/usr/bin/sdptool add SP
-
-连接蓝牙
-sudo rfcomm watch hci0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-&lt;h2 id=&quot;gps--l80-m39&quot;&gt;GPS  L80-M39&lt;/h2&gt;
-
-&lt;h3 id=&quot;1-安装gps模块需要的包&quot;&gt;1. 安装GPS模块需要的包&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get update &amp;amp;&amp;amp; sudo apt-get -y install gpsd gpsd-clients python-gps
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;2-重启树莓派重新配置gps服务&quot;&gt;2. 重启树莓派，重新配置GPS服务&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo dpkg-reconfigure gpsd
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;3-开启gps模块服务&quot;&gt;3. 开启GPS模块服务:&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;4-停止gps服务&quot;&gt;4. 停止GPS服务:&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo killall gpsd
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;5-你也可以使用systemctl命令管理gps服务但在那之前需要修改文件etcdefaultgpsd&quot;&gt;5. 你也可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;systemctl&lt;/code&gt;命令管理GPS服务，但在那之前需要修改文件&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/default/gpsd&lt;/code&gt;&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;START_DAEMON=&quot;true&quot;
-USBAUTO=&quot;true&quot;
-DEVICES=&quot;/dev/ttyUSB0&quot;
-GPSD_OPTIONS=&quot;-F /var/run/gpsd.socket&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;开始服务&quot;&gt;开始服务:&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo systemctl enable gpsd.sock sudo systemctl start gpsd.sock
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;停止服务&quot;&gt;停止服务:&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo systemctl stop gpsd.sock sudo systemctl disable gpsd.sock
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;获取模块信息&quot;&gt;获取模块信息&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo cgps -s
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;如果不能正常获得信息使用以下命令检查串口工作是否正常&quot;&gt;如果不能正常获得信息，使用以下命令检查串口工作是否正常&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cat/dev/ttyUSB0 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;无定位情况下显示如下&quot;&gt;无定位情况下显示如下:&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pi@raspberrypi ~ $ sudo cat /dev/ttyUSB0
-$GPRMC,144034.00,V,,,,,,,090315,,,N*75
-$GPVTG,,,,,,,,,N*30
-$GPGGA,144034.00,,,,,0,00,99.99,,,,,,*60
-$GPGSA,A,1,,,,,,,,,,,,,99.99,99.99,99.99*30
-$GPGSV,1,1,01,15,,,25*7B
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;NO FIX&lt;/code&gt; 即未定位，将模块移动到室外空旷处将获得定位信息。&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;h2 id=&quot;ssh&quot;&gt;SSH&lt;/h2&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;使用ssh登陆pi 默认用户名pi 密码raspberry
-ssh pi@192.168.2.104
-
-新建vnc服务 VNCViewer中ip:port登陆 默认port为0
-vncservice
-
-停止对应的vnc服务进程
-vncservice -kill :1
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;使用python解析串口数据并发送至蓝牙&quot;&gt;使用python解析串口数据并发送至蓝牙&lt;/h2&gt;
-
-&lt;h3 id=&quot;准备&quot;&gt;准备&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;安装python库
-sudo aptitude install python-dev
-sudo apt-get install python-serial
-python -m pip install pynmea2
-
-赋予串口读写权限
-sudo chmod 777 /dev/rfcomm0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;python代码&quot;&gt;python代码：&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import serial
-import pynmea2
-import time
-ser1 = serial.Serial(&quot;/dev/ttyUSB0&quot;,9600)
-ser2 = serial.Serial('/dev/rfcomm0',9600,parity=serial.PARITY_NONE)
-if ser2.isOpen == False:
-    ser2.open()
-ser2.write(&quot;serial turn on\n&quot;)
-
-try:
-    while True:
-        line = ser1.readline()
-        if line.startswith('$GPRMC'):
-            rmc = pynmea2.parse(line)
-            ser2.write(&quot;Latitude: &quot; +rmc.lat +&quot;Longitude: &quot;+rmc.lon+&quot;\n&quot;)
-        
-except KeyboardInterrupt:
-        ser2.close()
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-        <pubDate>Wed, 23 Jan 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/coding/Raspberry-Pi.html</link>
-        <guid isPermaLink="true">http://localhost:4000/coding/Raspberry-Pi.html</guid>
-        
-        <category>RaspberryPi</category>
-        
-        <category>INSTALL</category>
         
         
         <category>coding</category>

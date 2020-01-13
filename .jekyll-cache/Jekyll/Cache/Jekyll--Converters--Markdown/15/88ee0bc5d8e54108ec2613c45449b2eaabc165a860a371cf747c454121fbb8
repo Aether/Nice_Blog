@@ -1,0 +1,9 @@
+I"<h2 id="homebrew--macos-缺失的软件包的管理器">Homebrew —— macOS 缺失的软件包的管理器</h2>
+
+<h3 id="安装homebrew">安装Homebrew</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+</code></pre></div></div>
+
+<p>使用 Homebrew 安装 Apple 没有预装但你需要的东西。Homebrew 会将软件包安装到独立目录，并将其文件软链接至 /usr/local。</p>
+:ET

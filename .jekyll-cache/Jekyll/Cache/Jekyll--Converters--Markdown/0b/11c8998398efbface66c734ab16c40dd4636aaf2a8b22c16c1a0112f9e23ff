@@ -1,0 +1,85 @@
+I"�<h2 id="test-first-programming">Test-First Programming</h2>
+<h3 id="testing-levels">Testing levels</h3>
+<ul>
+  <li>Unit testing 单元测试
+    <ul>
+      <li>等价类划分 partitioning
+ • 全覆盖 Full cartestian produck
+ • 覆盖每个取值 Cover each part</li>
+      <li>边界值分析 BVA (binary value analysis)</li>
+    </ul>
+  </li>
+  <li>Integration testing 集成测试</li>
+  <li>System testing 系统测试</li>
+</ul>
+
+<p>设计spec —&gt;设计test cases —&gt; code</p>
+<h3 id="code-coverage">Code coverage</h3>
+<ul>
+  <li>Fuction coverage</li>
+  <li>Statement coverage</li>
+  <li>Branch coverage</li>
+  <li>Condition coverage</li>
+  <li>Path coverage</li>
+  <li>path &gt; branch &gt; statement</li>
+</ul>
+
+<h2 id="adt">ADT</h2>
+<h3 id="primitive-typesreference-types">Primitive Types/Reference Types</h3>
+<ul>
+  <li>primitive types
+    <ul>
+      <li>stack, exist only when in use</li>
+      <li>immutable</li>
+      <li>no ID, only value</li>
+      <li>dirt cheap</li>
+      <li>int, long, byte, short, char, float, double, boolean</li>
+    </ul>
+  </li>
+  <li>Object Reference Types
+    <ul>
+      <li>heap, garbage collected</li>
+      <li>some mutable, some not</li>
+      <li>ID + value</li>
+      <li>more costly</li>
+      <li>Classes, interfaces, arrays, enums, annotations</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="static-typesdynamic-types">Static Types/Dynamic Types</h3>
+<ul>
+  <li>static types
+    <ul>
+      <li>在编译阶段进行类型检查 – type</li>
+    </ul>
+  </li>
+  <li>dynamic data types
+    <ul>
+      <li>在运行阶段进行类型检查 – value</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="immutablemutable">Immutable/Mutable</h3>
+<ul>
+  <li>immutability - final
+    <ul>
+      <li>references / value cannot be changed</li>
+      <li>final class cannot be inherited</li>
+      <li>final method cannot be overridden by subclasses</li>
+    </ul>
+  </li>
+  <li>String —— immutable</li>
+  <li>StringBuilder —— mutable (never use Date)
+    <ul>
+      <li>防御式拷贝 defensive copy
+        <ul>
+          <li>避免指向同一内存地址 避免被修改的潜在风险</li>
+          <li>可能造成内存浪费</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+:ET

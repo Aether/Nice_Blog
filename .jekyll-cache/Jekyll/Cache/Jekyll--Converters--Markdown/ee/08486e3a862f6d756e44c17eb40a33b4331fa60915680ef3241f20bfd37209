@@ -1,0 +1,4 @@
+I"<h2 id="wifi">WIFI</h2>
+<p>在根目录下添加<code class="highlighter-rouge">wpa_supplicant.conf</code>, <code class="highlighter-rouge">ssh</code>两个文件，其中<code class="highlighter-rouge">ssh</code>为空</p>
+<h3 id="bootwpa_supplicantconf">/boot/wpa_supplicant.conf</h3>
+:ET
