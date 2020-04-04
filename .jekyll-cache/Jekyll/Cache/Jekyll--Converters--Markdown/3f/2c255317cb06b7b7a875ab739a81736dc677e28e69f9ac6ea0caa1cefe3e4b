@@ -1,0 +1,21 @@
+I"�<h2 id="macos联网后无法同步时间">macOS联网后无法同步时间</h2>
+
+<p>电脑一直有待机时耗电严重的问题，前段时间电脑忘记关机保持在待机模式，电池耗尽后系统时间出现了点问题，且联网后无法同步最新时间。</p>
+
+<p>有人提出使用Linux时间同步命令<code class="highlighter-rouge">ntpdate</code>更新时间，本机提示command not found</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─[:<span class="o">)]</span> % <span class="nb">sudo </span>ntpdate 0.centos.pool.ntp.org
+Password:
+<span class="nb">sudo</span>: ntpdate: <span class="nb">command </span>not found
+</code></pre></div></div>
+
+<p>查询<a href="https://stackoverflow.com/questions/52548093/ntpdate-command-not-found-macos-mojave">StackOverflow</a>得知应使用<code class="highlighter-rouge">sntp</code>命令：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>sntp <span class="nt">-sS</span> time.apple.com
+</code></pre></div></div>
+
+<p>问题解决</p>
+
+<hr />
+
+:ET

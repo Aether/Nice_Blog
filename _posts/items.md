@@ -1,0 +1,163 @@
+A1001:向字符串中插入分隔符
+
+~~~java
+//字符串插入分隔符
+StringBuilder sb = new StringBuilder(num);
+sb.insert(i, ",");
+~~~
+
+---
+
+A1002:合并多项式
+
+exponents and coefficients 指数和系数
+
+polynomial 多项式
+
+~~~Java
+//保留一位小数
+String.format("%.1f",a[i])
+~~~
+
+---
+
+A1003:求全部`单源最短路径`个数和`最大点权值的最小路径`
+
+dijkstra算法可直接求单源最短路径长度。
+
+题目中涉及多条最短路径，需要记录`单源最短路径`个数和找出`最大点权值的最小路径`，这需要我们对节点数据进行额外的存储：
+
+本废物这道题卡了两天🤯
+
+Q：如果当前点是最短路径上的点时，使用dijkstra算法选择哪个点继续走才能是最短路径呢？
+
+A：在松弛每个节点时，需记录这个节点的前驱节点：
+
+~~~java
+for (int i = 0; i < n; i++) {
+  if (map[x][i] != 0 && d[x] + map[x][i] < d[i]) {
+    d[i] = map[x][i] + d[x];
+    sets.get(i).clear();
+    sets.get(i).add(x);
+  }
+  if (map[x][i] != 0 && d[x] + map[x][i] == d[i]) {
+  	sets.get(i).add(x);
+  }
+}
+~~~
+
+这样松弛结束后可以得到每个点的前驱点集合：
+
+~~~
+[[2, 3, 4, 5], [3], [], [2, 4], [2], [2]]
+~~~
+
+这相当于图中的最短路径形成了一个有向图，可以使用DFS得到路径个数并且计算每条路径上的点的权值和。
+
+然而这里怎么写非递归的DFS🙃我已经都还给老师了
+
+我发现我对DFS中visited的计数有问题。比如最短路径包括0-2、0-3-4-2和0-4-2，在经历过0-3-4-2的搜索后，对4-2会标记已访问。导致没有计数最短路径0-4-2。在意识到这个问题之后，对代码做出了以下修改：每当一个点已经全部探索过后，它将会出栈，同时清除它访问过点的记录。解决了这个问题就成功AC啦～
+
+DFS：
+
+~~~java
+		while (!stack.isEmpty()) {
+      // 每次对栈顶结点进行搜索
+			int k = stack.peek();
+      // 当一个点没有前置结点时，意味着它是起点，DFS找到了一条完整路径
+			if (lists.get(k).isEmpty()) {
+				// 栈顶结点出栈
+				k = stack.pop();
+        // 清空访问记录
+				for (int j = 0; j < n; j++) {
+					visited[k][j] = false;
+				}
+			}
+      // 这个点有前置结点，接下来搜索前置结点：
+			for (int i = 0; i < lists.get(k).size(); i++) {
+				int pre = lists.get(k).get(i);
+        // 没访问过前置结点，就将前置结点入栈，再对前置结点进行搜索
+				if (!visited[k][i]) {
+					stack.push(pre);
+					visited[k][i] = true;
+					break;
+				}
+        // 这个点的全部前置结点都已经被搜索过了，将这个结点出栈同时清空搜索记录
+				if (visited[k][i] && i == lists.get(k).size() - 1) {
+					k = stack.pop();
+					for (int j = 0; j < n; j++) {
+						visited[k][j] = false;
+					}
+				}
+			}
+		}
+~~~
+
+dijkstra
+
+> 1.将起点加入集合S
+>
+> 2.松弛：用新加入的点更新到集合外的点的最短距离d[x]（看经过这个点去其他点的话能不能缩短d[x]）
+>
+> 3.选离集合S最近的点（d[i]最小的点）加入集合S
+>
+> 4.重复2、3两步，直到目标点也加入了集合，此时目标点所对应的d[i]即为最短路径长度。
+
+~~~java
+		while (x != c2) {
+			// shorten
+			for (int i = 0; i < n; i++) {
+				if (map[x][i] != 0 && d[x] + map[x][i] < d[i]) {
+					d[i] = map[x][i] + d[x];
+					sets.get(i).clear();
+					sets.get(i).add(x);
+				}
+				if (map[x][i] != 0 && d[x] + map[x][i] == d[i]) {
+
+					sets.get(i).add(x);
+				}
+			}
+			// find closest point
+			int min = INF;
+			int minIndex = c1;
+			for (int i = 0; i < n; i++) {
+				if (d[i] < min && !book[i]) {
+					min = d[i];
+					minIndex = i;
+				}
+			}
+			x = minIndex;
+			book[x] = true;
+		}
+~~~
+
+特殊情况：起始地与目的地相同
+
+---
+
+A1004:数叶子
+
+数据的给出格式是：父节点 子结点个数 子结点1 子结点2 ……
+
+需要根据数据建立对应的树，统计每一层的叶子个数
+
+一开始的想法是使用并查集，后来觉得并查集对于树的分层来讲有点复杂麻烦，后来想到的是简单的面向对象编程：一边读取数据，一边建立这棵树，建立后寻找跟结点，逐层计算叶子结点的个数。
+
+特殊情况：根结点即叶结点
+
+---
+
+A1006：比较时间
+
+将HH:MM:SS转换为秒即可，注意Scanner读入的问题：使用`in.nextInt()` 后将在缓冲区内留下空白符`\r`，使用`in.nextLine()`将其去除即可。
+
+~~~java
+int n = in.nextInt();
+in.nextLine();
+for (int i = 0; i < n; i++) {
+  String line = in.nextLine();
+}
+~~~
+
+`line.split("\\ ");`分隔字符串，空格前加转义符号。
+
