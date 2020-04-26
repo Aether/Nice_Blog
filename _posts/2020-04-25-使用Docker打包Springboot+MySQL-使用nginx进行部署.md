@@ -9,7 +9,7 @@ tags: CODING
 finished: true
 ---
 
-#使用Docker+maven对Springboot+MySQL项目进行打包与部署
+# 使用Docker+maven对Springboot+MySQL项目进行打包与部署
 
 > 在SE的软件架构与中间件课程的lab2中，需要将springboot项目部署到虚拟机+真实服务器上。正好借由这个机会学习一下docker的使用，同时也正好使部署变得简单快捷一些。
 
@@ -26,7 +26,7 @@ sudo apt-get install nginx
 
 负载均衡器`192.168.0.110`配置 ：
 
-~~~
+~~~nginx
 upstream nodes {
 	server 192.168.0.111:8080;
 	server 192.168.0.112:8080;
@@ -43,17 +43,17 @@ server {
 
 服务器`192.168.0.111`配置：
 
-~~~
+~~~nginx
 server {
 	listen		8080;
-  server_name 192.168.0.111;
+ 	server_name 192.168.0.111;
 }
 
 ~~~
 
 ## 配置nginx代理参数文件`/etc/nginx/proxy_params`
 
-~~~
+~~~nginx
 proxy_set_header Host $http_host;
 proxy_set_header X-Real-IP $remote_addr;
 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -69,7 +69,7 @@ proxy_buffers 4 128k;
 
 ## nginx启动、重启等操作
 
-~~~
+~~~shell
 sudo /etc/init.d/nginx start
 sudo /etc/init.d/nginx stop
 sudo /etc/init.d/nginx restart
@@ -84,7 +84,7 @@ sudo /etc/init.d/nginx reload
 
 ## 建立容器间的网络连接
 
-~~~
+~~~shell
 docker network create  external-api
 ~~~
 
@@ -94,19 +94,19 @@ docker network create  external-api
 
 ## 使用docker拉取mysql镜像
 
-~~~
-Docker pull mysql:8
+~~~shell
+docker pull mysql:8
 ~~~
 
 ## 运行mysql
 
-~~~
+~~~shell
 docker run --net external-api --name ly-mysql --restart unless-stopped -e MYSQL_ROOT_PASSWORD=123456789 -d mysql:8
 ~~~
 
 ## 导入数据库
 
-~~~
+~~~shell
 docker exec -i ly-mysql mysql -u root --password=123456789 < lab1/sale.sql  
 ~~~
 
@@ -139,7 +139,7 @@ docker build -t ly . && docker run -p 8080:8080 --name lab2project --net externa
 
 ## 提交打包好的镜像
 
- ~~~
+ ~~~shell
 docker commit -a "lvyue" -m "project" 10532f64dc6c ly-sprintboot:v1
 docker push $(mydockerusername)/ly-springboot:v1
  ~~~
@@ -150,38 +150,38 @@ docker push $(mydockerusername)/ly-springboot:v1
 
 ## 登陆docker账号
 
-~~~
+~~~shell
 sudo docker login -u $(mydockerusername) -p $(password)
 ~~~
 
 ## 拉取镜像
 
-~~~
+~~~shell
 sudo docker image pull $(mydockerusername)/ly-mysql:v1
 sudo docker image pull $(mydockerusername)/ly-springboot:v1
 ~~~
 
 ## 建立容器间的网络连接
 
-~~~
+~~~shell
 docker network create  external-api
 ~~~
 
 ## 运行mysql容器
 
-~~~
+~~~shell
 sudo docker run --net external-api --name ly-mysql --restart unless-stopped -e MYSQL_ROOT_PASSWORD=123456789 -d $(mydockerusername)/ly-mysql:v1
 ~~~
 
 ## 导入数据库
 
-~~~
+~~~shell
 sudo docker exec -i ly-mysql mysql -u root --password=123456789 < sale.sql
 ~~~
 
 ## 运行springboot容器
 
-~~~
+~~~shell
 sudo docker run -p 8080:8080 --name lab2project --net external-api $(mydockerusername)/ly-springboot:v1
 ~~~
 
@@ -189,13 +189,13 @@ sudo docker run -p 8080:8080 --name lab2project --net external-api $(mydockeruse
 
 # 附加：使用ab进行POST压力测试
 
-~~~
+~~~shell
 ab -T "application/json" -p data -n 500 -k -c 100 192.168.0.110:8080/sale/login
 ~~~
 
 `data`文件中保存POST的json数据
 
-~~~
+~~~json
 {
 	"staff_name":"hang",
 	"pass":"123123"
