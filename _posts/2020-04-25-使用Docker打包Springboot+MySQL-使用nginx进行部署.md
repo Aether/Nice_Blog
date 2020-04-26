@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "使用Docker+maven对Springboot+MySQL项目进行打包，结合nginx部署"
+title: "使用Docker+maven对Springboot+MySQL项目打包 结合nginx部署"
 subtitle: ""
 date: 2020-04-25
 author: Aether
@@ -9,9 +9,9 @@ tags: CODING
 finished: true
 ---
 
-# 使用Docker+maven对Springboot+MySQL项目进行打包与部署
+# HITSE软件架构与中间件lab2
 
-> 在SE的软件架构与中间件课程的lab2中，需要将springboot项目部署到虚拟机+真实服务器上。正好借由这个机会学习一下docker的使用，同时也正好使部署变得简单快捷一些。
+> 在SE的软件架构与中间件课程的lab2中，需要将springboot项目部署到虚拟机+真实服务器上。正好借由这个机会学习一下docker的使用，同时提高一下实验中部署项目的效率，减少工作冗余。
 
 # nginx 
 
