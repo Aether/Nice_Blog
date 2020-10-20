@@ -56,7 +56,7 @@ $$
 ### Algorithm Frame Overview
 
 
-![image-20201020220420595](/Users/aether/Desktop/Aether.github.io/_posts/image-20201020220420595.png)
+![image-20201020220420595](./image-20201020220420595.png)
 
 1. **光流估计**：输入 $I_0$ $I_1$，使用 PWC-Net 计算光流
 2. **深度估计**：输入 $I_0$ $I_1$，使用 hourglass architecture 计算Depth Maps
