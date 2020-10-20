@@ -5,11 +5,11 @@ subtitle: ""
 date: 2020-10-16
 author: Aether
 category: coding
-tags: CODING CV VIDEO-FRAME—INTERPOLATION
+tags: CODING PAPER CV VIDEO-FRAME-INTERPOLATION
 finished: true
 ---
 
-## Quadratic Video Interpolation
+# Quadratic Video Interpolation
 
 ###### Li, Siyao, et al.  - In *ICCVW*, 2019
 
@@ -20,18 +20,30 @@ finished: true
 ### Quadratic flow prediction
 
 传统方法中默认物体匀速运动，加速度为 0，$\boldsymbol f_{0 \rightarrow t}$ 可由 $\boldsymbol f_{0 \rightarrow 1}$ 线形表示
+
+
 $$
 \boldsymbol f_{0 \rightarrow t} = t\boldsymbol f_{0 \rightarrow 1}
 $$
+
+
 论文中利用多个相邻帧提取高阶信息，建立加速度模型，将 $\boldsymbol f_{0 \rightarrow t}$ 表示为
+
+
 $$
 \boldsymbol f_{0 \rightarrow t} = (\boldsymbol f_{0 \rightarrow 1}+\boldsymbol f_{0 \rightarrow -1})/2 \times t^2 + (\boldsymbol f_{0 \rightarrow 1}-\boldsymbol f_{0 \rightarrow -1})/2 \times t
 $$
 
+
+
 即
+
+
 $$
 x=v_0t+\frac{1}{2}at^2
 $$
+
+
 线性模型限制像素匀速&沿直线运动，只用最近的两帧信息。此公式引入加速度和曲线运动，能够利用更多的临近帧，反映物体运动的加速度和⾮线性轨迹。
 
 ### Flow reversal layer
