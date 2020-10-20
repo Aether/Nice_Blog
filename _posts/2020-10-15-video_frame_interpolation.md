@@ -1,0 +1,55 @@
+---
+layout: post
+title: "视频插帧技术综述"
+subtitle: "video frame interpolation"
+date: 2020-10-15
+author: Aether
+category: coding
+tags: CODING CV VIDEO-FRAME—INTERPOLATION
+finished: true
+---
+
+视频插帧技术广泛运用在各项应用中，如慢动作生成、合成新视角、提高视频帧率、视频恢复等。主要实现方法包括phase-based、kernel-based、flow-based 三类。
+
+### Phase-based
+
+
+将帧的时间变化建模为相移
+
+- PhaseNet 利用金字塔滤波器对具有相移的较大动态进行编码
+
+### Kernel-based
+
+使用卷积核将输入帧移动到中间时刻的位置
+
+- AdaConv、SepConv 估计空间自适应插值核，从较大的邻域合成像素
+- SepConv 将空间 2D 核分解为 1D 核来提高计算效率
+
+需要较高的内存占用空间，计算负载较大
+
+### Flow-based
+
+使用光流对输入帧进行扭曲变形得到中间帧
+
+基于光流的线形模型：
+
+- DVF、SuperSloMo ：估计两个输入帧之间的光流，直接将其扭曲为中间帧
+- TOF、CtxSyn、BMBC ：在扭曲帧上应用图像合成模块来产生中间帧
+- IM-Net：使用多尺度的块级水平/垂直运动矢量快速插值高分辨率视频
+
+传统光流方法受限于线性模型，难以对现实世界中的复杂运动进行建模，故提出包含高阶信息的非线性模型：
+
+- Quadratic/Cubic：使用高阶模型对光流建模，可反映加速度和非线性轨迹
+
+#### Occluded Area
+
+当对光流扭曲变形时，变形区域可能会出现多个像素映射到同一像素点产生重叠情况，也有可能发生没有像素映射到目标像素点产生空洞。目前已有的解决方案包括：
+
+-  估计 occlusion maps
+-  使用深度和场景上下文信息来赋予权重
+-  使用softmax splatting进行forward warping
+
+#### Flow-based & Kernel-based
+
+- DAIN 和 MEMC-Net 同时将 flow-based 和 kernel-based 的方法集成到端到端网络中，输入帧首先经过光流方法扭曲，然后通过自适应变形层的插值核进行采样
+- AdaCof 通过光流的自适应协作为每个目标像素估计权重和偏移矢量，以合成输出帧
