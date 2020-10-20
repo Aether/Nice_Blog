@@ -49,11 +49,15 @@ $$
 ### Flow reversal layer
 
 由于线性组合 $\boldsymbol f_{0 \rightarrow 1}$ 和 $\boldsymbol f_{1 \rightarrow 0}$ 来表示 backward flow 的方法具有运动边界周围表现不佳、无法应用加速度的缺点，作者提出新的计算方法：
+
+
 $$
 \boldsymbol f_{t \rightarrow 0}(\boldsymbol u)=
 	\frac{\sum_{\boldsymbol x + \boldsymbol f_{0 \rightarrow t}(\boldsymbol x)\in \mathcal N(\boldsymbol u)}w(||\boldsymbol x + \boldsymbol f_{0 \rightarrow t}(\boldsymbol x)-\boldsymbol u||_2)
 (-\boldsymbol f_{0 \rightarrow t}(\boldsymbol x))}{\sum_{\boldsymbol x + \boldsymbol f_{0 \rightarrow t}(\boldsymbol x)\in \mathcal N(\boldsymbol u)}w(||\boldsymbol x + \boldsymbol f_{0 \rightarrow t}(\boldsymbol x)-\boldsymbol u||_2)}
 $$
+
+
 
 - $w(d)=e^{-d^2/\sigma ^2}$  每个光流的高斯权重
 - $\mathcal N(\boldsymbol u)$ ：像素 $\boldsymbol u$ 的周边像素
@@ -65,9 +69,13 @@ $$
 #### Adaptive flow filtering
 
 由于使用 PWC-Net，backward flow 的边缘可能出现 ringing artifacts。作者使用 resCNN 策略表现不佳，它们主要来源于尖锐边缘的离群值，无法简单地移除这些立群值，因为卷积的权重平均运算受其影响。为避免权重平均的影响，只从相邻的一个像素采样
+
+
 $$
 \boldsymbol{f}_{t \rightarrow 0}^{\prime}(\boldsymbol{u})=\boldsymbol{f}_{t \rightarrow 0}(\boldsymbol{u}+\boldsymbol{\delta}(\boldsymbol{u}))+\boldsymbol{r}(\boldsymbol{u}) \\
 $$
+
+
 
 - $\boldsymbol \delta (\boldsymbol u) = k\times \tanh(·)∈[−k,k]$
 
@@ -76,22 +84,30 @@ $$
 #### Warping and fusing source frames
 
 基于$I_0$ $ I_1$ $ \boldsymbol f_{t \rightarrow 0}$ $\boldsymbol f_{t \rightarrow 1}$，合成目标中间帧 $\hat I_t$ ：
+
+
 $$
 \hat{I}_{t}(\boldsymbol{u})=\frac{(1-t) m(\boldsymbol{u}) I_{0}\left(\boldsymbol{u}+\boldsymbol{f}_{t \rightarrow 0}^{\prime}(\boldsymbol{u})\right)+t(1-m(\boldsymbol{u})) I_{1}\left(\boldsymbol{u}+\boldsymbol{f}_{t \rightarrow 1}^{\prime}(\boldsymbol{u})\right)}{(1-t) m(\boldsymbol{u})+t(1-m(\boldsymbol{u}))} \\
 $$
 
+
+
 - 图片合成中不直接使用$I_{-1}$，$I_2$，这两帧只用于挖掘加速度信息
 
 定义 loss 为 1 loss 和 perceptual loss 的结合：
+
+
 $$
 \left\|\hat{I}_{t}-I_{t}\right\|_{1}+\lambda\left\|\phi\left(\hat{I}_{t}\right)-\phi\left(I_{t}\right)\right\|_{2}
 $$
+
+
 
 - $\phi$ 是 VGG16 模型的特征提取器
 
 ### Algorithm Frame Overview
 
-![image-20201021033212451](/Users/aether/Desktop/Aether.github.io/_posts/image-20201021033212451.png)
+![image-20201021033212451](./image-20201021033212451.png)
 
 1. **光流估计**：输入 $I_0$ $I_1$，使用 PWC-Net 计算 $\boldsymbol f_{0 \rightarrow 1}$ $\boldsymbol f_{0 \rightarrow -1}$
 2. **平方光流预测**：输入 $\boldsymbol f_{0 \rightarrow 1}$ $\boldsymbol f_{0 \rightarrow -1}$, 计算 $\boldsymbol f_{0 \rightarrow t}$ 
