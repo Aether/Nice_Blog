@@ -58,7 +58,7 @@ $on-laptop:        800px;
   box-sizing: border-box; }
 
 body {
-    font-weight: lighter;
+   font-weight: lighter;
   font: 400 18px/1.5 Consolas,"Noto Sans",serif;
   color: #4e595e;
   background-color: #fdfdfd;
@@ -236,7 +236,7 @@ table, th {
   margin-left: auto;
   padding-right: 30px;
   padding-left: 30px; }
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 1000px) {
     .wrapper {
       max-width: -webkit-calc(800px - (30px));
       max-width: calc(800px - (30px));

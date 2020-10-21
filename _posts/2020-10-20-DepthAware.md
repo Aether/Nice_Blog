@@ -19,6 +19,8 @@ finished: true
 
 论文中使用 $\mathbf{F}_{0 \rightarrow 1}$ 中所有经过 $I_t$ 下目标像素 $\mathbf x$ 的光流加权平均来估计 $\mathbf{F}_{t \rightarrow 0}$ 
 
+s
+
 ![image-20201021051410825](../img/image-20201021051410825.png)
 
 
@@ -45,6 +47,7 @@ $$
 为了解决**空洞问题**，作者使用由外而内的策略：空洞位置的光流通过平均来自其相邻像素的光流来计算
 
 
+
 $$
 \mathbf{F}_{t \rightarrow 0}(\mathbf{x})=\frac{1}{|\mathcal{N}(\mathbf{x})|} \sum_{\mathbf{x}^{\prime} \in \mathcal{N}(\mathbf{x})} \mathbf{F}_{t \rightarrow 0}\left(\mathbf{x}^{\prime}\right)
 $$
@@ -52,6 +55,8 @@ $$
 
 
 $\mathcal{N}(\mathbf{x}) = \{\mathbf{x}':|\mathcal S(\mathbf{x})|>0\}$ ：像素 $\mathbf{x}$ 的四个相邻像素
+
+
 
 ### Algorithm Frame Overview
 
