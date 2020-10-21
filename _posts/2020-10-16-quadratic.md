@@ -107,7 +107,7 @@ $$
 
 ### Algorithm Frame Overview
 
-![image-20201021033212451](./image-20201021033212451.png)
+![image-20201021033212451](../img/image-20201021033212451.png)
 
 1. **光流估计**：输入 $I_0$ $I_1$，使用 PWC-Net 计算 $\boldsymbol f_{0 \rightarrow 1}$ $\boldsymbol f_{0 \rightarrow -1}$
 2. **平方光流预测**：输入 $\boldsymbol f_{0 \rightarrow 1}$ $\boldsymbol f_{0 \rightarrow -1}$, 计算 $\boldsymbol f_{0 \rightarrow t}$ 

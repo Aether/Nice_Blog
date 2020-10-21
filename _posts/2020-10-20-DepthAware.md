@@ -19,7 +19,7 @@ finished: true
 
 论文中使用 $\mathbf{F}_{0 \rightarrow 1}$ 中所有经过 $I_t$ 下目标像素 $\mathbf x$ 的光流加权平均来估计 $\mathbf{F}_{t \rightarrow 0}$ 
 
-![image-20201021051410825](/Users/aether/Desktop/Aether.github.io/_posts/image-20201021051410825.png)
+![image-20201021051410825](../img/image-20201021051410825.png)
 
 
 $$
@@ -51,12 +51,12 @@ $$
 
 
 
-- $\mathcal{N}(\mathbf{x}) = \{\mathbf{x}':|\mathcal S(\mathbf{x})|>0\}$ ：像素 $\mathbf{x}$ 的四个相邻像素
+$\mathcal{N}(\mathbf{x}) = \{\mathbf{x}':|\mathcal S(\mathbf{x})|>0\}$ ：像素 $\mathbf{x}$ 的四个相邻像素
 
 ### Algorithm Frame Overview
 
 
-![image-20201020220420595](./image-20201020220420595.png)
+![](../img/image-20201020220420595.png)
 
 1. **光流估计**：输入 $I_0$ $I_1$，使用 PWC-Net 计算光流
 2. **深度估计**：输入 $I_0$ $I_1$，使用 hourglass architecture 计算Depth Maps
