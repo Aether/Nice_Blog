@@ -19,7 +19,7 @@ finished: true
 
 论文中使用 $\mathbf{F}_{0 \rightarrow 1}$ 中所有经过 $I_t$ 下目标像素 $\mathbf x$ 的光流加权平均来估计 $\mathbf{F}_{t \rightarrow 0}$ 
 
-s
+
 
 ![image-20201021051410825](../img/image-20201021051410825.png)
 
@@ -54,7 +54,7 @@ $$
 
 
 
-$\mathcal{N}(\mathbf{x}) = \{\mathbf{x}':|\mathcal S(\mathbf{x})|>0\}$ ：像素 $\mathbf{x}$ 的四个相邻像素
+$\mathcal{N}(\mathbf{x}) = \{\mathbf{x}^{\prime}:|\mathcal S(\mathbf{x})|>0\}$ ：像素 $\mathbf{x}$ 的四个相邻像素
 
 
 
