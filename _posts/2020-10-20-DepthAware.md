@@ -17,7 +17,9 @@ finished: true
 
 ### Depth-Aware Flow Projection
 
-论文中使用 $$\mathbf{F}_{0 \rightarrow 1}$$ 中所有经过 $$I_t$$ 下目标像素 $$\mathbf x$$ 的光流加权平均来估计 $$\mathbf{F}_{t \rightarrow 0}$$
+
+
+论文中使用 $\mathbf{F}_{0 \rightarrow 1}$ 中所有经过 $I_t$ 下目标像素 $\mathbf x$ 的光流加权平均来估计 $\mathbf{F}_{t \rightarrow 0}$
 
 
 
@@ -52,11 +54,11 @@ $$
 \mathbf{F}_{t \rightarrow 0}(\mathbf{x})=\frac{1}{|\mathcal{N}(\mathbf{x})|} \sum_{\mathbf{x}^{\prime} \in \mathcal{N}(\mathbf{x})} \mathbf{F}_{t \rightarrow 0}\left(\mathbf{x}^{\prime}\right)
 $$
 
+$$
+\mathcal{N}(\mathbf{x}) = \{\mathbf{x}^{\prime}:|\mathcal S(\mathbf{x})|>0\}
+$$
 
-
-$$\mathcal{N}(\mathbf{x}) = \{\mathbf{x}^{\prime}:|\mathcal S(\mathbf{x})|>0\}$$ ：像素 $$\mathbf{x}$$ 的四个相邻像素
-
-
+- 像素 $$\mathbf{x}$$ 的四个相邻像素
 
 ### Algorithm Frame Overview
 
