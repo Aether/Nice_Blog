@@ -23,7 +23,7 @@ $grey-color-light: lighten($grey-color, 40%);
 $grey-color-dark:  darken($grey-color, 25%);
 
 // Width of the content area
-$content-width:    800px;
+$content-width:    1400px;
 
 $on-palm:          600px;
 $on-laptop:        800px;
@@ -230,13 +230,13 @@ table, th {
  * Wrapper
  */
 .wrapper {
-  max-width: -webkit-calc(850px - (30px * 2));
-  max-width: calc(850px - (30px * 2));
+  max-width: -webkit-calc(1450px - (30px * 2));
+  max-width: calc(1450px - (30px * 2));
   margin-right: auto;
   margin-left: auto;
   padding-right: 30px;
   padding-left: 30px; }
-  @media screen and (max-width: 1600px) {
+  @media screen and (max-width: 1400px) {
     .wrapper {
       max-width: -webkit-calc(800px - (30px));
       max-width: calc(800px - (30px));
